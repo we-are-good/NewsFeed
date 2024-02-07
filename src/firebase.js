@@ -5,12 +5,13 @@ import { initializeApp } from "firebase/app";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyDNLgL207w9aAoVlKqzQK_ieeROhfHtusE",
-  authDomain: "groove-project-aef59.firebaseapp.com",
-  projectId: "groove-project-aef59",
-  storageBucket: "groove-project-aef59.appspot.com",
-  messagingSenderId: "1079215030068",
-  appId: "1:1079215030068:web:fa25b7d3b1604d0779af61"
+
+  apiKey: "AIzaSyCQ5olKodsZhDCmlu6oZyK1JppXQ8uDTlA",
+  authDomain: "groove-a1c3e.firebaseapp.com",
+  projectId: "groove-a1c3e",
+  storageBucket: "groove-a1c3e.appspot.com",
+  messagingSenderId: "961749763398",
+  appId: "1:961749763398:web:7e1ba5a6c352c80f50d147"
 };
 
 // Initialize Firebase

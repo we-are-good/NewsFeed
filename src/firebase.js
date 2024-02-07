@@ -5,7 +5,6 @@ import { initializeApp } from "firebase/app";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-
   apiKey: "AIzaSyCQ5olKodsZhDCmlu6oZyK1JppXQ8uDTlA",
   authDomain: "groove-a1c3e.firebaseapp.com",
   projectId: "groove-a1c3e",

@@ -5,6 +5,7 @@ const GrooveFeed = ({ todo, setTodos }) => {
   const updateTodo = async (event) => {
     const todoRef = doc(db, "todos", todo.id);
     await updateDoc(todoRef, { ...todo, isDone: !todo.isDone });
+
     setTodos((prev) => {
       return prev.map((element) => {
         if (element.id === todo.id) {
@@ -18,8 +19,9 @@ const GrooveFeed = ({ todo, setTodos }) => {
 
   const deleteTodo = async (event) => {
     const todoRef = doc(db, "todos", todo.id);
-    deleteDoc(todoRef);
-    await setTodos((prev) => {
+    await deleteDoc(todoRef);
+
+    setTodos((prev) => {
       return prev.filter((element) => element.id !== todo.id);
     });
   };

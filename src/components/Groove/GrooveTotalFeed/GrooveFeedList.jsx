@@ -4,11 +4,8 @@ import { addDoc, collection, getDocs, query } from "firebase/firestore";
 import { db } from "../../../firebase";
 
 const GrooveFeedList = () => {
-  const [todos, setTodos] = useState([
-    { text: "할 일 1", isDone: false, id: 1 },
-    { text: "할 일 2", isDone: true, id: 2 }
-  ]);
-
+  const [todos, setTodos] = useState([]);
+  const [text, setText] = useState("");
   // useEffect 안에서 async/await를 만드려면 새로운 함수를 만들어야한다
   useEffect(() => {
     const fetchData = async () => {
@@ -35,8 +32,6 @@ const GrooveFeedList = () => {
     fetchData();
   }, []);
 
-  const [text, setText] = useState("");
-
   const onChange = (event) => {
     const {
       target: { name, value }
@@ -48,15 +43,17 @@ const GrooveFeedList = () => {
 
   const addTodo = async (event) => {
     event.preventDefault();
+    // Firestore에서 'todos' 컬렉션에 대한 참조 생성하기
     const newTodo = { text: text, isDone: false };
+
+    const collectionRef = collection(db, "todos");
+    const { id } = await addDoc(collectionRef, newTodo);
+
     setTodos((prev) => {
-      return [...todos, newTodo];
+      // 'todos' 컬렉션에 newTodo 문서를 추가합니다.
+      return [...todos, { ...newTodo, id }];
     });
     setText("");
-    // Firestore에서 'todos' 컬렉션에 대한 참조 생성하기
-    const collectionRef = collection(db, "todos");
-    // 'todos' 컬렉션에 newTodo 문서를 추가합니다.
-    await addDoc(collectionRef, newTodo);
   };
 
   return (

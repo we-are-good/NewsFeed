@@ -1,14 +1,24 @@
 import { useEffect } from "react";
-import { app } from "./firebase";
-function App() {
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "./firebase";
+import GrooveAuth from "./components/Groove/GrooveAuth";
+import GrooveFeedList from "./components/Groove/GrooveTotalFeed/GrooveFeedList";
+import FileUpload from "./components/FileUpload";
+
+const App = () => {
   useEffect(() => {
-    console.log("app", app);
+    onAuthStateChanged(auth, (user) => {
+      console.log("user", user); // 사용자 인증 정보가 변경될 때마다 해당 이벤트를 받아 처리합니다.
+    });
   }, []);
+
   return (
     <div className="App">
-      <h1>Learn Firebase</h1>
+      <GrooveAuth />
+      <GrooveFeedList />
+      <FileUpload />
     </div>
   );
-}
+};
 
 export default App;

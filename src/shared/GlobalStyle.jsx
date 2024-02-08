@@ -47,10 +47,6 @@ table {
 }
 *{
     box-sizing: border-box;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		height: 765px;
 }
 a{
     color:inherit;

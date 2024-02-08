@@ -1,126 +1,141 @@
-import React from "react";
-import { Navigate } from "react-router-dom";
+import React, { useEffect } from "react";
 import { useState } from "react";
-import styled from "styled-components";
+import {
+  LogInForm,
+  LogSigninButton,
+  IDPWBox,
+  LogInButtonsBox,
+  LogInSmallButton,
+  PromptLogIn,
+  GoogleGitLogIn
+} from "../../style/AuthStyle";
+import { auth } from "../../firebase";
+import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "../../firebase";
 
 function GrooveAuth() {
-  const [logInActive, setlogInActive] = useState(false);
+  const [logInModal, setLogInModal] = useState(false);
   const [activeName, setActiveName] = useState("Log in");
-  const [nickName, setNickName] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const onNickNameChange = (event) => {
-    setNickName(event.target.value);
+  const onEmailChange = (event) => {
+    setEmail(event.target.value);
   };
   const onPasswordChange = (event) => {
     setPassword(event.target.value);
   };
-  const openLogInModal = () => {
-    setlogInActive(true);
-  };
-  const closeLogInModal = () => {
-    setlogInActive(false);
+
+  const openModal = () => {
+    setLogInModal(true);
   };
 
-  const LogInForm = styled.form`
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background-color: white;
-    border: 0.2rem solid black;
-    height: 20rem;
-    width: 15rem;
-    gap: 1rem;
-  `;
+  const closeModal = () => {
+    setLogInModal(false);
+  };
 
-  const LogSigninButton = styled.button`
-    background-color: transparent;
-    border: none;
-    width: 5rem;
-    font-size: 1.2rem;
-  `;
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      console.log("현재유저정보", user);
+    });
+  }, []);
 
-  const IDPWBox = styled.div`
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    width: 12rem;
-  `;
+  const signIn = async (event) => {
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    } catch (error) {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      alert("오류가 발생했습니다.");
+    }
+  };
 
-  const LogInButtonsBox = styled.div`
-    display: flex;
-    flex-direction: row;
-    gap: 1rem;
+  const signUp = async (event) => {
+    event.preventDefault();
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    } catch (error) {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      alert("오류가 발생했습니다.");
+    } finally {
+      await setEmail("");
+      setPassword("");
+    }
+  };
 
-    align-items: center;
-    justify-content: center;
-    width: 12rem;
-    padding: 0rem 2rem;
-  `;
+  const logOut = async (event) => {
+    event.preventDefault();
+    await signOut(auth);
+  };
 
-  const LogInSmallButton = styled.button`
-    color: black;
-    background-color: yellow;
-    width: 4rem;
-    height: 1.5rem;
-    font-size: 0.8rem;
-    border-radius: 3rem;
-  `;
+  useEffect(() => {
+    const fetchData = async () => {
+      const querySnapshot = await getDocs(collection(db, "logInData"));
+      querySnapshot.forEach((doc) => {
+        console.log(`${doc.id} => ${doc.data()}`);
+      });
+    };
+    fetchData();
+  }, []);
 
-  const PromptLogIn = styled.button`
-    width: 2.5rem;
-    height: 2.5rem;
-    border-radius: 50%;
-    overflow: hidden;
-  `;
-
-  const LogInPromptButton = styled.button`
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    width: 15rem;
-    gap: 0.8rem;
-    background-color: white;
-    border: none;
-  `;
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     const q = query(collection(db, "logInData"));
+  //     const querySnapshot = await getDocs(q);
+  //     const initialTodos = [];
+  //     querySnapshot.forEach((doc) => {
+  //       const data = {
+  //         id: doc.id,
+  //         ...doc.data()
+  //       };
+  //       initialTodos.push(data);
+  //     });
+  //     setTodos(initialTodos);
+  //   };
+  //   fetchData();
+  // }, []);
 
   return (
     <div>
-      <button onClick={openLogInModal}>Log in</button>
+      <button onClick={openModal}>Log in</button>
+      <button onClick={logOut}>Log out</button>
       <div>
-        <div>
-          <LogInForm>
-            <div>
-              <LogSigninButton name="activeName">Log in</LogSigninButton>
-              <LogSigninButton name="activeName">Sign in</LogSigninButton>
-            </div>
-            <IDPWBox>
-              <input placeholder="ID" type="text" name="nickName" value={nickName} onChange={onNickNameChange} />
-            </IDPWBox>
-            <IDPWBox>
-              <input
-                placeholder="PASSWORD"
-                type="password"
-                name="password"
-                value={password}
-                onChange={onPasswordChange}
-              />
-            </IDPWBox>
-            <LogInButtonsBox>
-              <LogInSmallButton>Log in</LogInSmallButton>
-            </LogInButtonsBox>
+        {logInModal && (
+          <div>
+            <LogInForm>
+              <div>
+                <LogSigninButton name="activeName">Sign in</LogSigninButton>
+                <LogSigninButton name="activeName" onClick={signUp}>
+                  Sign up
+                </LogSigninButton>
+              </div>
+              <IDPWBox>
+                <input placeholder="ID" type="text" name="email" value={email} onChange={onEmailChange} />
+              </IDPWBox>
+              <IDPWBox>
+                <input
+                  placeholder="PASSWORD"
+                  type="password"
+                  name="password"
+                  value={password}
+                  onChange={onPasswordChange}
+                />
+              </IDPWBox>
+              <LogInButtonsBox>
+                <LogInSmallButton onClick={signIn}>Sign in</LogInSmallButton>
+              </LogInButtonsBox>
 
-            <div>or sign up with</div>
+              <div>or sign up with</div>
 
-            <LogInPromptButton>
-              <PromptLogIn>Google</PromptLogIn>
-              <PromptLogIn>Git</PromptLogIn>
-            </LogInPromptButton>
-          </LogInForm>
-        </div>
+              <GoogleGitLogIn>
+                <PromptLogIn>Google</PromptLogIn>
+                <PromptLogIn>Git</PromptLogIn>
+              </GoogleGitLogIn>
+            </LogInForm>
+          </div>
+        )}
       </div>
     </div>
   );

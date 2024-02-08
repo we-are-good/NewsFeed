@@ -8,7 +8,7 @@ import {
   LogInSmallButton,
   PromptLogIn,
   GoogleGitLogIn
-} from "../../style/AuthStyle";
+} from "../../style/GrooveAuthStyle";
 import { auth } from "../../firebase";
 import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "firebase/auth";
 import { collection, getDocs } from "firebase/firestore";
@@ -19,6 +19,7 @@ function GrooveAuth() {
   const [activeName, setActiveName] = useState("Log in");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [nickname, setNickname] = useState("");
 
   const onEmailChange = (event) => {
     setEmail(event.target.value);

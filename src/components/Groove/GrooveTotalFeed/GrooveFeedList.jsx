@@ -40,40 +40,40 @@ const GrooveFeedList = () => {
     fetchData();
   }, []);
 
-  const onChangeTitle = (event) => {
-    const {
-      target: { name, value }
-    } = event;
-    if (name === "titleText") {
-      setTitleText(value);
-    }
-  };
+  // const onChangeTitle = (event) => {
+  //   const {
+  //     target: { name, value }
+  //   } = event;
+  //   if (name === "titleText") {
+  //     setTitleText(value);
+  //   }
+  // };
 
-  const onChangeBody = (event) => {
-    const {
-      target: { name, value }
-    } = event;
-    if (name === "bodyText") {
-      setBodyText(value);
-    }
-  };
+  // const onChangeBody = (event) => {
+  //   const {
+  //     target: { name, value }
+  //   } = event;
+  //   if (name === "bodyText") {
+  //     setBodyText(value);
+  //   }
+  // };
 
-  const addTodo = async (event) => {
-    event.preventDefault();
+  // const addTodo = async (event) => {
+  //   event.preventDefault();
 
-    // Firestore에서 'todos' 컬렉션에 대한 참조 생성하기
-    const newGroove = { body: titleText, title: bodyText };
+  //   // Firestore에서 'newGroove' 컬렉션에 대한 참조 생성하기
+  //   const newGroove = { body: titleText, title: bodyText };
 
-    // const newTodo = { text: text, isDone: false };
+  //   // const newTodo = { text: text, isDone: false };
 
-    const collectionRef = collection(db, "GrooveTop");
-    const { id } = await addDoc(collectionRef, newGroove);
+  //   const collectionRef = collection(db, "GrooveTop");
+  //   const { id } = await addDoc(collectionRef, newGroove);
 
-    setGrooveTop((prev) => {
-      // 'GrooveTop' 컬렉션에 newTodo 문서를 추가합니다.
-      return [...GrooveTop, { ...newGroove, id }];
-    });
-  };
+  //   setGrooveTop((prev) => {
+  //     // 'GrooveTop' 컬렉션에 newTodo 문서를 추가합니다.
+  //     return [...GrooveTop, { ...newGroove, id }];
+  //   });
+  // };
 
   return (
     <>

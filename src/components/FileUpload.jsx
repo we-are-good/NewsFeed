@@ -1,9 +1,11 @@
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { auth, storage } from "../firebase";
+import { orderBy } from "firebase/firestore";
 
 const FileUpload = () => {
   const [selectedFile, setSelectedFile] = useState(null);
+  const [imageUrl, setImageUrl] = useState();
 
   const handleFileSelect = (event) => {
     setSelectedFile(event.target.files[0]);
@@ -17,6 +19,7 @@ const FileUpload = () => {
     // 파일 URL 가져오기
     const downloadURL = await getDownloadURL(imageRef);
     console.log("downloadURL", downloadURL);
+    setImageUrl(downloadURL);
   };
 
   return (
@@ -24,6 +27,7 @@ const FileUpload = () => {
       <h2>파일 업로드 컴포넌트</h2>
       <input type="file" onChange={handleFileSelect} />
       <button onClick={handleUpload}>Upload</button>
+      <img src={imageUrl} alt="기본이미지" style={{ width: "200px", height: "200px" }}></img>
     </div>
   );
 };

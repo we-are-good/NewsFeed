@@ -27,11 +27,12 @@ const GrooveFeed = ({ todo, setTodos }) => {
   };
 
   return (
-    <div key={todo.id}>
-      <span>{todo.text}</span>
-      <button onClick={updateTodo}>{todo.isDone ? "취소" : "완료"}</button>
-      <button onClick={deleteTodo}>삭제</button>
-    </div>
+    // <div key={todo.id}>
+    //   <span>{todo.text}</span>
+    //   <button onClick={updateTodo}>{todo.isDone ? "취소" : "완료"}</button>
+    //   <button onClick={deleteTodo}>삭제</button>
+    // </div>
+    <>피드 나열</>
   );
 };
 

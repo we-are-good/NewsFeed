@@ -1,3 +1,5 @@
+
+
 import React, { useEffect } from "react";
 import { useState } from "react";
 import {
@@ -63,6 +65,7 @@ function GrooveAuth() {
     } finally {
       await setEmail("");
       setPassword("");
+
     }
   };
 
@@ -70,6 +73,7 @@ function GrooveAuth() {
     event.preventDefault();
     await signOut(auth);
   };
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -141,5 +145,6 @@ function GrooveAuth() {
     </div>
   );
 }
+
 
 export default GrooveAuth;

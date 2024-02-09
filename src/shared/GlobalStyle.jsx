@@ -21,6 +21,7 @@ time, mark, audio, video {
 	font-size: 100%;
 	font: inherit;
 	vertical-align: baseline;
+	font-family:pretendard ;
 }
 /* HTML5 display-role reset for older browsers */
 article, aside, details, figcaption, figure, 
@@ -47,10 +48,6 @@ table {
 }
 *{
     box-sizing: border-box;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		height: 765px;
 }
 a{
     color:inherit;

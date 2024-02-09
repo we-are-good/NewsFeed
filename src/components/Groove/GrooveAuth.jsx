@@ -11,10 +11,9 @@ import {
   PromptLogIn,
   GoogleGitLogIn
 } from "../../style/GrooveAuthStyle";
-import { auth } from "../../firebase";
+import { auth, db } from "../../firebase";
 import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "firebase/auth";
 import { collection, getDocs } from "firebase/firestore";
-import { db } from "../../firebase";
 
 function GrooveAuth() {
   const [logInModal, setLogInModal] = useState(false);

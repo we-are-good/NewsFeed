@@ -44,7 +44,7 @@ const GrooveFeed = ({ todo, setTodos, GrooveTop }) => {
       return prev.filter((element) => element.id !== todo.id);
     });
   };
-
+  
   return (
     // <div key={todo.id}>
     //   <span>{todo.text}</span>

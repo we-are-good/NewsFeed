@@ -1,13 +1,24 @@
 import React from "react";
-
+import {
+  GrooveHeaderWrap,
+  GrooveHeaderLogo,
+  GrooveHeaderIconWrap,
+  GrooveHeaderIconHome,
+  GrooveHeaderIconWrite,
+  GrooveHeaderIconMy
+} from "../../style/GrooveHeaderStyle";
 function GrooveHeader() {
   return (
     <>
-      <div>GrooveHeader</div>
-      <>
-        {" "}
-        //////////////////////////////////////////////////////////////////////////////////////////헤더영역//////////////////////////////////////////////////////////////////////////////////////////
-      </>
+      <GrooveHeaderWrap>
+        <GrooveHeaderLogo>Groove</GrooveHeaderLogo>
+
+        <GrooveHeaderIconWrap>
+          <GrooveHeaderIconHome />
+          <GrooveHeaderIconWrite />
+          <GrooveHeaderIconMy />
+        </GrooveHeaderIconWrap>
+      </GrooveHeaderWrap>
     </>
   );
 }

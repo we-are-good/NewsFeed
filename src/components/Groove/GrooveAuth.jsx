@@ -1,27 +1,30 @@
-
-
 import React, { useEffect } from "react";
 import { useState } from "react";
 import {
+  OverlayForm,
   LogInForm,
   LogSigninButton,
   IDPWBox,
   LogInButtonsBox,
   LogInSmallButton,
   PromptLogIn,
-  GoogleGitLogIn
+  GoogleGitLogIn,
+  SocialLogInNickname
 } from "../../style/GrooveAuthStyle";
 import { auth } from "../../firebase";
 import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "firebase/auth";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, query, addDoc } from "firebase/firestore";
 import { db } from "../../firebase";
+import { GoogleAuthProvider, signInWithPopup, GithubAuthProvider } from "firebase/auth";
 
 function GrooveAuth() {
   const [logInModal, setLogInModal] = useState(false);
-  const [activeName, setActiveName] = useState("Log in");
+  const [signUpModal, setSignUpModal] = useState(false);
+  const [socialLogInModal, setSocialLogInModal] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [nickname, setNickname] = useState("");
+  const [totalUsersInformation, setTotalUsersInformation] = useState([]);
 
   const onEmailChange = (event) => {
     setEmail(event.target.value);
@@ -29,43 +32,47 @@ function GrooveAuth() {
   const onPasswordChange = (event) => {
     setPassword(event.target.value);
   };
+  const onNicknameChange = (event) => {
+    setNickname(event.target.value);
+  };
 
-  const openModal = () => {
+  const openLogInModal = () => {
     setLogInModal(true);
   };
 
-  const closeModal = () => {
+  const closeLogInModal = () => {
     setLogInModal(false);
   };
 
-  useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      console.log("현재유저정보", user);
-    });
-  }, []);
-
-  const signIn = async (event) => {
-    try {
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
-    } catch (error) {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      alert("오류가 발생했습니다.");
-    }
+  const openSignUpModal = () => {
+    setSignUpModal(true);
+  };
+  const closeSignUpModal = () => {
+    setSignUpModal(false);
   };
 
-  const signUp = async (event) => {
-    event.preventDefault();
+  const openSocialLogInModal = () => {
+    setSocialLogInModal(true);
+  };
+  const closeSocialLogInModal = () => {
+    setSocialLogInModal(false);
+  };
+
+  const Login = async (event) => {
     try {
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      if (!email || !password) {
+        return alert("빈칸을 입력하세요");
+      }
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      closeLogInModal();
     } catch (error) {
       const errorCode = error.code;
       const errorMessage = error.message;
       alert("오류가 발생했습니다.");
     } finally {
-      await setEmail("");
+      setEmail("");
+      setNickname("");
       setPassword("");
-
     }
   };
 
@@ -74,50 +81,133 @@ function GrooveAuth() {
     await signOut(auth);
   };
 
+  const signUp = async (event) => {
+    event.preventDefault();
+    try {
+      if (!email || !password || !nickname) {
+        return alert("빈칸을 입력하세요");
+      }
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      console.log("userCredential", userCredential);
+      const newUser = { email: email, nickname: nickname };
+      const collectionRef = collection(db, "logInData");
+      await addDoc(collectionRef, newUser);
+      closeSignUpModal();
+    } catch (error) {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      alert(errorCode, errorMessage);
+    } finally {
+      setEmail("");
+      setNickname("");
+      setPassword("");
+    }
+  };
+
+  const fetchData = async () => {
+    const q = query(collection(db, "logInData"));
+    const querySnapshot = await getDocs(q);
+    const quaryData = await querySnapshot.forEach((doc) => {
+      const usersInformation = { id: doc.id, email: doc.data().email, nickname: doc.data().nickname };
+      totalUsersInformation.push(usersInformation);
+    });
+    setTotalUsersInformation(totalUsersInformation);
+  };
+  // 현재 가지고 있는 db내 이메일, 닉네임 목록 추출 완료!
+  fetchData();
 
   useEffect(() => {
-    const fetchData = async () => {
-      const querySnapshot = await getDocs(collection(db, "logInData"));
-      querySnapshot.forEach((doc) => {
-        console.log(`${doc.id} => ${doc.data()}`);
-      });
-    };
-    fetchData();
-  }, []);
+    const nowUserData = onAuthStateChanged(auth, (user) => {
+      if (!user) return;
+      const nowUserEmail = user.email;
+      if (!email) return;
+      console.log("nowUserEmail", nowUserEmail);
+      setEmail(nowUserEmail);
+      const nowUserInformation = totalUsersInformation.find((user) => user.email === nowUserEmail);
+      if (!nowUserInformation) return;
+      const nowUserNickname = nowUserInformation.nickname;
+      console.log("nowUserNickname", nowUserNickname);
+      setNickname(nowUserNickname);
+    });
+  }, [totalUsersInformation]);
+  //현재 전역상태에 머물러있는 유저의 이메일, 닉네임 추출 완료!
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     const q = query(collection(db, "logInData"));
-  //     const querySnapshot = await getDocs(q);
-  //     const initialTodos = [];
-  //     querySnapshot.forEach((doc) => {
-  //       const data = {
-  //         id: doc.id,
-  //         ...doc.data()
-  //       };
-  //       initialTodos.push(data);
-  //     });
-  //     setTodos(initialTodos);
-  //   };
-  //   fetchData();
-  // }, []);
+  const handleGoogleLogin = async () => {
+    try {
+      const provider = new GoogleAuthProvider();
+      const popUpforLogin = await signInWithPopup(auth, provider);
+      console.log("popUpforLogin", popUpforLogin);
+      const googleLogInUserEmail = popUpforLogin.user.email;
+      console.log(googleLogInUserEmail);
+
+      if (totalUsersInformation.find(googleLogInUserEmail)) {
+        return alert("이미 가입한 이메일입니다.");
+      }
+
+      const openModal = await openSocialLogInModal();
+      const getSocialLogInNickName = await socialLogInNickname();
+
+      const newUser = { email: googleLogInUserEmail, nickname: socialLogInNickname };
+      const collectionRef = collection(db, "logInData");
+      await addDoc(collectionRef, newUser);
+    } catch (error) {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      const credential = GoogleAuthProvider.credentialFromError(error);
+      alert("오류가 발생했습니다.");
+    } finally {
+      closeSocialLogInModal();
+    }
+  };
+
+  const handleGitLogin = async () => {
+    try {
+      const provider = new GithubAuthProvider();
+      const popUpforLogin = await signInWithPopup(auth, provider);
+      console.log("popUpforLogin", popUpforLogin);
+      const credential = GithubAuthProvider.credentialFromResult(popUpforLogin);
+      const token = credential.accessToken;
+      const user = popUpforLogin.user;
+    } catch (error) {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      const credential = GithubAuthProvider.credentialFromError(error);
+      alert("오류가 발생했습니다.");
+    }
+  };
+
+  const socialLogInNickname = () => {
+    if (!nickname) {
+      return alert("빈칸을 입력해 주세요!");
+    }
+    setNickname(nickname);
+  };
 
   return (
-    <div>
-      <button onClick={openModal}>Log in</button>
+    <OverlayForm>
+      <button onClick={openLogInModal}>Log in</button>
       <button onClick={logOut}>Log out</button>
+
       <div>
-        {logInModal && (
+        {logInModal && !signUpModal && !socialLogInModal && (
           <div>
             <LogInForm>
               <div>
-                <LogSigninButton name="activeName">Sign in</LogSigninButton>
-                <LogSigninButton name="activeName" onClick={signUp}>
+                <LogSigninButton type="button" name="ignore-click">
+                  Log in
+                </LogSigninButton>
+                <LogSigninButton
+                  type="button"
+                  onClick={() => {
+                    closeLogInModal();
+                    openSignUpModal();
+                  }}
+                >
                   Sign up
                 </LogSigninButton>
               </div>
               <IDPWBox>
-                <input placeholder="ID" type="text" name="email" value={email} onChange={onEmailChange} />
+                <input placeholder="E-mail" type="text" name="email" value={email} onChange={onEmailChange} />
               </IDPWBox>
               <IDPWBox>
                 <input
@@ -129,22 +219,87 @@ function GrooveAuth() {
                 />
               </IDPWBox>
               <LogInButtonsBox>
-                <LogInSmallButton onClick={signIn}>Sign in</LogInSmallButton>
+                <LogInSmallButton type="button" onClick={Login}>
+                  Log in
+                </LogInSmallButton>
+              </LogInButtonsBox>
+            </LogInForm>
+          </div>
+        )}
+      </div>
+
+      <div>
+        {signUpModal && !socialLogInModal && (
+          <div>
+            <LogInForm>
+              <div>
+                <LogSigninButton
+                  type="button"
+                  name="activeName"
+                  onClick={() => {
+                    closeSignUpModal();
+                    openLogInModal();
+                  }}
+                >
+                  Log in
+                </LogSigninButton>
+                <LogSigninButton type="button" name="ignore-click">
+                  Sign up
+                </LogSigninButton>
+              </div>
+              <IDPWBox>
+                <input placeholder="E-mail" type="text" name="email" value={email} onChange={onEmailChange} />
+              </IDPWBox>
+              <IDPWBox>
+                <input placeholder="Nickname" type="text" name="text" value={nickname} onChange={onNicknameChange} />
+              </IDPWBox>
+              <IDPWBox>
+                <input
+                  placeholder="PASSWORD"
+                  type="password"
+                  name="password"
+                  value={password}
+                  onChange={onPasswordChange}
+                />
+              </IDPWBox>
+              <LogInButtonsBox>
+                <LogInSmallButton type="button" onClick={signUp}>
+                  Sign up
+                </LogInSmallButton>
               </LogInButtonsBox>
 
               <div>or sign up with</div>
 
               <GoogleGitLogIn>
-                <PromptLogIn>Google</PromptLogIn>
-                <PromptLogIn>Git</PromptLogIn>
+                <PromptLogIn type="button" onClick={handleGoogleLogin}>
+                  Google
+                </PromptLogIn>
+                <PromptLogIn type="button" onClick={handleGitLogin}>
+                  Git
+                </PromptLogIn>
               </GoogleGitLogIn>
             </LogInForm>
           </div>
         )}
       </div>
-    </div>
+
+      <div>
+        {socialLogInModal && (
+          <SocialLogInNickname>
+            <input
+              placeholder="Nickname"
+              type="text"
+              required
+              minLength={4}
+              value={nickname}
+              onChange={onNicknameChange}
+            />
+            <button onClick={socialLogInNickname}>확인</button>
+          </SocialLogInNickname>
+        )}
+      </div>
+    </OverlayForm>
   );
 }
-
 
 export default GrooveAuth;

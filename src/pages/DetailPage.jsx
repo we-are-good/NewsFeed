@@ -1,11 +1,13 @@
+import { deleteDoc, doc } from "firebase/firestore";
 import React from "react";
 import { useLocation, useParams } from "react-router-dom";
+import { db } from "../firebase";
 
-function DetailPage() {
+function DetailPage({ setGrooveTop, GrooveTop }) {
   const params = useParams();
   const location = useLocation();
   const detailGroove = location.state.filter((item) => item.id === params.id);
-
+  console.log(...detailGroove);
   // const updateTodo = async (event) => {
   //   const todoRef = doc(db, "todos", todo.id);
   //   await updateDoc(todoRef, { ...todo, isDone: !todo.isDone });
@@ -21,20 +23,23 @@ function DetailPage() {
   //   });
   // };
 
-  // const deleteTodo = async (event) => {
-  //   const todoRef = doc(db, "todos", todo.id);
-  //   await deleteDoc(todoRef);
+  const deleteGroove = async (event) => {
+    const GrooveTopRef = doc(db, "GrooveTop", GrooveTop.id);
+    console.log(GrooveTopRef);
+    await deleteDoc(GrooveTopRef);
 
-  //   setTodos((prev) => {
-  //     return prev.filter((element) => element.id !== todo.id);
-  //   });
-  // };
+    setGrooveTop((prev) => {
+      console.log(prev);
+      return prev.filter((element) => element.id !== GrooveTop.id);
+    });
+  };
 
   return (
     <>
       <div>DetailPage</div>
       <>제목: {detailGroove[0].title}</>
-      <>제목: {detailGroove[0].body}</>
+      <>내용: {detailGroove[0].body}</>
+      <button onClick={deleteGroove}>삭제하기</button>
     </>
   );
 }

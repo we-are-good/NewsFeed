@@ -19,7 +19,7 @@ const Title = styled.div`
 const Body = styled.div`
   color: yellow;
 `;
-const GrooveFeed = ({ GrooveTop }) => {
+const GrooveFeed = ({ GrooveTop, setGrooveTop }) => {
   return (
     <>
       <>
@@ -36,6 +36,7 @@ const GrooveFeed = ({ GrooveTop }) => {
                 pathname: `/detail/${item.id}`
               }}
               state={GrooveTop}
+              setGrooveTop={setGrooveTop}
             >
               {/* <div key={item.id} onClick={navigate(`/detail/${item.id}`)}> */}
               <img src="" alt="업로드된 이미지"></img>

@@ -31,7 +31,7 @@ function WritePage() {
     event.preventDefault();
 
     // Firestore에서 'grooveTop' 컬렉션에 대한 참조 생성하기
-    const newGroove = { body: titleText, title: bodyText, Timestamp: new Date() };
+    const newGroove = { body: titleText, title: bodyText, Timestamp: new Date(), isLiked: false, likeCount: 0 };
 
     // const newTodo = { text: text, isDone: false };
 

@@ -14,8 +14,12 @@ function GrooveHeader() {
         <GrooveHeaderLogo>Groove</GrooveHeaderLogo>
 
         <GrooveHeaderIconWrap>
-          <GrooveHeaderIconHome />
-          <GrooveHeaderIconWrite />
+          <GrooveHeaderIconHome>
+            <i class="fa-solid fa-house"></i>
+          </GrooveHeaderIconHome>
+          <GrooveHeaderIconWrite>
+            <i class="fa-solid fa-pen"></i>
+          </GrooveHeaderIconWrite>
           <GrooveHeaderIconMy />
         </GrooveHeaderIconWrap>
       </GrooveHeaderWrap>

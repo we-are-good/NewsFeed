@@ -16,10 +16,10 @@ function GrooveHeader() {
         <GrooveHeaderLogo>Groove</GrooveHeaderLogo>
 
         <GrooveHeaderIconWrap>
-          <GrooveAuth />
           <GrooveHeaderIconHome />
           <GrooveHeaderIconWrite />
           <GrooveHeaderIconMy />
+          <GrooveAuth />
         </GrooveHeaderIconWrap>
       </GrooveHeaderWrap>
     </>

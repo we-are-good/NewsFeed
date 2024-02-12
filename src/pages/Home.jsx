@@ -8,10 +8,10 @@ function Home() {
   const navigate = useNavigate();
   return (
     <div>
-      {/* <GrooveHeader /> */}
+      <GrooveHeader />
       <button onClick={() => navigate("/write")}>글 작성하러가기 </button>
-      {/* <GrooveFeedList />
-      <GrooveFooter /> */}
+      <GrooveFeedList />
+      <GrooveFooter />
     </div>
   );
 }

@@ -191,9 +191,14 @@ function GrooveAuth() {
   };
 
   return (
-    <OverlayForm>
+    <div>
       <button onClick={openLogInModal}>Log in</button>
       <button onClick={logOut}>Log out</button>
+      {logInModal && !signUpModal && !socialLogInModal && (
+        <div>
+          <OverlayForm />
+        </div>
+      )}
 
       <div>
         {logInModal && !signUpModal && !socialLogInModal && (
@@ -305,7 +310,7 @@ function GrooveAuth() {
           </SocialLogInNickname>
         )}
       </div>
-    </OverlayForm>
+    </div>
   );
 }
 

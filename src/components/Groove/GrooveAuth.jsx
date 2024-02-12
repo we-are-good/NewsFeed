@@ -57,6 +57,10 @@ function GrooveAuth() {
   const closeSocialLogInModal = () => {
     setSocialLogInModal(false);
   };
+  const closeLogInSignUpModal = () => {
+    setSignUpModal(false);
+    setLogInModal(false);
+  };
 
   const Login = async (event) => {
     try {
@@ -194,9 +198,9 @@ function GrooveAuth() {
     <div>
       <button onClick={openLogInModal}>Log in</button>
       <button onClick={logOut}>Log out</button>
-      {logInModal && !signUpModal && !socialLogInModal && (
+      {(logInModal || signUpModal || socialLogInModal) && (
         <div>
-          <OverlayForm />
+          <OverlayForm onClick={closeLogInSignUpModal} />
         </div>
       )}
 

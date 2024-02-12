@@ -30,11 +30,26 @@ export const GrooveHeaderIconWrap = styled.div`
     margin-left: 0;
   }
 `;
-export const GrooveHeaderIconHome = styled.button``;
-export const GrooveHeaderIconWrite = styled.button``;
+export const GrooveHeaderIconHome = styled.button`
+  position: relative;
+  & > i {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+`;
+export const GrooveHeaderIconWrite = styled.button`
+  position: relative;
+  & > i {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+`;
 export const GrooveHeaderIconMy = styled.button`
   position: relative;
-
   &::before {
     content: "";
     position: absolute;
@@ -56,5 +71,12 @@ export const GrooveHeaderIconMy = styled.button`
     left: 50%;
     transform: translate(-50%, 0%);
     background-color: #222;
+  }
+  &:hover {
+    background-color: #222;
+  }
+  &:hover::before,
+  &:hover::after {
+    background-color: #fff;
   }
 `;

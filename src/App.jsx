@@ -1,4 +1,3 @@
-
 import { useEffect } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./firebase";
@@ -17,10 +16,8 @@ const App = () => {
   //   });
   // }, []);
 
-
   return (
     <>
-
       <GlobalStyle />
       <Router />
       {/* <GrooveAuth /> */}
@@ -29,8 +26,7 @@ const App = () => {
       {/* <FileUpload /> */}
       {/* <LoadFile /> */}
 
-      <GrooveAuth />
-
+      {/* <GrooveAuth /> */}
     </>
   );
 };

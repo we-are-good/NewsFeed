@@ -1,6 +1,20 @@
 import styled from "styled-components";
 
+export const OverlayForm = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.8);
+`;
+
 export const LogInForm = styled.form`
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 1001;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -13,7 +27,8 @@ export const LogInForm = styled.form`
 `;
 
 export const LogSigninButton = styled.button`
-  background-color: transparent;
+  pointer-events: ${(props) => (props.name === "ignore-click" ? "none" : "painted")};
+  background-color: ${(props) => (props.name === "ignore-click" ? "yellow" : "transparent")};
   border: none;
   width: 5rem;
   font-size: 1.2rem;
@@ -59,4 +74,21 @@ export const GoogleGitLogIn = styled.footer`
   justify-content: center;
   align-items: center;
   gap: 0.8rem;
+`;
+
+export const SocialLogInNickname = styled.div`
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 1001;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  border: 0.2rem solid black;
+  height: 5rem;
+  width: 17rem;
+  gap: 1rem;
 `;

@@ -7,6 +7,8 @@ import {
   GrooveHeaderIconWrite,
   GrooveHeaderIconMy
 } from "../../style/GrooveHeaderStyle";
+import GrooveAuth from "./GrooveAuth";
+
 function GrooveHeader() {
   return (
     <>
@@ -14,6 +16,7 @@ function GrooveHeader() {
         <GrooveHeaderLogo>Groove</GrooveHeaderLogo>
 
         <GrooveHeaderIconWrap>
+          <GrooveAuth />
           <GrooveHeaderIconHome />
           <GrooveHeaderIconWrite />
           <GrooveHeaderIconMy />

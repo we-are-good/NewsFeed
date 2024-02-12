@@ -59,6 +59,8 @@ function WritePage() {
         내용:<input type="text" value={bodyText} name="bodyText" onChange={onChangeBody} required></input>
         <br />
         <button onClick={addTodo}>추가</button>
+        <br />
+        <button onClick={() => navigate("/")}>취소</button>
       </form>
     </>
   );

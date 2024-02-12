@@ -87,6 +87,9 @@ function GrooveAuth() {
       if (!email || !password || !nickname) {
         return alert("빈칸을 입력하세요");
       }
+      const nowUserData = onAuthStateChanged(auth, (user) => {
+        if (user) return;
+      });
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       console.log("userCredential", userCredential);
       const newUser = { email: email, nickname: nickname };
@@ -108,13 +111,14 @@ function GrooveAuth() {
     const q = query(collection(db, "logInData"));
     const querySnapshot = await getDocs(q);
     const quaryData = await querySnapshot.forEach((doc) => {
-      const usersInformation = { id: doc.id, email: doc.data().email, nickname: doc.data().nickname };
-      totalUsersInformation.push(usersInformation);
+      const userInformation = {
+        id: doc.id,
+        email: doc.data().email,
+        nickname: doc.data().nickname
+      };
     });
-    setTotalUsersInformation(totalUsersInformation);
+    setTotalUsersInformation(quaryData);
   };
-  // 현재 가지고 있는 db내 이메일, 닉네임 목록 추출 완료!
-  fetchData();
 
   useEffect(() => {
     const nowUserData = onAuthStateChanged(auth, (user) => {
@@ -123,14 +127,17 @@ function GrooveAuth() {
       if (!email) return;
       console.log("nowUserEmail", nowUserEmail);
       setEmail(nowUserEmail);
+      console.log(email);
+
+      const userTotalData = fetchData();
+      console.log(userTotalData);
       const nowUserInformation = totalUsersInformation.find((user) => user.email === nowUserEmail);
       if (!nowUserInformation) return;
       const nowUserNickname = nowUserInformation.nickname;
       console.log("nowUserNickname", nowUserNickname);
       setNickname(nowUserNickname);
     });
-  }, [totalUsersInformation]);
-  //현재 전역상태에 머물러있는 유저의 이메일, 닉네임 추출 완료!
+  }, [setEmail]);
 
   const handleGoogleLogin = async () => {
     try {

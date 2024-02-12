@@ -1,3 +1,4 @@
+// groove-3e149.firebaseapp.com
 import React, { useEffect } from "react";
 import { useState } from "react";
 import {
@@ -12,10 +13,18 @@ import {
   SocialLogInNickname
 } from "../../style/GrooveAuthStyle";
 import { auth } from "../../firebase";
-import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  fetchSignInMethodsForEmail,
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+  signOut
+} from "firebase/auth";
+import { getAuth } from "firebase/auth";
 import { collection, getDocs, query, addDoc } from "firebase/firestore";
 import { db } from "../../firebase";
 import { GoogleAuthProvider, signInWithPopup, GithubAuthProvider } from "firebase/auth";
+import { useRef } from "react";
 
 function GrooveAuth() {
   const [logInModal, setLogInModal] = useState(false);
@@ -25,7 +34,15 @@ function GrooveAuth() {
   const [password, setPassword] = useState("");
   const [nickname, setNickname] = useState("");
   const [totalUsersInformation, setTotalUsersInformation] = useState([]);
-  const [isUserLogIn, setIsUserLogIn] = useState(false);
+  const isUserLogIn = useRef(false);
+  const nowLogInEmail = useRef("");
+  const nowLogInNickname = useRef("");
+  const nowUser = useRef("");
+  let googleLogInUserEmail = "";
+
+  console.log("nowLogInEmail", nowLogInEmail.current);
+  console.log("nowLogInNickname", nowLogInNickname.current);
+  console.log("isUserLogIn", isUserLogIn);
 
   const onEmailChange = (event) => {
     setEmail(event.target.value);
@@ -58,6 +75,7 @@ function GrooveAuth() {
   const closeSocialLogInModal = () => {
     setSocialLogInModal(false);
   };
+
   const closeLogInSignUpModal = () => {
     setSignUpModal(false);
     setLogInModal(false);
@@ -70,7 +88,7 @@ function GrooveAuth() {
       }
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       closeLogInModal();
-      setIsUserLogIn(true);
+      isUserLogIn.current = true;
     } catch (error) {
       const errorCode = error.code;
       const errorMessage = error.message;
@@ -85,7 +103,8 @@ function GrooveAuth() {
   const logOut = async (event) => {
     event.preventDefault();
     await signOut(auth);
-    setIsUserLogIn(false);
+    isUserLogIn.current = false;
+    nowUser.current = "";
   };
 
   const signUp = async (event) => {
@@ -103,7 +122,7 @@ function GrooveAuth() {
       const collectionRef = collection(db, "logInData");
       await addDoc(collectionRef, newUser);
       closeSignUpModal();
-      setIsUserLogIn(true);
+      isUserLogIn.current = true;
     } catch (error) {
       const errorCode = error.code;
       const errorMessage = error.message;
@@ -115,73 +134,97 @@ function GrooveAuth() {
     }
   };
 
-  const fetchData = async () => {
-    const q = query(collection(db, "logInData"));
-    const querySnapshot = await getDocs(q);
-    const quaryData = await querySnapshot.forEach((doc) => {
-      const userInformation = {
-        id: doc.id,
-        email: doc.data().email,
-        nickname: doc.data().nickname
-      };
-    });
-    setTotalUsersInformation(quaryData);
-  };
+  const auth = getAuth();
+  const user = auth.currentUser;
+  nowUser.current = user;
+  console.log("nowUser", nowUser.current);
 
   useEffect(() => {
-    const nowUserData = onAuthStateChanged(auth, (user) => {
-      if (!user) return;
-      const nowUserEmail = user.email;
-      if (!email) return;
-      console.log("nowUserEmail", nowUserEmail);
-      setEmail(nowUserEmail);
-      console.log(email);
+    const fetchData = async (userEmail) => {
+      const q = query(collection(db, "logInData"));
+      const querySnapshot = await getDocs(q);
 
-      const userTotalData = fetchData();
-      console.log(userTotalData);
-      const nowUserInformation = totalUsersInformation.find((user) => user.email === nowUserEmail);
-      if (!nowUserInformation) return;
-      const nowUserNickname = nowUserInformation.nickname;
-      console.log("nowUserNickname", nowUserNickname);
-      setNickname(nowUserNickname);
-    });
-  }, [setEmail]);
+      const totalUsersInformation = await querySnapshot.docs.map((doc) => ({
+        email: doc.data().email,
+        nickname: doc.data().nickname
+      }));
+      setTotalUsersInformation(totalUsersInformation);
+      console.log(totalUsersInformation);
+      const LogInNickname = await totalUsersInformation.find((information) => information.email === userEmail).nickname;
+      nowLogInNickname.current = LogInNickname;
+      console.log("nowLogInEmail.current", nowLogInEmail.current);
+      console.log("nowLogInNickname", LogInNickname);
+      if (!totalUsersInformation) return;
+    };
 
-  const handleGoogleLogin = async () => {
+    if (user) {
+      console.log("user", user);
+      const userEmail = user.email;
+      isUserLogIn.current = true;
+      nowLogInEmail.current = userEmail;
+      setLogInModal(false);
+      fetchData(userEmail);
+    } else {
+      console.log("user in else", user);
+    }
+  }, [user]);
+
+  const socialLogInNickname = () => {
+    if (!nickname) {
+      return alert("빈칸을 입력해 주세요!");
+    }
+    setNickname(nickname);
+    closeSocialLogInModal();
+  };
+
+  const handleGoogleSignUp = async () => {
     try {
-      const provider = new GoogleAuthProvider();
+      const provider = await new GoogleAuthProvider();
       const popUpforLogin = await signInWithPopup(auth, provider);
-      console.log("popUpforLogin", popUpforLogin);
-      const googleLogInUserEmail = popUpforLogin.user.email;
-      console.log(googleLogInUserEmail);
 
-      if (totalUsersInformation.find(googleLogInUserEmail)) {
+      const alreadySignUpEmail = await fetchSignInMethodsForEmail(auth, googleLogInUserEmail);
+      if (alreadySignUpEmail.length > 0) {
         return alert("이미 가입한 이메일입니다.");
       }
+      isUserLogIn.current = true;
+      // 오류가 수정되면 옮겨질 예정이다.
 
-      const openModal = await openSocialLogInModal();
-      const getSocialLogInNickName = await socialLogInNickname();
+      googleLogInUserEmail = popUpforLogin.user.email;
+      console.log("googleLogInUserEmail", googleLogInUserEmail);
+
+      setSignUpModal(false);
+      openSocialLogInModal();
+      const getSocialLogInNickName = await socialLogInNickname; //닉네임을 정하는 함수
 
       const newUser = { email: googleLogInUserEmail, nickname: socialLogInNickname };
       const collectionRef = collection(db, "logInData");
       await addDoc(collectionRef, newUser);
-      setIsUserLogIn(true);
     } catch (error) {
       const errorCode = error.code;
       const errorMessage = error.message;
+      console.log("errorCode", errorCode);
+      console.log("errorMessage", errorMessage);
       const credential = GoogleAuthProvider.credentialFromError(error);
       alert("오류가 발생했습니다.");
     } finally {
       closeSocialLogInModal();
     }
   };
-
   const handleGitLogin = async () => {
     try {
       const provider = new GithubAuthProvider();
       const popUpforLogin = await signInWithPopup(auth, provider);
-      console.log("popUpforLogin", popUpforLogin);
       const credential = GithubAuthProvider.credentialFromResult(popUpforLogin);
+
+      setSignUpModal(false);
+      const openModal = openSocialLogInModal;
+      const getSocialLogInNickName = await socialLogInNickname;
+
+      // const newUser = { email: googleLogInUserEmail, nickname: socialLogInNickname };
+      // const collectionRef = collection(db, "logInData");
+      // await addDoc(collectionRef, newUser);
+      // setIsUserLogIn(true);
+
       const token = credential.accessToken;
       const user = popUpforLogin.user;
     } catch (error) {
@@ -192,21 +235,14 @@ function GrooveAuth() {
     }
   };
 
-  const socialLogInNickname = () => {
-    if (!nickname) {
-      return alert("빈칸을 입력해 주세요!");
-    }
-    setNickname(nickname);
-  };
-
   return (
     <div>
-      {!isUserLogIn && (
+      {!isUserLogIn.current && (
         <div>
           <button onClick={openLogInModal}>Log in</button>
         </div>
       )}
-      {isUserLogIn && (
+      {isUserLogIn.current && (
         <div>
           <button onClick={logOut}>Log out</button>
         </div>
@@ -300,7 +336,7 @@ function GrooveAuth() {
               <div>or sign up with</div>
 
               <GoogleGitLogIn>
-                <PromptLogIn type="button" onClick={handleGoogleLogin}>
+                <PromptLogIn type="button" onClick={handleGoogleSignUp}>
                   Google
                 </PromptLogIn>
                 <PromptLogIn type="button" onClick={handleGitLogin}>

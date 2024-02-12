@@ -25,6 +25,7 @@ function GrooveAuth() {
   const [password, setPassword] = useState("");
   const [nickname, setNickname] = useState("");
   const [totalUsersInformation, setTotalUsersInformation] = useState([]);
+  const [isUserLogIn, setIsUserLogIn] = useState(false);
 
   const onEmailChange = (event) => {
     setEmail(event.target.value);
@@ -69,6 +70,7 @@ function GrooveAuth() {
       }
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       closeLogInModal();
+      setIsUserLogIn(true);
     } catch (error) {
       const errorCode = error.code;
       const errorMessage = error.message;
@@ -83,6 +85,7 @@ function GrooveAuth() {
   const logOut = async (event) => {
     event.preventDefault();
     await signOut(auth);
+    setIsUserLogIn(false);
   };
 
   const signUp = async (event) => {
@@ -100,6 +103,7 @@ function GrooveAuth() {
       const collectionRef = collection(db, "logInData");
       await addDoc(collectionRef, newUser);
       closeSignUpModal();
+      setIsUserLogIn(true);
     } catch (error) {
       const errorCode = error.code;
       const errorMessage = error.message;
@@ -161,6 +165,7 @@ function GrooveAuth() {
       const newUser = { email: googleLogInUserEmail, nickname: socialLogInNickname };
       const collectionRef = collection(db, "logInData");
       await addDoc(collectionRef, newUser);
+      setIsUserLogIn(true);
     } catch (error) {
       const errorCode = error.code;
       const errorMessage = error.message;
@@ -196,8 +201,16 @@ function GrooveAuth() {
 
   return (
     <div>
-      <button onClick={openLogInModal}>Log in</button>
-      <button onClick={logOut}>Log out</button>
+      {!isUserLogIn && (
+        <div>
+          <button onClick={openLogInModal}>Log in</button>
+        </div>
+      )}
+      {isUserLogIn && (
+        <div>
+          <button onClick={logOut}>Log out</button>
+        </div>
+      )}
       {(logInModal || signUpModal || socialLogInModal) && (
         <div>
           <OverlayForm onClick={closeLogInSignUpModal} />

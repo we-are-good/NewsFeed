@@ -4,7 +4,7 @@ import { auth, db } from "../firebase";
 import GrooveHeader from "../components/Groove/GrooveHeader";
 import GrooveFooter from "../components/Groove/GrooveFooter";
 import styled from 'styled-components';
-import { FaExclamationCircle } from 'react-icons/fa'; // 경고 아이콘 추가
+
 
 function MyPage() {
   const [currentUser, setCurrentUser] = useState(null); // 현재 로그인한 사용자 정보 상태
@@ -58,7 +58,6 @@ function MyPage() {
           </StDiv>
         ) : (
           <StyledMessage>
-            <FaExclamationCircle />
             <p>로그인이 필요합니다.</p>
             <Link to="/login">로그인하러 가기</Link>
           </StyledMessage>

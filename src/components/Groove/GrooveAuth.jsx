@@ -1,5 +1,5 @@
 // groove-3e149.firebaseapp.com
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import {
   OverlayForm,
   LogInForm,
@@ -11,7 +11,6 @@ import {
   GoogleGitLogIn,
   SocialLogInNickname
 } from "../../style/GrooveAuthStyle";
-
 import {
   createUserWithEmailAndPassword,
   fetchSignInMethodsForEmail,
@@ -19,37 +18,33 @@ import {
   signInWithEmailAndPassword,
   signOut
 } from "firebase/auth";
-import { getAuth } from "firebase/auth";
 import { collection, getDocs, query, addDoc } from "firebase/firestore";
-
 import { GoogleAuthProvider, signInWithPopup, GithubAuthProvider } from "firebase/auth";
-import { useRef } from "react";
-// import { useDispatch, useSelector } from "react-redux";
-// import { LOGIN, LOGOUT } from "../../shared/redux/authIsLogIn";
-
-import { auth, db } from "../../firebase";
+import { db } from "../../firebase";
+import { GrooveContext } from "../../shared/GrooveContext";
 
 function GrooveAuth() {
-  const [logInModal, setLogInModal] = useState(false);
+  const {
+    socialLogInModal,
+    setSocialLogInModal,
+    email,
+    setEmail,
+    password,
+    setPassword,
+    nickname,
+    setNickname,
+    auth,
+    user,
+    isUserLogIn,
+    setIsUserLogIn,
+    logInModal,
+    setLogInModal,
+    nowUserInformation
+  } = useContext(GrooveContext);
+
+  nowUserInformation();
+
   const [signUpModal, setSignUpModal] = useState(false);
-  const [socialLogInModal, setSocialLogInModal] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [nickname, setNickname] = useState("");
-  const [totalUsersInformation, setTotalUsersInformation] = useState([]);
-  const [isUserLogIn, setIsUserLogIn] = useState(false);
-
-  const nowLogInEmail = useRef("");
-  const nowLogInNickname = useRef("");
-  const nowUser = useRef("");
-  let googleLogInUserEmail = "";
-
-  // const dispatch = useDispatch();
-  // const isUserLogIn = useSelector((state) => state.isUserLogIn);
-
-  console.log("nowLogInEmail", nowLogInEmail.current);
-  console.log("nowLogInNickname", nowLogInNickname.current);
-  console.log("isUserLogIn", isUserLogIn);
 
   const onEmailChange = (event) => {
     setEmail(event.target.value);
@@ -88,13 +83,6 @@ function GrooveAuth() {
     setLogInModal(false);
   };
 
-  // const handleLogIn = () => {
-  //   dispatch(LOGIN());
-  // };
-  // const handleLogOut = () => {
-  //   dispatch(LOGOUT());
-  // };
-
   const Login = async (event) => {
     try {
       if (!email || !password) {
@@ -117,7 +105,6 @@ function GrooveAuth() {
   const logOut = async (event) => {
     setIsUserLogIn(false);
     await signOut(auth);
-    nowUser.current = "";
   };
 
   const signUp = async (event) => {
@@ -131,11 +118,10 @@ function GrooveAuth() {
         return alert("비밀번호는 여섯글자 이상이어야 합니다.");
       }
 
-      const nowUserData = onAuthStateChanged(auth, (user) => {
+      onAuthStateChanged(auth, (user) => {
         if (user) return;
       });
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      console.log("userCredential", userCredential);
       const newUser = { email: email, nickname: nickname };
       const collectionRef = collection(db, "logInData");
       await addDoc(collectionRef, newUser);
@@ -152,43 +138,6 @@ function GrooveAuth() {
       setPassword("");
     }
   };
-
-  const auth = getAuth();
-  const user = auth.currentUser;
-  nowUser.current = user;
-  console.log("nowUser", nowUser.current);
-
-  useEffect(() => {
-    const fetchData = async (userEmail) => {
-      const q = query(collection(db, "logInData"));
-      const querySnapshot = await getDocs(q);
-
-      const totalUsersInformation = await querySnapshot.docs.map((doc) => ({
-        email: doc.data().email,
-        nickname: doc.data().nickname
-      }));
-      setTotalUsersInformation(totalUsersInformation);
-      console.log(totalUsersInformation);
-      const nowLogIn = await totalUsersInformation.find((information) => information.email === userEmail);
-      if (!nowLogIn) {
-        return;
-      }
-      const nowLogInNickname = nowLogIn.nickname;
-      console.log("nowLogInEmail.current", nowLogInEmail.current);
-      console.log("nowLogInNickname", nowLogInNickname);
-      if (!totalUsersInformation) return;
-    };
-
-    if (user) {
-      console.log("user", user);
-      const userEmail = user.email;
-      setIsUserLogIn(true);
-      setLogInModal(false);
-      fetchData(userEmail);
-    } else {
-      console.log("user in else", user);
-    }
-  }, [user]);
 
   const socialLogInNickname = () => {
     if (!nickname) {

@@ -8,6 +8,7 @@ import GlobalStyle from "./shared/GlobalStyle";
 import Home from "./pages/Home";
 import Router from "./shared/Router";
 import React from "react";
+import { GrooveContext } from "./shared/GrooveContext";
 const App = () => {
   // useEffect(() => {
   //   onAuthStateChanged(auth, (user) => {
@@ -17,18 +18,15 @@ const App = () => {
 
   return (
     <>
-      <GlobalStyle />
-      <Router />
-      {/* <GrooveAuth /> */}
-      {/* <Home /> */}
-      {/* <GrooveFeedList /> */}
-      {/* <FileUpload /> */}
-      {/* <LoadFile /> */}
-
-
-
-      {/* <GrooveAuth /> */}
-
+      <GrooveContext>
+        <GlobalStyle />
+        <Router />
+        {/* <GrooveAuth /> */}
+        {/* <Home /> */}
+        {/* <GrooveFeedList /> */}
+        {/* <FileUpload /> */}
+        {/* <LoadFile /> */}
+      </GrooveContext>
     </>
   );
 };

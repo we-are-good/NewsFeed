@@ -23,13 +23,18 @@ export const LogInForm = styled.form`
   align-items: center;
   background-color: #151515;
   color: #fff;
-  padding: 3rem;
+  padding: 3rem 3rem 4rem 3rem;
   border-radius: 1rem;
   /* border: 0.2rem solid black; */
   height: 500px;
   width: 400px;
   gap: 1rem;
   z-index: 2;
+  @media (max-width: 500px) {
+    width: 80%;
+    padding: 1rem;
+    justify-content: space-around;
+  }
 `;
 
 export const BackgroundLogInButton = styled.button`
@@ -48,6 +53,10 @@ export const LogSigninButton = styled.button`
   /* width: 5rem; */
   margin: 1rem;
   font-size: 2rem;
+  @media (max-width: 500px) {
+    font-size: 1.5rem;
+  }
+  padding-bottom: 5px;
   color: ${(props) => (props.name === "ignore-click" ? "#ffc41d" : "#fff")};
   border-bottom: ${(props) => (props.name === "ignore-click" ? "3px" : "0px")} solid
     ${(props) => (props.name === "ignore-click" ? "#ffc41d" : "#fff")};
@@ -72,10 +81,20 @@ export const IDPWBox = styled.div`
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  width: 12rem;
+  width: 100%;
+  height: 2rem;
+  margin-bottom: 0.5rem;
   & > input {
     width: 100%;
+    height: 100%;
+    border-radius: 5px;
+    padding: 5px;
+    border: none;
   }
+`;
+export const IDPWBoxWrap = styled.div`
+  width: 100%;
+  /* margin-bottom: 2rem; */
 `;
 
 export const LogInButtonsBox = styled.div`
@@ -84,23 +103,27 @@ export const LogInButtonsBox = styled.div`
   gap: 1rem;
   align-items: center;
   justify-content: center;
-  width: 12rem;
-  padding: 0rem 2rem;
+  width: 100%;
 `;
 
 export const LogInSmallButton = styled.button`
-  color: black;
+  color: #151515;
   background-color: #ffc41d;
-  width: 4rem;
-  height: 1.5rem;
+  width: 100%;
+  height: 2rem;
+  font-weight: 600;
   font-size: 0.8rem;
-  border-radius: 3rem;
+  border-radius: 5px;
+  margin: 1rem 0;
+  border: none;
+  cursor: pointer;
 `;
 
 export const PromptLogIn = styled.button`
-  width: 12rem;
+  width: 100%;
   height: 1.5rem;
   overflow: hidden;
+  cursor: pointer;
 `;
 
 export const GoogleGitLogIn = styled.div`
@@ -109,6 +132,7 @@ export const GoogleGitLogIn = styled.div`
   justify-content: center;
   align-items: center;
   gap: 0.8rem;
+  width: 100%;
 `;
 
 export const SocialLogInNickname = styled.div`

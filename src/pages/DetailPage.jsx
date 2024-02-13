@@ -30,8 +30,8 @@ function DetailPage({
   const [editedBody, setEditedBody] = useState("");
   const [originalTitle, setOriginalTitle] = useState("");
   const [originalBody, setOriginalBody] = useState("");
-  const [user, setUser] = useState(null); // 사용자 상태 추가
-
+  const [user, setUser] = useState(null);
+  console.log("user", user);
   const detailGroove = location.state.find((item) => item.id === params.id);
 
   const [isLiked, setIsLiked] = useState(false); // 좋아요 상태를 각 사용자 별로 따로 관리
@@ -41,6 +41,7 @@ function DetailPage({
   const [newImage, setNewImage] = useState(null);
   const [imageURL, setImageURL] = useState(detailGroove.imageUrl);
 
+  const [isLoggedIn, setIsLoggedIn] = useState(currentUser);
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       setUser(user); // 현재 사용자 업데이트
@@ -74,7 +75,6 @@ function DetailPage({
   const toggleLike = async () => {
     try {
       if (clickDisabled) return;
-
       // 로그인 상태 확인
       if (!user) {
         // 로그인되지 않았을 때 로그인을 유도하는 메시지 또는 경고창 표시
@@ -180,6 +180,7 @@ function DetailPage({
     try {
       const askDelete = window.confirm("정말 삭제하시겠습니까?");
       if (!askDelete) return;
+
       const GrooveTopRef = doc(db, "GrooveTop", detailGroove.id);
       await deleteDoc(GrooveTopRef);
       navigate("/");
@@ -219,6 +220,7 @@ function DetailPage({
         setLogInModal={setLogInModal}
       />
       <div>DetailPage</div>
+      <div>DetailPage</div>
       {isEditing ? (
         <>
           <EditingTitle>제목: </EditingTitle>
@@ -250,7 +252,15 @@ function DetailPage({
             <>
               <p>좋아요: {Object.keys(likes).length}개</p>
               <p>로그인 후에 좋아요를 누르실 수 있습니다.</p>
-              <GrooveAuth />
+              <GrooveAuth
+                nickname={nickname}
+                setNickname={setNickname}
+                currentUser={currentUser}
+                setTotalUsersInformation={setTotalUsersInformation}
+                logInModal={logInModal}
+                setLogInModal={setLogInModal}
+                setIsUserLogIn={setIsUserLogIn}
+              />
             </>
           )}
           <br />

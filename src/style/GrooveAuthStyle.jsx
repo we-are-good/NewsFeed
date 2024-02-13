@@ -37,6 +37,14 @@ export const LogInForm = styled.form`
   }
 `;
 
+export const BackgroundLogInButton = styled.button`
+  margin-right: 2rem;
+  background-color: #ffc41d;
+  font-size: 1.2rem;
+  font-weight: 600;
+  border-radius: 0.4rem;
+`;
+
 export const LogSigninButton = styled.button`
   pointer-events: ${(props) => (props.name === "ignore-click" ? "none" : "painted")};
   background-color: transparent;

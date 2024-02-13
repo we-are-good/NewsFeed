@@ -3,12 +3,12 @@ import GrooveFeed from "./GrooveFeed";
 import { addDoc, collection, getDocs, orderBy, query } from "firebase/firestore";
 import { db } from "../../../firebase";
 
-const GrooveFeedList = () => {
+const GrooveFeedList = ({ user }) => {
   const [GrooveTop, setGrooveTop] = useState([]);
 
   const [titleText, setTitleText] = useState("");
   const [bodyText, setBodyText] = useState("");
-
+  console.log(user);
   // console.log("GrooveTop", GrooveTop);
   // console.log("titleText", titleText);
   // console.log("bodyText", bodyText);

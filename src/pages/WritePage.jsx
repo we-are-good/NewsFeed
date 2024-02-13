@@ -26,6 +26,16 @@ function WritePage({ currentUser }) {
   //   }
   // }, []);
 
+  // const [isLoggedIn, setIsLoggedIn] = useState(false);
+  // useEffect(() => {
+  //   if (isLoggedIn) {
+  //     return;
+  //   } else {
+  //     alert("로그인이 필요합니다");
+  //     navigate("/");
+  //   }
+  // }, []);
+
   useEffect(() => {
     focusRef.current.focus();
   }, []);

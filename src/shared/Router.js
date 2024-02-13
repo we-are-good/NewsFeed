@@ -7,13 +7,10 @@ import { getAuth } from "firebase/auth";
 import { useEffect, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 
+
 const Router = () => {
   const auth = getAuth();
   const [currentUser, setCurrentUser] = useState(auth.currentUser);
-
-  // const user = auth.currentUser;
-  // console.log("auth->", auth);
-  // console.log("user->", user);
   console.log("currentUser------>>>>>", currentUser);
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {

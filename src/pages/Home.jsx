@@ -4,10 +4,27 @@ import GrooveHeader from "../components/Groove/GrooveHeader";
 import GrooveFooter from "../components/Groove/GrooveFooter";
 import styled from "styled-components";
 
-function Home({ currentUser }) {
+function Home({
+  isUserLogIn,
+  currentUser,
+  isMyIconClicked,
+  setIsMyIconClicked,
+  setIsUserLogIn,
+  setTotalUsersInformation,
+  logInModal,
+  setLogInModal
+}) {
   return (
     <Wrapper>
-      <GrooveHeader currentUser={currentUser} />
+      <GrooveHeader
+        currentUser={currentUser}
+        setIsUserLogIn={setIsUserLogIn}
+        setIsMyIconClicked={setIsMyIconClicked}
+        isMyIconClicked={isMyIconClicked}
+        setTotalUsersInformation={setTotalUsersInformation}
+        logInModal={logInModal}
+        setLogInModal={setLogInModal}
+      />
       <GrooveFeedList />
       <GrooveFooter />
     </Wrapper>

@@ -37,7 +37,7 @@ function GrooveAuth() {
   const [password, setPassword] = useState("");
   const [nickname, setNickname] = useState("");
   const [totalUsersInformation, setTotalUsersInformation] = useState([]);
-  const [isUserLogIn, setIsUserLogIn] = useState("false");
+  const [isUserLogIn, setIsUserLogIn] = useState(false);
 
   const nowLogInEmail = useRef("");
   const nowLogInNickname = useRef("");
@@ -115,7 +115,6 @@ function GrooveAuth() {
   };
 
   const logOut = async (event) => {
-    event.preventDefault();
     setIsUserLogIn(false);
     await signOut(auth);
     nowUser.current = "";
@@ -166,6 +165,9 @@ function GrooveAuth() {
       setTotalUsersInformation(totalUsersInformation);
       console.log(totalUsersInformation);
       const LogInNickname = await totalUsersInformation.find((information) => information.email === userEmail).nickname;
+      if (!LogInNickname) {
+        return;
+      }
       nowLogInNickname.current = LogInNickname;
       console.log("nowLogInEmail.current", nowLogInEmail.current);
       console.log("nowLogInNickname", LogInNickname);

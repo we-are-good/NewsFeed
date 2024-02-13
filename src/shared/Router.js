@@ -12,6 +12,7 @@ const Router = () => {
   const [isMyIconClicked, setIsMyIconClicked] = useState(false);
   const [totalUsersInformation, setTotalUsersInformation] = useState([]);
   const [logInModal, setLogInModal] = useState(false);
+  const [nickname, setNickname] = useState("");
 
   const auth = getAuth();
   const [currentUser, setCurrentUser] = useState(auth.currentUser);
@@ -36,6 +37,8 @@ const Router = () => {
           path="/"
           element={
             <Home
+              nickname={nickname}
+              setNickname={setNickname}
               currentUser={currentUser}
               isUserLogIn={isUserLogIn}
               setIsUserLogIn={setIsUserLogIn}
@@ -51,6 +54,8 @@ const Router = () => {
           path="/write"
           element={
             <WritePage
+              nickname={nickname}
+              setNickname={setNickname}
               currentUser={currentUser}
               isUserLogIn={isUserLogIn}
               setIsUserLogIn={setIsUserLogIn}
@@ -66,6 +71,8 @@ const Router = () => {
           path="/detail/:id"
           element={
             <DetailPage
+              nickname={nickname}
+              setNickname={setNickname}
               currentUser={currentUser}
               isUserLogIn={isUserLogIn}
               setIsUserLogIn={setIsUserLogIn}
@@ -81,6 +88,8 @@ const Router = () => {
           path="/mypage"
           element={
             <MyPage
+              nickname={nickname}
+              setNickname={setNickname}
               currentUser={currentUser}
               setCurrentUser={setCurrentUser}
               isUserLogIn={isUserLogIn}

@@ -15,10 +15,12 @@ function MyPage({
   setIsMyIconClicked,
   setTotalUsersInformation,
   logInModal,
-  setLogInModal
+  setLogInModal,
+  nickname,
+  setNickname
 }) {
   // const [currentUser, setCurrentUser] = useState(null);
-  const [userNickname, setUserNickname] = useState("");
+  // const [userNickname, setUserNickname] = useState("");
   const [userEmail, setUserEmail] = useState("");
   const [userUid, setUserUid] = useState("");
   const [userDocId, setUserDocId] = useState(""); // 사용자 문서의 ID 추가
@@ -37,7 +39,7 @@ function MyPage({
         fetchUserPosts(user.uid);
       } else {
         setCurrentUser(null);
-        setUserNickname("");
+        setNickname("");
         setUserEmail("");
         setUserUid("");
         setUserDocId("");
@@ -59,8 +61,12 @@ function MyPage({
       querySnapshot.forEach((doc) => {
         const userData = doc.data();
         const nickname = userData.nickname;
+<<<<<<< HEAD
         const profileImage = userData.profileImage; // 프로필 이미지 가져오기
         setUserNickname(nickname);
+=======
+        setNickname(nickname);
+>>>>>>> a7e7ba0b6af6b98acf6d6cd7e6d94375f533e41a
         setUserDocId(doc.id); // 사용자 문서의 ID 저장
         setProfileImage(profileImage); // 프로필 이미지 설정
       });
@@ -98,7 +104,7 @@ function MyPage({
       await updateDoc(userDocRef, {
         nickname: newNickname.trim()
       });
-      setUserNickname(newNickname.trim());
+      setNickname(newNickname.trim());
       setEditingNickname(false);
       setNewNickname("");
     } catch (error) {
@@ -117,6 +123,8 @@ function MyPage({
         setTotalUsersInformation={setTotalUsersInformation}
         logInModal={logInModal}
         setLogInModal={setLogInModal}
+        nickname={nickname}
+        setNickname={setNickname}
       />
       <StDiv>
         {currentUser ? (
@@ -133,7 +141,7 @@ function MyPage({
                 </div>
               ) : (
                 <p>
-                  Nickname: {userNickname} <button onClick={() => setEditingNickname(true)}>닉네임 변경</button>
+                  Nickname: {nickname} <button onClick={() => setEditingNickname(true)}>닉네임 변경</button>
                 </p>
               )}
               </div>

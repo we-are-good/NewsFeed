@@ -6,7 +6,7 @@ import GrooveHeader from "../components/Groove/GrooveHeader";
 
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
-function WritePage() {
+function WritePage({ currentUser }) {
   const focusRef = useRef();
   const navigate = useNavigate();
   const [titleText, setTitleText] = useState("");
@@ -50,6 +50,7 @@ function WritePage() {
   };
 
   const addTodo = async (event) => {
+    console.log(currentUser);
     event.preventDefault();
     // Firestore에서 'grooveTop' 컬렉션에 대한 참조 생성하기
     const newGroove = {
@@ -58,7 +59,8 @@ function WritePage() {
       Timestamp: new Date(),
       isLiked: false,
       likeCount: 0,
-      imageUrl: selectedFile ? imageUrl : ""
+      imageUrl: selectedFile ? imageUrl : "",
+      authorId: currentUser.uid
     };
     if (titleText.length === 0 && bodyText.length === 0) {
       alert("제목과 내용은 필수 입력입니다");

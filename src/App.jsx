@@ -24,11 +24,6 @@ const App = () => {
       {/* <GrooveFeedList /> */}
       {/* <FileUpload /> */}
       {/* <LoadFile /> */}
-
-
-
-      {/* <GrooveAuth /> */}
-
     </>
   );
 };

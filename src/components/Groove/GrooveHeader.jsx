@@ -9,11 +9,9 @@ import {
 } from "../../style/GrooveHeaderStyle";
 
 import GrooveAuth from "./GrooveAuth";
-
-
 import { useNavigate } from "react-router-dom";
 
-function GrooveHeader() {
+function GrooveHeader({ user }) {
   const navigate = useNavigate();
 
   return (
@@ -21,8 +19,7 @@ function GrooveHeader() {
       <GrooveHeaderWrap>
         <GrooveHeaderLogo onClick={() => navigate("/")}>Groove</GrooveHeaderLogo>
         <GrooveHeaderIconWrap>
-
-          <GrooveAuth />
+          <GrooveAuth user={user} />
 
           <GrooveHeaderIconHome onClick={() => navigate("/")}>
             <i className="fa-solid fa-house" />
@@ -33,7 +30,6 @@ function GrooveHeader() {
           <GrooveHeaderIconMy>
             <i className="fa-solid fa-user" />
           </GrooveHeaderIconMy>
-
         </GrooveHeaderIconWrap>
       </GrooveHeaderWrap>
     </>

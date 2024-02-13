@@ -26,10 +26,18 @@ export const LogInForm = styled.form`
   padding: 3rem;
   border-radius: 1rem;
   /* border: 0.2rem solid black; */
-  height: 600px;
-  width: 450px;
+  height: 500px;
+  width: 400px;
   gap: 1rem;
   z-index: 2;
+`;
+
+export const BackgroundLogInButton = styled.button`
+  margin-right: 2rem;
+  background-color: #ffc41d;
+  font-size: 1.2rem;
+  font-weight: 600;
+  border-radius: 0.4rem;
 `;
 
 export const LogSigninButton = styled.button`
@@ -38,11 +46,25 @@ export const LogSigninButton = styled.button`
   border: none;
   cursor: pointer;
   /* width: 5rem; */
-  margin: 2rem;
+  margin: 1rem;
   font-size: 2rem;
   color: ${(props) => (props.name === "ignore-click" ? "#ffc41d" : "#fff")};
   border-bottom: ${(props) => (props.name === "ignore-click" ? "3px" : "0px")} solid
     ${(props) => (props.name === "ignore-click" ? "#ffc41d" : "#fff")};
+`;
+export const TopText = styled.div`
+  text-align: center;
+  & > h3 {
+    font-size: 2rem;
+    font-weight: 400;
+    margin-bottom: 0.2rem;
+    color: #eee;
+  }
+  & > h4 {
+    font-size: 1.1rem;
+    font-weight: 100;
+    color: #ccc;
+  }
 `;
 
 export const IDPWBox = styled.div`
@@ -51,13 +73,15 @@ export const IDPWBox = styled.div`
   justify-content: center;
   align-items: center;
   width: 12rem;
+  & > input {
+    width: 100%;
+  }
 `;
 
 export const LogInButtonsBox = styled.div`
   display: flex;
   flex-direction: row;
   gap: 1rem;
-
   align-items: center;
   justify-content: center;
   width: 12rem;
@@ -79,7 +103,7 @@ export const PromptLogIn = styled.button`
   overflow: hidden;
 `;
 
-export const GoogleGitLogIn = styled.footer`
+export const GoogleGitLogIn = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;

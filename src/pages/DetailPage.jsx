@@ -250,7 +250,15 @@ function DetailPage({
             <>
               <p>좋아요: {Object.keys(likes).length}개</p>
               <p>로그인 후에 좋아요를 누르실 수 있습니다.</p>
-              <GrooveAuth />
+              <GrooveAuth
+                nickname={nickname}
+                setNickname={setNickname}
+                currentUser={currentUser}
+                setTotalUsersInformation={setTotalUsersInformation}
+                logInModal={logInModal}
+                setLogInModal={setLogInModal}
+                setIsUserLogIn={setIsUserLogIn}
+              />
             </>
           )}
           <br />

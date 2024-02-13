@@ -46,6 +46,31 @@ export const GrooveHeaderIconWrap = styled.div`
     margin-left: 0;
   }
 `;
-export const GrooveHeaderIconHome = styled.button``;
+export const GrooveHeaderIconHome = styled.button`
+  display: flex;
+`;
 export const GrooveHeaderIconWrite = styled.button``;
 export const GrooveHeaderIconMy = styled.button``;
+export const GrooveHeaderIcons = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1rem;
+  margin-right: 3.5rem;
+`;
+export const GrooveHeaderIconSelection = styled.div`
+  position: absolute;
+  top: 3.2rem;
+  right: 3.2rem;
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  font-size: 1.2rem;
+  gap: 0.3rem;
+  & > button {
+    background-color: #ffc41d;
+    font-size: 0.8rem;
+    font-weight: 600;
+    border-radius: 0.4rem;
+  }
+`;

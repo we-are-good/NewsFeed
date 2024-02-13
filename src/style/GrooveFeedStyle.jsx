@@ -37,7 +37,7 @@ export const StyledLink = styled(Link)`
 export const ImgWrapBox = styled.div`
   width: 320px;
   height: 170px;
-  border: 1px solid blue;
+  border: 1px solid #ffc41d;
   border-radius: 0.5rem;
   position: relative;
   overflow: hidden;
@@ -47,6 +47,7 @@ export const ImgWrapBox = styled.div`
     left: 50%;
     transform: translate(-50%, -50%);
     transition: 0.3s;
+    width: 100%;
   }
 `;
 export const ContentWrapBox = styled.div`
@@ -59,6 +60,9 @@ export const Title = styled.h3`
   font-size: 1.5rem;
   margin-bottom: 0.8rem;
   font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 export const Body = styled.p`
   white-space: normal;

@@ -6,7 +6,9 @@ export const OverlayForm = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(255, 255, 255, 0.7);
+  background-color: #15151599;
+  backdrop-filter: blur(10px);
+  z-index: 1;
 `;
 
 export const LogInForm = styled.form`
@@ -14,25 +16,33 @@ export const LogInForm = styled.form`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  box-shadow: 1001;
+  box-shadow: 0px 0px 10px #ffc41d;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  background-color: white;
-  border: 0.2rem solid black;
-  height: 20rem;
-  width: 15rem;
+  background-color: #151515;
+  color: #fff;
+  padding: 3rem;
+  border-radius: 1rem;
+  /* border: 0.2rem solid black; */
+  height: 600px;
+  width: 450px;
   gap: 1rem;
-  z-index: 1;
+  z-index: 2;
 `;
 
 export const LogSigninButton = styled.button`
   pointer-events: ${(props) => (props.name === "ignore-click" ? "none" : "painted")};
-  background-color: ${(props) => (props.name === "ignore-click" ? "yellow" : "transparent")};
+  background-color: transparent;
   border: none;
-  width: 5rem;
-  font-size: 1.2rem;
+  cursor: pointer;
+  /* width: 5rem; */
+  margin: 2rem;
+  font-size: 2rem;
+  color: ${(props) => (props.name === "ignore-click" ? "#ffc41d" : "#fff")};
+  border-bottom: ${(props) => (props.name === "ignore-click" ? "3px" : "0px")} solid
+    ${(props) => (props.name === "ignore-click" ? "#ffc41d" : "#fff")};
 `;
 
 export const IDPWBox = styled.div`
@@ -56,7 +66,7 @@ export const LogInButtonsBox = styled.div`
 
 export const LogInSmallButton = styled.button`
   color: black;
-  background-color: yellow;
+  background-color: #ffc41d;
   width: 4rem;
   height: 1.5rem;
   font-size: 0.8rem;

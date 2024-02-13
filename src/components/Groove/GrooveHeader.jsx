@@ -17,10 +17,10 @@ function GrooveHeader() {
         <GrooveHeaderLogo onClick={() => navigate("/")}>Groove</GrooveHeaderLogo>
         <GrooveHeaderIconWrap>
           <GrooveHeaderIconHome onClick={() => navigate("/")}>
-            <i class="fa-solid fa-house"></i>
+            <i className="fa-solid fa-house"></i>
           </GrooveHeaderIconHome>
           <GrooveHeaderIconWrite onClick={() => navigate("/write")}>
-            <i class="fa-solid fa-pen"></i>
+            <i className="fa-solid fa-pen"></i>
           </GrooveHeaderIconWrite>
           <GrooveHeaderIconMy />
         </GrooveHeaderIconWrap>

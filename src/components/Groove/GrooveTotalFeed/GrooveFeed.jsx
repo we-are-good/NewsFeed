@@ -27,7 +27,7 @@ const GrooveFeed = ({ GrooveTop, setGrooveTop }) => {
                 {/* 좋아요 버튼 및 갯수 렌더링 */}
                 <UserLikeBox>
                   <p>
-                    <i className="fa-solid fa-heart" /> {Object.keys(item.likes).length}개
+                    <i className="fa-solid fa-heart" /> {Object.keys(item.likes || {}).length}개
                   </p>
                 </UserLikeBox>
               </ContentWrapBox>

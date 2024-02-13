@@ -84,7 +84,7 @@ import { app } from "../../../firebase";
 // };
 
 // export default GrooveFeed;
-const GrooveFeed = ({ GrooveTop, totalUsersInformation }) => {
+const GrooveFeed = ({ GrooveTop, totalUsersInformation, currentUser }) => {
   console.log(GrooveTop);
   console.log("totalUsersInformation", totalUsersInformation);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -92,6 +92,7 @@ const GrooveFeed = ({ GrooveTop, totalUsersInformation }) => {
   useEffect(() => {
     setIsLoggedIn(!!currentUser); // currentUser가 있으면 true, 없으면 false로 설정
   }, [currentUser]);
+
   const [loginData, setLoginData] = useState([]);
   useEffect(() => {
     const fetchLoginData = async () => {
@@ -112,11 +113,6 @@ const GrooveFeed = ({ GrooveTop, totalUsersInformation }) => {
 
         console.log("Fetched loginData:", loginDataArray);
 
-        // 추가된 로그
-        GrooveTop.forEach((item) => {
-          console.log("item.userId:", item.userId);
-        });
-
         setLoginData(loginDataArray);
       } catch (error) {
         console.error("Error fetching loginData:", error);
@@ -135,7 +131,7 @@ const GrooveFeed = ({ GrooveTop, totalUsersInformation }) => {
           const formattedTime = format(date, "yyyy-MM-dd HH:mm:ss");
 
           // userLoginData를 find로 찾도록 수정
-          const userLoginData = loginData.find((loginItem) => loginItem.id === currentUser.uid);
+          const userLoginData = loginData.find((loginItem) => loginItem.id === (currentUser?.uid || ""));
           console.log("loginData", loginData);
           console.log("userLoginData", userLoginData);
 
@@ -156,7 +152,7 @@ const GrooveFeed = ({ GrooveTop, totalUsersInformation }) => {
                 <p>{formattedTime}</p>
                 <UserLikeBox>
                   <p>
-                    <i className="fa-solid fa-heart" /> {item.likes ? Object.keys(item.likes).length : 0}개
+                    <i className="fa-solid fa-heart" /> {Object.keys(item.likes || {}).length}개
                   </p>
                 </UserLikeBox>
                 {/* nickname 값 렌더링 */}

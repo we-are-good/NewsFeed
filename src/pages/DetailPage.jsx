@@ -18,7 +18,9 @@ function DetailPage({
   setIsMyIconClicked,
   setTotalUsersInformation,
   logInModal,
-  setLogInModal
+  setLogInModal,
+  nickname,
+  setNickname
 }) {
   const navigate = useNavigate();
   const params = useParams();
@@ -28,8 +30,8 @@ function DetailPage({
   const [editedBody, setEditedBody] = useState("");
   const [originalTitle, setOriginalTitle] = useState("");
   const [originalBody, setOriginalBody] = useState("");
-  const [user, setUser] = useState(null);
-  console.log("user", user);
+  const [user, setUser] = useState(null); // 사용자 상태 추가
+
   const detailGroove = location.state.find((item) => item.id === params.id);
 
   const [isLiked, setIsLiked] = useState(false); // 좋아요 상태를 각 사용자 별로 따로 관리
@@ -38,8 +40,6 @@ function DetailPage({
   const [clickDisabled, setClickDisabled] = useState(false);
   const [newImage, setNewImage] = useState(null);
   const [imageURL, setImageURL] = useState(detailGroove.imageUrl);
-
-  const [isLoggedIn, setIsLoggedIn] = useState(currentUser);
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
@@ -74,6 +74,7 @@ function DetailPage({
   const toggleLike = async () => {
     try {
       if (clickDisabled) return;
+
       // 로그인 상태 확인
       if (!user) {
         // 로그인되지 않았을 때 로그인을 유도하는 메시지 또는 경고창 표시
@@ -179,7 +180,6 @@ function DetailPage({
     try {
       const askDelete = window.confirm("정말 삭제하시겠습니까?");
       if (!askDelete) return;
-
       const GrooveTopRef = doc(db, "GrooveTop", detailGroove.id);
       await deleteDoc(GrooveTopRef);
       navigate("/");
@@ -207,6 +207,8 @@ function DetailPage({
   return (
     <>
       <GrooveHeader
+        nickname={nickname}
+        setNickname={setNickname}
         currentUser={currentUser}
         isUserLogIn={isUserLogIn}
         setIsUserLogIn={setIsUserLogIn}

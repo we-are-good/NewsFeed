@@ -12,7 +12,9 @@ function Home({
   setIsUserLogIn,
   setTotalUsersInformation,
   logInModal,
-  setLogInModal
+  setLogInModal,
+  nickname,
+  setNickname
 }) {
   return (
     <Wrapper>
@@ -24,6 +26,8 @@ function Home({
         setTotalUsersInformation={setTotalUsersInformation}
         logInModal={logInModal}
         setLogInModal={setLogInModal}
+        nickname={nickname}
+        setNickname={setNickname}
       />
       <GrooveFeedList />
       <GrooveFooter />

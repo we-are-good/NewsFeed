@@ -15,10 +15,12 @@ function MyPage({
   setIsMyIconClicked,
   setTotalUsersInformation,
   logInModal,
-  setLogInModal
+  setLogInModal,
+  nickname,
+  setNickname
 }) {
   // const [currentUser, setCurrentUser] = useState(null);
-  const [userNickname, setUserNickname] = useState("");
+  // const [userNickname, setUserNickname] = useState("");
   const [userEmail, setUserEmail] = useState("");
   const [userUid, setUserUid] = useState("");
   const [userDocId, setUserDocId] = useState(""); // 사용자 문서의 ID 추가
@@ -36,7 +38,7 @@ function MyPage({
         fetchUserPosts(user.uid);
       } else {
         setCurrentUser(null);
-        setUserNickname("");
+        setNickname("");
         setUserEmail("");
         setUserUid("");
         setUserDocId("");
@@ -57,7 +59,7 @@ function MyPage({
       querySnapshot.forEach((doc) => {
         const userData = doc.data();
         const nickname = userData.nickname;
-        setUserNickname(nickname);
+        setNickname(nickname);
         setUserDocId(doc.id); // 사용자 문서의 ID 저장
       });
     } catch (error) {
@@ -94,7 +96,7 @@ function MyPage({
       await updateDoc(userDocRef, {
         nickname: newNickname.trim()
       });
-      setUserNickname(newNickname.trim());
+      setNickname(newNickname.trim());
       setEditingNickname(false);
       setNewNickname("");
     } catch (error) {
@@ -113,6 +115,8 @@ function MyPage({
         setTotalUsersInformation={setTotalUsersInformation}
         logInModal={logInModal}
         setLogInModal={setLogInModal}
+        nickname={nickname}
+        setNickname={setNickname}
       />
 
       <StDiv>
@@ -128,7 +132,7 @@ function MyPage({
                 </div>
               ) : (
                 <p>
-                  Nickname: {userNickname} <button onClick={() => setEditingNickname(true)}>닉네임 변경</button>
+                  Nickname: {nickname} <button onClick={() => setEditingNickname(true)}>닉네임 변경</button>
                 </p>
               )}
               <p>Email: {userEmail}</p>

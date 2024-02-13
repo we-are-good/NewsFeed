@@ -1,6 +1,5 @@
 // groove-3e149.firebaseapp.com
 import React, { useEffect, useState } from "react";
-import defaultAvatar from  "../../assets/defaultavatar.png";
 import {
   OverlayForm,
   LogInForm,
@@ -110,9 +109,12 @@ function GrooveAuth({
         return alert("비밀번호는 여섯글자 이상이어야 합니다.");
       }
 
+      const nowUserData = onAuthStateChanged(auth, (user) => {
+        if (user) return;
+      });
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       console.log("userCredential", userCredential);
-      const newUser = { email: email, nickname: nickname, profileImage: defaultAvatar }; // 기본 프로필 이미지로 설정
+      const newUser = { email: email, nickname: nickname };
       const collectionRef = collection(db, "logInData");
       await addDoc(collectionRef, newUser);
       closeSignUpModal();

@@ -1,75 +1,60 @@
-import { deleteDoc, doc, updateDoc } from "firebase/firestore";
-import { db } from "../../../firebase";
-import styled from "styled-components";
-const Top = styled.div`
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-`;
-const Feed = styled.div`
-  background-color: gray;
-  display: flex;
-  flex-direction: column;
-  border: 1px solid black;
-  width: 17%;
-  height: 500px;
-`;
-const Title = styled.div`
-  color: green;
-`;
-const Body = styled.div`
-  color: yellow;
-`;
-const GrooveFeed = ({ todo, setTodos, GrooveTop }) => {
-  const updateTodo = async (event) => {
-    const todoRef = doc(db, "todos", todo.id);
-    await updateDoc(todoRef, { ...todo, isDone: !todo.isDone });
+import { Top, StyledLink, ImgWrapBox, ContentWrapBox, Title, Body, UserLikeBox } from "../../../style/GrooveFeedStyle";
+import GrooveLikeBtn from "./GrooveLikeBtn";
 
-    setTodos((prev) => {
-      return prev.map((element) => {
-        if (element.id === todo.id) {
-          return { ...element, isDone: !element.isDone };
-        } else {
-          return element;
-        }
-      });
+const GrooveFeed = ({ GrooveTop, setGrooveTop }) => {
+  const handleLike = (grooveId) => {
+    // 좋아요 처리를 위한 로직 추가
+    // 여기서는 상태를 직접 업데이트하는 예시 코드입니다.
+    const updatedGrooveTop = GrooveTop.map((item) => {
+      if (item.id === grooveId) {
+        return {
+          ...item,
+          isLiked: !item.isLiked,
+          likeCount: item.isLiked ? item.likeCount - 1 : item.likeCount + 1
+        };
+      }
+      return item;
     });
-  };
 
-  const deleteTodo = async (event) => {
-    const todoRef = doc(db, "todos", todo.id);
-    await deleteDoc(todoRef);
-
-    setTodos((prev) => {
-      return prev.filter((element) => element.id !== todo.id);
-    });
+    setGrooveTop(updatedGrooveTop);
+    // 여기에서 Firestore 업데이트 로직을 추가할 수 있습니다.
   };
 
   return (
-    // <div key={todo.id}>
-    //   <span>{todo.text}</span>
-    //   <button onClick={updateTodo}>{todo.isDone ? "취소" : "완료"}</button>
-    //   <button onClick={deleteTodo}>삭제</button>
-    // </div>
     <>
-      <>
-        //////////////////////////////////////////////////////////////////////////////////////////피드영역//////////////////////////////////////////////////////////////////////////////////////////
-      </>
       <Top>
         {GrooveTop.map((item) => {
           return (
             // 여기서 item은 Firestore Database의 문서!
-            <Feed key={item.id}>
-              <img src="" alt="업로드된 이미지"></img>
-              <Title>제목 :{item.title}</Title>
-              <Body>내용 :{item.body}</Body>
-            </Feed>
+            // <StyledLink to={`/detail/${item.id}`} key={item.id}>
+            <StyledLink
+              key={item.id}
+              to={{
+                pathname: `/detail/${item.id}`
+              }}
+              state={GrooveTop}
+              setGrooveTop={setGrooveTop}
+            >
+              {/* <div key={item.id} onClick={navigate(`/detail/${item.id}`)}> */}
+              <ImgWrapBox>
+                <img src="" alt="업로드된 이미지"></img>
+              </ImgWrapBox>
+              <ContentWrapBox>
+                <Title>{item.title}</Title>
+                <Body>{item.body}</Body>
+                {/* 좋아요 버튼 및 갯수 렌더링 */}
+                <UserLikeBox>
+                  <GrooveLikeBtn onClick={() => handleLike(item.id)}>
+                    {item.isLiked ? <i className="fa-solid fa-heart" /> : <i className="fa-regular fa-heart" />}
+                    {item.likeCount}
+                  </GrooveLikeBtn>
+                </UserLikeBox>
+              </ContentWrapBox>
+              {/* </div> */}
+            </StyledLink>
           );
         })}
       </Top>
-      <>
-        //////////////////////////////////////////////////////////////////////////////////////////피드영역//////////////////////////////////////////////////////////////////////////////////////////
-      </>
     </>
   );
 };

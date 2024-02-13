@@ -1,10 +1,9 @@
-//
-
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { auth, db, storage } from "../firebase";
 import { doc, updateDoc, deleteDoc, getDoc } from "firebase/firestore";
 import GrooveLikeBtn from "../components/Groove/GrooveTotalFeed/GrooveLikeBtn";
+import GrooveAuth from "../components/Groove/GrooveAuth";
 
 import { getDownloadURL, ref, uploadBytes } from "@firebase/storage";
 
@@ -19,6 +18,7 @@ function DetailPage() {
   const [editedBody, setEditedBody] = useState("");
   const [originalTitle, setOriginalTitle] = useState("");
   const [originalBody, setOriginalBody] = useState("");
+  const [user, setUser] = useState(null); // 사용자 상태 추가
 
   const detailGroove = location.state.find((item) => item.id === params.id);
 
@@ -27,6 +27,17 @@ function DetailPage() {
   const [clickDisabled, setClickDisabled] = useState(false);
   const [newImage, setNewImage] = useState(null);
   const [imageURL, setImageURL] = useState(detailGroove.imageUrl);
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      setUser(user); // 현재 사용자 업데이트
+    });
+
+    return () => {
+      unsubscribe(); // cleanup 함수
+    };
+  }, []); // 빈 배열을 전달하여 컴포넌트가 처음 마운트될 때만 실행
+
   useEffect(() => {
     const fetchLikeCount = async () => {
       // Firestore에서 해당 Groove의 데이터를 가져오기 위한 문서 참조를 만듭니다.
@@ -50,6 +61,14 @@ function DetailPage() {
   const toggleLike = async () => {
     try {
       if (clickDisabled) return;
+
+      // 로그인 상태 확인
+      if (!user) {
+        // 로그인되지 않았을 때 로그인을 유도하는 메시지 또는 경고창 표시
+        alert("로그인 후에 좋아요를 누르실 수 있습니다.");
+        return;
+      }
+
       setClickDisabled(true);
 
       const grooveRef = doc(db, "GrooveTop", detailGroove.id);
@@ -57,11 +76,11 @@ function DetailPage() {
       // Firestore에서 바로 업데이트
       await updateDoc(grooveRef, {
         isLiked: !isLiked,
-        likeCount: isLiked ? likeCount - 1 : likeCount + 1
+        likeCount: !isLiked ? likeCount + 1 : likeCount - 1
       });
 
-      setIsLiked(!isLiked);
-      setLikeCount(isLiked ? likeCount - 1 : likeCount + 1);
+      setIsLiked((prevIsLiked) => !prevIsLiked);
+      setLikeCount((prevLikeCount) => (!isLiked ? prevLikeCount + 1 : prevLikeCount - 1));
     } catch (error) {
       console.error("Error toggling like:", error);
     } finally {
@@ -179,7 +198,20 @@ function DetailPage() {
           <>제목: {originalTitle}</>
           <>내용: {originalBody}</>
           {/* 좋아요 버튼 컴포넌트를 렌더링하고, 필요한 props를 전달합니다. */}
-          <GrooveLikeBtn isLiked={isLiked} onLikeClick={toggleLike} likeCount={likeCount} grooveId={detailGroove?.id} />
+          {user ? (
+            // 로그인 상태일 때만 좋아요 버튼을 활성화
+            <>
+              <GrooveLikeBtn isLiked={isLiked} onLikeClick={toggleLike} grooveId={detailGroove?.id} />
+              <p>좋아요: {likeCount}개</p>
+            </>
+          ) : (
+            // 로그인 상태가 아닐 때 로그인을 유도하는 메시지 또는 경고창 표시
+            <>
+              <p>좋아요: {likeCount}개</p>
+              <p>로그인 후에 좋아요를 누르실 수 있습니다.</p>
+              <GrooveAuth />
+            </>
+          )}
           <br />
           <button onClick={handleEdit}>수정하기</button>
           <br />

@@ -22,8 +22,9 @@ const DetailPage = ({ currentUser }) => {
   console.log("user", user);
   const detailGroove = location.state.find((item) => item.id === params.id);
 
-  const [isLiked, setIsLiked] = useState(detailGroove?.isLiked || false);
+  const [isLiked, setIsLiked] = useState(false); // 좋아요 상태를 각 사용자 별로 따로 관리
   const [likeCount, setLikeCount] = useState(detailGroove?.likeCount || 0);
+  const [likes, setLikes] = useState(detailGroove?.likes || {}); // 사용자의 좋아요 상태를 기록하는 객체
   const [clickDisabled, setClickDisabled] = useState(false);
   const [newImage, setNewImage] = useState(null);
   const [imageURL, setImageURL] = useState(detailGroove.imageUrl);
@@ -72,15 +73,32 @@ const DetailPage = ({ currentUser }) => {
 
       setClickDisabled(true);
 
-      const grooveRef = doc(db, "GrooveTop", detailGroove.id);
-      // Firestore에서 바로 업데이트
-      await updateDoc(grooveRef, {
-        isLiked: !isLiked,
-        likeCount: !isLiked ? likeCount + 1 : likeCount - 1
-      });
+      // 사용자의 UID
+      const userUid = user.uid;
 
-      setIsLiked((prevIsLiked) => !prevIsLiked);
-      setLikeCount((prevLikeCount) => (!isLiked ? prevLikeCount + 1 : prevLikeCount - 1));
+      // 사용자가 이미 좋아요를 눌렀는지 확인
+      const userLiked = likes[userUid];
+
+      // Firestore에서 해당 Groove의 데이터를 가져오기 위한 문서 참조를 만듭니다.
+      const grooveRef = doc(db, "GrooveTop", detailGroove.id);
+
+      // 사용자가 이미 좋아요를 눌렀다면 취소, 아니면 좋아요 추가
+      if (userLiked) {
+        // 좋아요 취소
+        delete likes[userUid];
+      } else {
+        // 좋아요 추가
+        likes[userUid] = true;
+      }
+
+      // 좋아요 상태 업데이트
+      setLikes({ ...likes });
+
+      // 좋아요 개수 업데이트
+      setLikeCount(Object.keys(likes).length);
+
+      // Firestore에 좋아요 정보 업데이트
+      await updateDoc(grooveRef, { likes });
     } catch (error) {
       console.error("Error toggling like:", error);
     } finally {
@@ -198,12 +216,12 @@ const DetailPage = ({ currentUser }) => {
             // 로그인 상태일 때만 좋아요 버튼을 활성화
             <>
               <GrooveLikeBtn isLiked={isLiked} onLikeClick={toggleLike} grooveId={detailGroove?.id} />
-              <p>좋아요: {likeCount}개</p>
+              <p>좋아요: {Object.keys(likes).length}개</p>
             </>
           ) : (
             // 로그인 상태가 아닐 때 로그인을 유도하는 메시지 또는 경고창 표시
             <>
-              <p>좋아요: {likeCount}개</p>
+              <p>좋아요: {Object.keys(likes).length}개</p>
               <p>로그인 후에 좋아요를 누르실 수 있습니다.</p>
               <GrooveAuth />
             </>

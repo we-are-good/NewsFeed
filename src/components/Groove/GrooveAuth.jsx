@@ -11,7 +11,7 @@ import {
   GoogleGitLogIn,
   SocialLogInNickname
 } from "../../style/GrooveAuthStyle";
-import { auth } from "../../firebase";
+
 import {
   createUserWithEmailAndPassword,
   fetchSignInMethodsForEmail,
@@ -21,11 +21,15 @@ import {
 } from "firebase/auth";
 import { getAuth } from "firebase/auth";
 import { collection, getDocs, query, addDoc } from "firebase/firestore";
-import { db } from "../../firebase";
+
 import { GoogleAuthProvider, signInWithPopup, GithubAuthProvider } from "firebase/auth";
 import { useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { LOGIN, LOGOUT } from "../../shared/redux/authIsLogIn";
+
+import { auth, db } from "../../firebase";
+
+
 
 function GrooveAuth() {
   const [logInModal, setLogInModal] = useState(false);

@@ -1,19 +1,23 @@
 import React from "react";
 import GrooveFeedList from "../components/Groove/GrooveTotalFeed/GrooveFeedList";
-import { useNavigate } from "react-router-dom";
 import GrooveHeader from "../components/Groove/GrooveHeader";
 import GrooveFooter from "../components/Groove/GrooveFooter";
+import styled from "styled-components";
 
 function Home() {
-  const navigate = useNavigate();
   return (
-    <div>
+    <Wrapper>
       <GrooveHeader />
-      <button onClick={() => navigate("/write")}>글 작성하러가기 </button>
       <GrooveFeedList />
       <GrooveFooter />
-    </div>
+    </Wrapper>
   );
 }
 
 export default Home;
+
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+`;

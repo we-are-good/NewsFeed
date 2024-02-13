@@ -9,9 +9,9 @@ const GrooveFeedList = () => {
   const [titleText, setTitleText] = useState("");
   const [bodyText, setBodyText] = useState("");
 
-  console.log("GrooveTop", GrooveTop);
-  console.log("titleText", titleText);
-  console.log("bodyText", bodyText);
+  // console.log("GrooveTop", GrooveTop);
+  // console.log("titleText", titleText);
+  // console.log("bodyText", bodyText);
   // useEffect 안에서 async/await를 만드려면 새로운 함수를 만들어야함
   useEffect(() => {
     const fetchData = async () => {
@@ -77,15 +77,7 @@ const GrooveFeedList = () => {
 
   return (
     <>
-      <p>
-        ----------------------------------------------------------------------------------------------피드리스트
-        영역----------------------------------------------------------------------------------------------
-      </p>
       <GrooveFeed GrooveTop={GrooveTop} />
-      <p>
-        ----------------------------------------------------------------------------------------------피드리스트
-        영역----------------------------------------------------------------------------------------------
-      </p>
     </>
   );
 };

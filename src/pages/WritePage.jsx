@@ -20,7 +20,6 @@ function WritePage({
   const [titleText, setTitleText] = useState("");
   const [bodyText, setBodyText] = useState("");
   const [GrooveTop, setGrooveTop] = useState([]);
-
   const [selectedFile, setSelectedFile] = useState(null);
   const [imageUrl, setImageUrl] = useState();
   console.log("writecurrentuser", currentUser);
@@ -36,14 +35,16 @@ function WritePage({
   // }, []);
 
   // const [isLoggedIn, setIsLoggedIn] = useState(false);
-  // useEffect(() => {
-  //   if (isLoggedIn) {
-  //     return;
-  //   } else {
-  //     alert("로그인이 필요합니다");
-  //     navigate("/");
-  //   }
-  // }, []);
+  const [isLoggedIn, setIsLoggedIn] = useState(currentUser);
+  useEffect(() => {
+    console.log("currentUser", currentUser);
+    if (isLoggedIn) {
+      return;
+    } else {
+      alert("로그인이 필요합니다");
+      navigate("/");
+    }
+  }, []);
 
   useEffect(() => {
     focusRef.current.focus();
@@ -73,8 +74,8 @@ function WritePage({
     event.preventDefault();
     // Firestore에서 'grooveTop' 컬렉션에 대한 참조 생성하기
     const newGroove = {
-      body: titleText,
-      title: bodyText,
+      body: bodyText,
+      title: titleText,
       Timestamp: new Date(),
       isLiked: false,
       likeCount: 0,
@@ -99,23 +100,21 @@ function WritePage({
     navigate("/");
   };
 
-  const handleFileSelect = (event) => {
+  const handleFileSelect = async (event) => {
+    const file = event.target.files[0];
     setSelectedFile(event.target.files[0]);
-  };
 
-  const handleUpload = async (e) => {
-    // 업로드시 제출 막으려고
-    e.preventDefault();
     // ref 함수를 이용해서 Storage 내부 저장할 위치를 지정하고, uploadBytes 함수를 이용해서 파일을 저장합니다.
     // const imageRef = ref(storage, `${auth.currentUser.uid}/${selectedFile.name}`);
-    const imageRef = ref(storage, `${auth.uid}/${selectedFile.name}`);
-    await uploadBytes(imageRef, selectedFile);
+    const imageRef = ref(storage, `${auth.uid}/${file.name}`);
+    await uploadBytes(imageRef, file);
 
-    // 파일 URL 가져오기
+    // 다운로드 URL 가져오기
     const downloadURL = await getDownloadURL(imageRef);
     console.log("downloadURL", downloadURL);
     setImageUrl(downloadURL);
   };
+
   return (
     <>
       <GrooveHeader
@@ -139,7 +138,6 @@ function WritePage({
         <button onClick={addTodo}>추가</button>
         <button onClick={() => navigate("/")}>취소</button>
         <input type="file" onChange={handleFileSelect} />
-        <button onClick={handleUpload}>Upload</button>
         <img src={imageUrl} alt="기본이미지" style={{ width: "200px", height: "200px" }}></img>
       </form>
     </>

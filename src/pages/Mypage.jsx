@@ -25,6 +25,7 @@ function MyPage({
   const [userPosts, setUserPosts] = useState([]);
   const [newNickname, setNewNickname] = useState("");
   const [editingNickname, setEditingNickname] = useState(false);
+  const [profileImage, setProfileImage] = useState("");
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
@@ -41,6 +42,7 @@ function MyPage({
         setUserUid("");
         setUserDocId("");
         setUserPosts([]);
+        setProfileImage("");
       }
     });
 
@@ -57,8 +59,10 @@ function MyPage({
       querySnapshot.forEach((doc) => {
         const userData = doc.data();
         const nickname = userData.nickname;
+        const profileImage = userData.profileImage; // 프로필 이미지 가져오기
         setUserNickname(nickname);
         setUserDocId(doc.id); // 사용자 문서의 ID 저장
+        setProfileImage(profileImage); // 프로필 이미지 설정
       });
     } catch (error) {
       console.error("Error fetching user info:", error);
@@ -119,6 +123,8 @@ function MyPage({
           <StDiv>
             <div>
               <p>사용자 정보:</p>
+              <div>
+              <Avatar src={profileImage} alt="프로필 이미지" /> 
               {editingNickname ? (
                 <div>
                   <input type="text" value={newNickname} onChange={(e) => setNewNickname(e.target.value)} />
@@ -130,6 +136,7 @@ function MyPage({
                   Nickname: {userNickname} <button onClick={() => setEditingNickname(true)}>닉네임 변경</button>
                 </p>
               )}
+              </div>
               <p>Email: {userEmail}</p>
               <p>작성한 글 목록:</p>
               {userPosts.length > 0 ? (
@@ -181,6 +188,13 @@ const StyledMessage = styled.div`
   gap: 8px;
   font-size: 25px;
   color: #ffff;
+`;
+
+const Avatar = styled.img`
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
 `;
 
 export default MyPage;

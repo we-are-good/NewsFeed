@@ -9,7 +9,6 @@ function Home() {
   return (
     <div>
       <GrooveHeader />
-      <button onClick={() => navigate("/write")}>글 작성하러가기 </button>
       <GrooveFeedList />
       <GrooveFooter />
     </div>

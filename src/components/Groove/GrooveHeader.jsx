@@ -7,18 +7,20 @@ import {
   GrooveHeaderIconWrite,
   GrooveHeaderIconMy
 } from "../../style/GrooveHeaderStyle";
+import { useNavigate } from "react-router-dom";
 function GrooveHeader() {
+  const navigate = useNavigate();
+
   return (
     <>
       <GrooveHeaderWrap>
-        <GrooveHeaderLogo>Groove</GrooveHeaderLogo>
-
+        <GrooveHeaderLogo onClick={() => navigate("/")}>Groove</GrooveHeaderLogo>
         <GrooveHeaderIconWrap>
-          <GrooveHeaderIconHome>
-            <i class="fa-solid fa-house"></i>
+          <GrooveHeaderIconHome onClick={() => navigate("/")}>
+            <i className="fa-solid fa-house"></i>
           </GrooveHeaderIconHome>
-          <GrooveHeaderIconWrite>
-            <i class="fa-solid fa-pen"></i>
+          <GrooveHeaderIconWrite onClick={() => navigate("/write")}>
+            <i className="fa-solid fa-pen"></i>
           </GrooveHeaderIconWrite>
           <GrooveHeaderIconMy />
         </GrooveHeaderIconWrap>

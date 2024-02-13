@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { auth, db } from "../firebase";
-import GrooveHeader from "../components/Groove/GrooveHeader";
-import GrooveFooter from "../components/Groove/GrooveFooter";
+import GrooveHeader from "../components/groove/GrooveHeader";
+import GrooveFooter from "../components/groove/GrooveFooter";
 import styled from "styled-components";
 
 function MyPage() {

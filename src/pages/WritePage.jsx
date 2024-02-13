@@ -2,7 +2,7 @@ import { Timestamp, addDoc, collection } from "firebase/firestore";
 import React, { useEffect, useRef, useState } from "react";
 import { auth, db, storage } from "../firebase";
 import { useNavigate } from "react-router-dom";
-import GrooveHeader from "../components/Groove/GrooveHeader";
+import GrooveHeader from "../components/groove/GrooveHeader";
 
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 

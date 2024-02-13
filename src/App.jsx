@@ -1,14 +1,14 @@
 import { useEffect } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./firebase";
-import GrooveFeedList from "./components/Groove/GrooveTotalFeed/GrooveFeedList";
+import GrooveFeedList from "./components/groove/GrooveTotalFeed/GrooveFeedList";
 import FileUpload from "./components/FileUpload";
 import LoadFile from "./components/LoadFile";
 import GlobalStyle from "./shared/GlobalStyle";
 import Home from "./pages/Home";
 import Router from "./shared/Router";
 import React from "react";
-import { GrooveContext } from "./shared/GrooveContext";
+import { GrooveContext } from "./context/GrooveContext";
 const App = () => {
   // useEffect(() => {
   //   onAuthStateChanged(auth, (user) => {

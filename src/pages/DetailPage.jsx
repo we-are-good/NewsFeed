@@ -4,12 +4,11 @@ import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { auth, db, storage } from "../firebase";
 import { doc, updateDoc, deleteDoc, getDoc } from "firebase/firestore";
-import GrooveLikeBtn from "../components/Groove/GrooveTotalFeed/GrooveLikeBtn";
+import GrooveLikeBtn from "../components/groove/GrooveTotalFeed/GrooveLikeBtn";
 
 import { getDownloadURL, ref, uploadBytes } from "@firebase/storage";
 
-import GrooveHeader from "../components/Groove/GrooveHeader";
-
+import GrooveHeader from "../components/groove/GrooveHeader";
 
 function DetailPage() {
   const navigate = useNavigate();

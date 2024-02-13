@@ -21,7 +21,7 @@ import {
 import { collection, getDocs, query, addDoc } from "firebase/firestore";
 import { GoogleAuthProvider, signInWithPopup, GithubAuthProvider } from "firebase/auth";
 import { db } from "../../firebase";
-import { GrooveContext } from "../../shared/GrooveContext";
+import { GrooveContext } from "../../context/GrooveContext";
 
 function GrooveAuth() {
   const {

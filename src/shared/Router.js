@@ -52,6 +52,7 @@ const Router = () => {
           element={
             <WritePage
               currentUser={currentUser}
+              isUserLogIn={isUserLogIn}
               setIsUserLogIn={setIsUserLogIn}
               isMyIconClicked={isMyIconClicked}
               setIsMyIconClicked={setIsMyIconClicked}
@@ -66,6 +67,7 @@ const Router = () => {
           element={
             <DetailPage
               currentUser={currentUser}
+              isUserLogIn={isUserLogIn}
               setIsUserLogIn={setIsUserLogIn}
               isMyIconClicked={isMyIconClicked}
               setIsMyIconClicked={setIsMyIconClicked}
@@ -79,7 +81,9 @@ const Router = () => {
           path="/mypage"
           element={
             <MyPage
-              currentUser={(currentUser, setCurrentUser)}
+              currentUser={currentUser}
+              setCurrentUser={setCurrentUser}
+              isUserLogIn={isUserLogIn}
               setIsUserLogIn={setIsUserLogIn}
               isMyIconClicked={isMyIconClicked}
               setIsMyIconClicked={setIsMyIconClicked}

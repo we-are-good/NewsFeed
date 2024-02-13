@@ -5,7 +5,16 @@ import { useNavigate } from "react-router-dom";
 import GrooveHeader from "../components/Groove/GrooveHeader";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
-function WritePage({ currentUser }) {
+function WritePage({
+  currentUser,
+  isUserLogIn,
+  setIsUserLogIn,
+  isMyIconClicked,
+  setIsMyIconClicked,
+  setTotalUsersInformation,
+  logInModal,
+  setLogInModal
+}) {
   const focusRef = useRef();
   const navigate = useNavigate();
   const [titleText, setTitleText] = useState("");
@@ -15,6 +24,7 @@ function WritePage({ currentUser }) {
   const [selectedFile, setSelectedFile] = useState(null);
   const [imageUrl, setImageUrl] = useState();
   console.log("writecurrentuser", currentUser);
+
   // const [isLoggedIn, setIsLoggedIn] = useState(false);
   // useEffect(() => {
   //   if (isLoggedIn) {
@@ -108,7 +118,16 @@ function WritePage({ currentUser }) {
   };
   return (
     <>
-      <GrooveHeader currentUser={currentUser} />
+      <GrooveHeader
+        currentUser={currentUser}
+        isUserLogIn={isUserLogIn}
+        setIsUserLogIn={setIsUserLogIn}
+        isMyIconClicked={isMyIconClicked}
+        setIsMyIconClicked={setIsMyIconClicked}
+        setTotalUsersInformation={setTotalUsersInformation}
+        logInModal={logInModal}
+        setLogInModal={setLogInModal}
+      />
       <form>
         <label> 글 작성 </label>
         <br />

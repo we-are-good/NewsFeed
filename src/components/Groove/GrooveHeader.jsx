@@ -25,6 +25,7 @@ function GrooveHeader({
 }) {
   const navigate = useNavigate();
   const [logInUserNickname, setLogInUserNickname] = useState("");
+
   const logOut = async (event) => {
     await signOut(auth);
     setIsMyIconClicked(false);
@@ -100,7 +101,9 @@ function GrooveHeader({
               <button type="button" onClick={logOut}>
                 Logout
               </button>
-              <button type="button">My page</button>
+              <button type="button" onClick={() => navigate("/mypage")}>
+                My page
+              </button>
             </div>
           )}
         </GrooveHeaderIconWrap>

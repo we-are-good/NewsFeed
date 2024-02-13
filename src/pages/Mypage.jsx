@@ -122,20 +122,24 @@ function MyPage({
       <StDiv>
         {currentUser ? (
           <StDiv>
-            <div>
+            <StDiv>
+            <StUserContainer>
               <p>사용자 정보:</p>
               {editingNickname ? (
                 <div>
-                  <input type="text" value={newNickname} onChange={(e) => setNewNickname(e.target.value)} />
+                  <p>닉네임:
+                  <StInput type="text" value={newNickname} onChange={(e) => setNewNickname(e.target.value)} />
                   <button onClick={handleNicknameChange}>변경</button>
                   <button onClick={() => setEditingNickname(false)}>취소</button>
+                  </p>
                 </div>
               ) : (
                 <p>
-                  Nickname: {nickname} <button onClick={() => setEditingNickname(true)}>닉네임 변경</button>
+                  닉네임: {nickname} <StEditbtn onClick={() => setEditingNickname(true)}>변경</StEditbtn>
                 </p>
               )}
-              <p>Email: {userEmail}</p>
+              <p>이메일 주소: {userEmail}</p>
+              </StUserContainer>
               <p>작성한 글 목록:</p>
               {userPosts.length > 0 ? (
                 <ul>
@@ -160,12 +164,11 @@ function MyPage({
               ) : (
                 <p>작성한 글이 없습니다.</p>
               )}
-            </div>
+            </StDiv>
           </StDiv>
         ) : (
           <StyledMessage>
             <p>로그인이 필요합니다.</p>
-            <Link to="/login">로그인하러 가기</Link>
           </StyledMessage>
         )}
       </StDiv>
@@ -181,12 +184,33 @@ const StDiv = styled.div`
   flex-direction: column;
 `;
 
+const StUserContainer = styled.div`
+  margin: 5vh;
+  border-bottom: 3px #ffc41d; ;
+  line-height: 1.5;
+`;
+
 const StyledMessage = styled.div`
   display: flex;
   align-items: center;
   gap: 8px;
   font-size: 25px;
   color: #ffff;
+`;
+
+const StInput = styled.input`
+  border-color: #ffc41d;
+  background-color: transparent;
+`;
+
+const StEditbtn = styled.button`
+  background-color: transparent;
+  border: none;
+  color: #ffc41d;
+  cursor: pointer;
+  &:hover{  
+    filter: brightness(70%);
+  }
 `;
 
 export default MyPage;

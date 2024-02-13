@@ -22,8 +22,9 @@ import {
 import { collection, getDocs, query, addDoc } from "firebase/firestore";
 import { GoogleAuthProvider, signInWithPopup, GithubAuthProvider } from "firebase/auth";
 import { auth, db } from "../../firebase";
+import { getAuth } from "firebase/auth";
 
-function GrooveAuth({ user }) {
+function GrooveAuth() {
   const [logInModal, setLogInModal] = useState(false);
   const [signUpModal, setSignUpModal] = useState(false);
   const [socialLogInModal, setSocialLogInModal] = useState(false);
@@ -126,6 +127,9 @@ function GrooveAuth({ user }) {
       setPassword("");
     }
   };
+
+  const auth = getAuth();
+  const user = auth.currentUser;
   useEffect(() => {
     const fetchData = async (userEmail) => {
       const q = query(collection(db, "logInData"));
@@ -206,11 +210,11 @@ function GrooveAuth({ user }) {
 
   return (
     <div>
-      {isUserLogIn && (
+      {/* {isUserLogIn && (
         <button type="button" onClick={logOut}>
           Log out
         </button>
-      )}
+      )} */}
       {!isUserLogIn && (
         <button type="button" onClick={openLogInModal}>
           Log in

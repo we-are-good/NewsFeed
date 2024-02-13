@@ -4,8 +4,7 @@ import GrooveHeader from "../components/Groove/GrooveHeader";
 import GrooveFooter from "../components/Groove/GrooveFooter";
 import styled from "styled-components";
 
-function MyPage() {
-  const [currentUser, setCurrentUser] = useState(null); // 현재 로그인한 사용자 정보 상태
+function MyPage({ currentUser, setCurrentUser }) {
   const [userPosts, setUserPosts] = useState([]); // 현재 사용자가 작성한 글 목록 상태
 
   useEffect(() => {
@@ -38,7 +37,7 @@ function MyPage() {
 
   return (
     <div>
-      <GrooveHeader />
+      <GrooveHeader currentUser={currentUser} />
       <StDiv>
         {currentUser ? (
           <StDiv>

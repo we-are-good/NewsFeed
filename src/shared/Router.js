@@ -29,7 +29,7 @@ const Router = () => {
         <Route path="/" element={<Home currentUser={currentUser} />} />
         <Route path="/write" element={<WritePage currentUser={currentUser} />} />
         <Route path="/detail/:id" element={<DetailPage currentUser={currentUser} />} />
-        <Route path="/mypage" element={<MyPage />} />
+        <Route path="/mypage" element={<MyPage currentUser={(currentUser, setCurrentUser)} />} />
       </Routes>
     </BrowserRouter>
   );

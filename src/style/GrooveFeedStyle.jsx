@@ -2,7 +2,10 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 
 export const Top = styled.div`
+  width: 100%;
+  border: 1px solid red;
   display: flex;
+  justify-content: center;
   gap: 10px;
   flex-wrap: wrap;
 `;

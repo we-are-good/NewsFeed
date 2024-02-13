@@ -2,6 +2,7 @@ import { Timestamp, addDoc, collection } from "firebase/firestore";
 import React, { useState } from "react";
 import { db } from "../firebase";
 import { useNavigate } from "react-router-dom";
+import GrooveHeader from "../components/Groove/GrooveHeader";
 
 function WritePage() {
   const navigate = useNavigate();
@@ -49,6 +50,7 @@ function WritePage() {
   };
   return (
     <>
+      <GrooveHeader />
       <div>WritePage</div>
 
       <form>

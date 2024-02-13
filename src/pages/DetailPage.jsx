@@ -3,6 +3,7 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { db } from "../firebase";
 import { doc, updateDoc, deleteDoc, getDoc } from "firebase/firestore";
 import GrooveLikeBtn from "../components/Groove/GrooveTotalFeed/GrooveLikeBtn";
+import GrooveHeader from "../components/Groove/GrooveHeader";
 
 function DetailPage() {
   const navigate = useNavigate();
@@ -100,6 +101,7 @@ function DetailPage() {
 
   return (
     <>
+      <GrooveHeader />
       <div>DetailPage</div>
       {isEditing ? (
         <>

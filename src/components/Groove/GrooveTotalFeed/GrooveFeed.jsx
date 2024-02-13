@@ -37,7 +37,7 @@ const GrooveFeed = ({ GrooveTop, setGrooveTop }) => {
             >
               {/* <div key={item.id} onClick={navigate(`/detail/${item.id}`)}> */}
               <ImgWrapBox>
-                <img src="" alt="업로드된 이미지"></img>
+                <img src={item.imageUrl} alt="업로드된 이미지"></img>
               </ImgWrapBox>
               <ContentWrapBox>
                 <Title>{item.title}</Title>

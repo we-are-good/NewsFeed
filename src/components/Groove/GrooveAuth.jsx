@@ -169,13 +169,13 @@ function GrooveAuth() {
       }));
       setTotalUsersInformation(totalUsersInformation);
       console.log(totalUsersInformation);
-      const LogInNickname = await totalUsersInformation.find((information) => information.email === userEmail).nickname;
-      if (!LogInNickname) {
+      const nowLogIn = await totalUsersInformation.find((information) => information.email === userEmail);
+      if (!nowLogIn) {
         return;
       }
-      nowLogInNickname.current = LogInNickname;
+      const nowLogInNickname = nowLogIn.nickname;
       console.log("nowLogInEmail.current", nowLogInEmail.current);
-      console.log("nowLogInNickname", LogInNickname);
+      console.log("nowLogInNickname", nowLogInNickname);
       if (!totalUsersInformation) return;
     };
 
@@ -195,27 +195,20 @@ function GrooveAuth() {
       return alert("빈칸을 입력해 주세요!");
     }
     setNickname(nickname);
+    const newUser = { email: user.email, nickname };
+    const collectionRef = collection(db, "logInData");
+    addDoc(collectionRef, newUser);
     closeSocialLogInModal();
+    setNickname("");
   };
 
   const handleGoogleSignUp = async () => {
     try {
       const provider = await new GoogleAuthProvider();
-      const popUpforLogin = await signInWithPopup(auth, provider);
-
-      const alreadySignUpEmail = await fetchSignInMethodsForEmail(auth, googleLogInUserEmail);
+      const result = await signInWithPopup(auth, provider);
       setIsUserLogIn(true);
-
-      googleLogInUserEmail = popUpforLogin.user.email;
-      console.log("googleLogInUserEmail", googleLogInUserEmail);
-
       setSignUpModal(false);
-      openSocialLogInModal();
-      const getSocialLogInNickName = await socialLogInNickname; //닉네임을 정하는 함수
-
-      const newUser = { email: googleLogInUserEmail, nickname: socialLogInNickname };
-      const collectionRef = collection(db, "logInData");
-      await addDoc(collectionRef, newUser);
+      setSocialLogInModal(true);
     } catch (error) {
       const errorCode = error.code;
       const errorMessage = error.message;
@@ -223,27 +216,20 @@ function GrooveAuth() {
       console.log("errorMessage", errorMessage);
       const credential = GoogleAuthProvider.credentialFromError(error);
       alert("오류가 발생했습니다.");
-    } finally {
-      closeSocialLogInModal();
     }
   };
+
   const handleGitLogin = async () => {
     try {
       const provider = new GithubAuthProvider();
       const popUpforLogin = await signInWithPopup(auth, provider);
       const credential = GithubAuthProvider.credentialFromResult(popUpforLogin);
 
+      setIsUserLogIn(true);
       setSignUpModal(false);
+      setSocialLogInModal(true);
       const openModal = openSocialLogInModal;
       const getSocialLogInNickName = await socialLogInNickname;
-
-      // const newUser = { email: googleLogInUserEmail, nickname: socialLogInNickname };
-      // const collectionRef = collection(db, "logInData");
-      // await addDoc(collectionRef, newUser);
-      // setIsUserLogIn(true);
-
-      const token = credential.accessToken;
-      const user = popUpforLogin.user;
     } catch (error) {
       const errorCode = error.code;
       const errorMessage = error.message;
@@ -356,7 +342,7 @@ function GrooveAuth() {
                   Google
                 </PromptLogIn>
                 <PromptLogIn type="button" onClick={handleGitLogin}>
-                  Git
+                  Github
                 </PromptLogIn>
               </GoogleGitLogIn>
             </LogInForm>

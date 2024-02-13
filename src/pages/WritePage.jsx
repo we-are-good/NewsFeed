@@ -6,8 +6,6 @@ import GrooveHeader from "../components/Groove/GrooveHeader";
 
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
-
-
 function WritePage() {
   const focusRef = useRef();
   const navigate = useNavigate();
@@ -50,8 +48,12 @@ function WritePage() {
       Timestamp: new Date(),
       isLiked: false,
       likeCount: 0,
-      imageUrl: imageUrl
+      imageUrl: selectedFile ? imageUrl : ""
     };
+    if (titleText.length === 0 && bodyText.length === 0) {
+      alert("제목과 내용은 필수 입력입니다");
+      return;
+    }
     // const newTodo = { text: text, isDone: false };
     const collectionRef = collection(db, "GrooveTop");
     // 여기서 id는  firebase database -> grooveTop컬렉션의 문서값

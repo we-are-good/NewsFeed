@@ -2,24 +2,6 @@ import { Top, StyledLink, ImgWrapBox, ContentWrapBox, Title, Body, UserLikeBox }
 import GrooveLikeBtn from "./GrooveLikeBtn";
 
 const GrooveFeed = ({ GrooveTop, setGrooveTop }) => {
-  const handleLike = (grooveId) => {
-    // 좋아요 처리를 위한 로직 추가
-    // 여기서는 상태를 직접 업데이트하는 예시 코드입니다.
-    const updatedGrooveTop = GrooveTop.map((item) => {
-      if (item.id === grooveId) {
-        return {
-          ...item,
-          isLiked: !item.isLiked,
-          likeCount: item.isLiked ? item.likeCount - 1 : item.likeCount + 1
-        };
-      }
-      return item;
-    });
-
-    setGrooveTop(updatedGrooveTop);
-    // 여기에서 Firestore 업데이트 로직을 추가할 수 있습니다.
-  };
-
   return (
     <>
       <Top>

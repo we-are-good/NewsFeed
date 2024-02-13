@@ -68,6 +68,7 @@ function WritePage() {
   };
 
   const handleUpload = async (e) => {
+    // 업로드시 제출 막으려고
     e.preventDefault();
     // ref 함수를 이용해서 Storage 내부 저장할 위치를 지정하고, uploadBytes 함수를 이용해서 파일을 저장합니다.
     // const imageRef = ref(storage, `${auth.currentUser.uid}/${selectedFile.name}`);

@@ -17,12 +17,14 @@ function GrooveHeader() {
         <GrooveHeaderLogo onClick={() => navigate("/")}>Groove</GrooveHeaderLogo>
         <GrooveHeaderIconWrap>
           <GrooveHeaderIconHome onClick={() => navigate("/")}>
-            <i className="fa-solid fa-house"></i>
+            <i className="fa-solid fa-house" />
           </GrooveHeaderIconHome>
           <GrooveHeaderIconWrite onClick={() => navigate("/write")}>
-            <i className="fa-solid fa-pen"></i>
+            <i className="fa-solid fa-pen" />
           </GrooveHeaderIconWrite>
-          <GrooveHeaderIconMy />
+          <GrooveHeaderIconMy>
+            <i className="fa-solid fa-user" />
+          </GrooveHeaderIconMy>
         </GrooveHeaderIconWrap>
       </GrooveHeaderWrap>
     </>

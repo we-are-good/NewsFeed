@@ -17,7 +17,9 @@ function DetailPage({
   setIsMyIconClicked,
   setTotalUsersInformation,
   logInModal,
-  setLogInModal
+  setLogInModal,
+  nickname,
+  setNickname
 }) {
   const navigate = useNavigate();
   const params = useParams();
@@ -193,6 +195,8 @@ function DetailPage({
   return (
     <>
       <GrooveHeader
+        nickname={nickname}
+        setNickname={setNickname}
         currentUser={currentUser}
         isUserLogIn={isUserLogIn}
         setIsUserLogIn={setIsUserLogIn}

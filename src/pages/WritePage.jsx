@@ -13,7 +13,9 @@ function WritePage({
   setIsMyIconClicked,
   setTotalUsersInformation,
   logInModal,
-  setLogInModal
+  setLogInModal,
+  nickname,
+  setNickname
 }) {
   const focusRef = useRef();
   const navigate = useNavigate();
@@ -126,6 +128,8 @@ function WritePage({
         setTotalUsersInformation={setTotalUsersInformation}
         logInModal={logInModal}
         setLogInModal={setLogInModal}
+        nickname={nickname}
+        setNickname={setNickname}
       />
       <form>
         <label> 글 작성 </label>

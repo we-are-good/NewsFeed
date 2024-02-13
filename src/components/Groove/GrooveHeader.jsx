@@ -21,10 +21,11 @@ function GrooveHeader({
   setIsMyIconClicked,
   setLogInModal,
   logInModal,
-  setTotalUsersInformation
+  setTotalUsersInformation,
+  nickname,
+  setNickname
 }) {
   const navigate = useNavigate();
-  const [logInUserNickname, setLogInUserNickname] = useState("");
 
   const logOut = async (event) => {
     await signOut(auth);
@@ -67,7 +68,7 @@ function GrooveHeader({
         return;
       }
       const nowLogInNickname = nowLogIn.nickname;
-      setLogInUserNickname(nowLogInNickname);
+      setNickname(nowLogInNickname);
       if (!totalUsersInformation) return;
     };
 
@@ -78,7 +79,7 @@ function GrooveHeader({
       fetchData(userEmail);
     } else {
     }
-  }, [user]);
+  }, [user, nickname]);
 
   return (
     <>
@@ -88,7 +89,7 @@ function GrooveHeader({
           {/* <GrooveAuth currentUser={currentUser} /> */}
           {currentUser ? (
             <div>
-              <div>{logInUserNickname}님 환영합니다!</div>
+              <div>{nickname}님 환영합니다!</div>
               <div>
                 <GrooveHeaderIconHome onClick={goHome}>
                   <i className="fa-solid fa-house" />
@@ -103,6 +104,8 @@ function GrooveHeader({
             </div>
           ) : (
             <GrooveAuth
+              nickname={nickname}
+              setNickname={setNickname}
               currentUser={currentUser}
               setTotalUsersInformation={setTotalUsersInformation}
               logInModal={logInModal}

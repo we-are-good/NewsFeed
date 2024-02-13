@@ -17,7 +17,7 @@ const GrooveLikeBtn = ({ isLiked, onLikeClick, likeCount, grooveId }) => {
 
   return (
     <button onClick={toggleLike}>
-      {isLiked ? <i className="fa-regular fa-heart"></i> : <i className="fa-solid fa-heart"></i>}
+      {isLiked ? <i className="fa-solid fa-heart" /> : <i className="fa-regular fa-heart" />}
       {likeCount}
     </button>
   );

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { db } from "../firebase";
-import { doc, updateDoc, deleteDoc } from "firebase/firestore";
+import { doc, updateDoc, deleteDoc, getDoc } from "firebase/firestore";
+import GrooveLikeBtn from "../components/Groove/GrooveTotalFeed/GrooveLikeBtn";
 
 function DetailPage() {
   const navigate = useNavigate();
@@ -14,6 +15,45 @@ function DetailPage() {
   const [originalBody, setOriginalBody] = useState("");
 
   const detailGroove = location.state.find((item) => item.id === params.id);
+
+  const [isLiked, setIsLiked] = useState(detailGroove?.isLiked || false);
+  const [likeCount, setLikeCount] = useState(detailGroove?.likeCount || 0);
+  const [clickDisabled, setClickDisabled] = useState(false);
+
+  useEffect(() => {
+    const fetchLikeCount = async () => {
+      // Firestore에서 해당 Groove의 데이터를 가져오기 위한 문서 참조를 만듭니다.
+      const grooveRef = doc(db, "GrooveTop", detailGroove.id);
+      const grooveSnap = await getDoc(grooveRef);
+
+      if (grooveSnap.exists()) {
+        setLikeCount(grooveSnap.data().likeCount);
+      }
+    };
+    fetchLikeCount();
+  }, [detailGroove?.id]);
+
+  const toggleLike = async () => {
+    try {
+      if (clickDisabled) return;
+      setClickDisabled(true);
+
+      const grooveRef = doc(db, "GrooveTop", detailGroove.id);
+
+      // Firestore에서 바로 업데이트
+      await updateDoc(grooveRef, {
+        isLiked: !isLiked,
+        likeCount: isLiked ? likeCount - 1 : likeCount + 1
+      });
+
+      setIsLiked(!isLiked);
+      setLikeCount(isLiked ? likeCount - 1 : likeCount + 1);
+    } catch (error) {
+      console.error("Error toggling like:", error);
+    } finally {
+      setClickDisabled(false);
+    }
+  };
 
   useEffect(() => {
     setEditedTitle(detailGroove.title);
@@ -76,6 +116,8 @@ function DetailPage() {
         <>
           <>제목: {originalTitle}</>
           <>내용: {originalBody}</>
+          {/* 좋아요 버튼 컴포넌트를 렌더링하고, 필요한 props를 전달합니다. */}
+          <GrooveLikeBtn isLiked={isLiked} onLikeClick={toggleLike} likeCount={likeCount} grooveId={detailGroove?.id} />
           <br />
           <button onClick={handleEdit}>수정하기</button>
           <br />

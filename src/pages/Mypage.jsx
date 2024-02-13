@@ -1,26 +1,28 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { auth, db } from "../firebase";
-import { collection, query, where, getDocs, getFirestore } from 'firebase/firestore';
+import { collection, query, where, getDocs, getFirestore, doc, updateDoc } from 'firebase/firestore';
 import GrooveHeader from "../components/Groove/GrooveHeader";
 import GrooveFooter from "../components/Groove/GrooveFooter";
 import styled from 'styled-components';
 
-function MyPage({}) {
+function MyPage() {
   const [currentUser, setCurrentUser] = useState(null);
   const [userNickname, setUserNickname] = useState("");
   const [userEmail, setUserEmail] = useState("");
   const [userUid, setUserUid] = useState("");
   const [userPosts, setUserPosts] = useState([]);
+  const [newNickname, setNewNickname] = useState("");
+  const [editingNickname, setEditingNickname] = useState(false);
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
       if (user) {
         setCurrentUser(user);
-        setUserEmail(user.email); // 현재 로그인한 사용자의 이메일 설정
-        setUserUid(user.uid); // 현재 로그인한 사용자의 UID 설정
+        setUserEmail(user.email);
+        setUserUid(user.uid);
         fetchData(user.email);
-        fetchUserPosts(user.uid); // 사용자가 작성한 글 가져오기
+        fetchUserPosts(user.uid);
       } else {
         setCurrentUser(null);
         setUserNickname("");
@@ -43,7 +45,6 @@ function MyPage({}) {
       querySnapshot.forEach((doc) => {
         const userData = doc.data();
         const nickname = userData.nickname;
-        console.log("userData", userData);
         setUserNickname(nickname);
       });
     } catch (error) {
@@ -66,6 +67,24 @@ function MyPage({}) {
     }
   };
 
+  const handleNicknameChange = async () => {
+    if (newNickname.trim() === "") {
+      alert("닉네임을 입력해주세요.");
+      return;
+    }
+    try {
+      const userDocRef = doc(db, "logInData", currentUser.id);
+      await updateDoc(userDocRef, {
+        nickname: newNickname.trim()
+      });
+      setUserNickname(newNickname.trim());
+      setEditingNickname(false);
+      setNewNickname("");
+    } catch (error) {
+      console.error("Error updating nickname:", error);
+    }
+  };
+
   return (
     <div>
       <GrooveHeader />
@@ -74,16 +93,30 @@ function MyPage({}) {
           <StDiv>
             <div>
               <p>사용자 정보:</p>
-              <p>Nickname: {userNickname}</p>
+              {editingNickname ? (
+                <div>
+                  <input
+                    type="text"
+                    value={newNickname}
+                    onChange={(e) => setNewNickname(e.target.value)}
+                  />
+                  <button onClick={handleNicknameChange}>변경</button>
+                  <button onClick={() => setEditingNickname(false)}>취소</button>
+                </div>
+              ) : (
+                <p>Nickname: {userNickname} <button onClick={() => setEditingNickname(true)}>닉네임 변경</button></p>
+              )}
               <p>Email: {userEmail}</p>
               <p>작성한 글 목록:</p>
               {userPosts.length > 0 ? (
                 <ul>
                   {userPosts.map((post, index) => (
                     <li key={index}>
-                     <img src={post.imageUrl} alt="업로드된 이미지" />
-                    <p>{post.title}</p>
-                    <p>{post.body}</p>
+                      <Link to={`/detail/${post.id}`}> 
+                        <img src={post.imageUrl} alt="업로드된 이미지" />
+                        <p>{post.title}</p>
+                        <p>{post.body}</p>
+                      </Link>
                     </li>
                   ))}
                 </ul>

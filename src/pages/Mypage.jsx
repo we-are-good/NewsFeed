@@ -61,12 +61,8 @@ function MyPage({
       querySnapshot.forEach((doc) => {
         const userData = doc.data();
         const nickname = userData.nickname;
-<<<<<<< HEAD
         const profileImage = userData.profileImage; // 프로필 이미지 가져오기
         setUserNickname(nickname);
-=======
-        setNickname(nickname);
->>>>>>> a7e7ba0b6af6b98acf6d6cd7e6d94375f533e41a
         setUserDocId(doc.id); // 사용자 문서의 ID 저장
         setProfileImage(profileImage); // 프로필 이미지 설정
       });

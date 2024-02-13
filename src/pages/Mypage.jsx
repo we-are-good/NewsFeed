@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { auth, db } from "../firebase";
+import GrooveHeader from "../components/Groove/GrooveHeader";
+import GrooveFooter from "../components/Groove/GrooveFooter";
+import styled  from 'styled-components';
 
 function MyPage() {
   const [currentUser, setCurrentUser] = useState(null); // 현재 로그인한 사용자 정보 상태
@@ -35,27 +38,43 @@ function MyPage() {
 
   return (
     <div>
+      <GrooveHeader />
+      <StDiv>
       {currentUser ? (
-        <div>
+        <StDiv>
         <div>
           <p>사용자 정보:</p>
           <p>이름: {currentUser.displayName}</p>
           <p>이메일: {currentUser.email}</p>
           <p>작성한 글 목록:</p>
           </div>
-          <div>
-          <ul>
+          <StList>
             {userPosts.map((post) => (
               <li key={post.id}>{post.title}</li>
             ))}
-          </ul>
-        </div>
-        </div>
+          </StList>
+        </StDiv>
       ) : (
         <p>로그인이 필요합니다.</p>
       )}
+      </StDiv>
+      <GrooveFooter />
     </div>
   );
 }
 
+const StDiv = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+`;
+
+const StList = styled.ul`
+  list-style-type: none;
+  padding: 0;
+`;
+
 export default MyPage;
+
+

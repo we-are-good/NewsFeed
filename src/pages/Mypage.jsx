@@ -28,7 +28,6 @@ function MyPage() {
       unsubscribe();
     };
   }, []);
-
   // 사용자 정보를 가져오는 함수
   const fetchData = async (email) => {
     try {
@@ -38,6 +37,7 @@ function MyPage() {
         // 이메일에 해당하는 사용자 정보가 있는 경우 닉네임 설정
         const userData = querySnapshot.docs[0].data();
         const nickname = userData.nickname;
+        console.log("User's nickname:", nickname); // 닉네임을 콘솔에 출력
         setUserNickname(nickname); // 받아온 닉네임을 userNickname에 설정
       }
     } catch (error) {

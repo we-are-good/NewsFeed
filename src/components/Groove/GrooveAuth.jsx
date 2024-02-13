@@ -9,7 +9,7 @@ import {
   LogInSmallButton,
   PromptLogIn,
   GoogleGitLogIn,
-  SocialLogInNickname
+  SocialLogInNickname 
 } from "../../style/GrooveAuthStyle";
 
 import {
@@ -38,6 +38,7 @@ function GrooveAuth() {
   const [nickname, setNickname] = useState("");
   const [totalUsersInformation, setTotalUsersInformation] = useState([]);
   const [isUserLogIn, setIsUserLogIn] = useState(false);
+  
 
   const nowLogInEmail = useRef("");
   const nowLogInNickname = useRef("");

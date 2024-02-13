@@ -1,30 +1,8 @@
-import styled from "styled-components";
-import { Link } from "react-router-dom";
-const Top = styled.div`
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-`;
-const StyledLink = styled(Link)`
-  background-color: gray;
-  display: flex;
-  flex-direction: column;
-  border: 1px solid black;
-  width: 17%;
-  height: 500px;
-`;
-const Title = styled.div`
-  color: green;
-`;
-const Body = styled.div`
-  color: yellow;
-`;
+import { Top, StyledLink, Title, Body } from "../../../style/GrooveFeedStyle";
+
 const GrooveFeed = ({ GrooveTop, setGrooveTop }) => {
   return (
     <>
-      <>
-        //////////////////////////////////////////////////////////////////////////////////////////피드영역//////////////////////////////////////////////////////////////////////////////////////////
-      </>
       <Top>
         {GrooveTop.map((item) => {
           return (
@@ -47,9 +25,6 @@ const GrooveFeed = ({ GrooveTop, setGrooveTop }) => {
           );
         })}
       </Top>
-      <>
-        //////////////////////////////////////////////////////////////////////////////////////////피드영역//////////////////////////////////////////////////////////////////////////////////////////
-      </>
     </>
   );
 };

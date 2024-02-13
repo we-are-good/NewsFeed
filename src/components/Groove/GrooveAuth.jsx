@@ -4,12 +4,13 @@ import {
   OverlayForm,
   LogInForm,
   LogSigninButton,
+  TopText,
   IDPWBox,
   LogInButtonsBox,
   LogInSmallButton,
   PromptLogIn,
   GoogleGitLogIn,
-  SocialLogInNickname 
+  SocialLogInNickname
 } from "../../style/GrooveAuthStyle";
 
 import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
@@ -235,6 +236,10 @@ function GrooveAuth({ currentUser, isUserLogIn, setIsUserLogIn, setLogInModal, l
                   Sign up
                 </LogSigninButton>
               </div>
+              <TopText>
+                <h3>Welcome back!</h3>
+                <h4>Please sign in to your account</h4>
+              </TopText>
               <IDPWBox>
                 <input placeholder="E-mail" type="text" name="email" value={email} onChange={onEmailChange} />
               </IDPWBox>

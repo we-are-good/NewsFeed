@@ -123,7 +123,6 @@ const DetailPage = ({ currentUser }) => {
       // 이미지 변경
       if (newImage) {
         // const imageRef = ref(storage, `${auth.currentUser.uid}/${selectedFile.name}`);
-
         const imageRef = ref(storage, `${auth.uid}/${newImage.name}`);
         await uploadBytes(imageRef, newImage);
         const newImageURL = await getDownloadURL(imageRef);
@@ -136,8 +135,15 @@ const DetailPage = ({ currentUser }) => {
 
       const GrooveTopRef = doc(db, "GrooveTop", detailGroove.id);
 
-      if (editedTitle === originalTitle && editedBody === originalBody && !newImage) {
-        return alert("수정사항이 없습니다!");
+      if (
+        //수정된 제목이 원본 제목과 동일하고, 수정된 내용이 원본 내용과 동일하며, 새 이미지가 없는 경우
+        (editedTitle === originalTitle && editedBody === originalBody && !newImage) ||
+        // 제목이 공백인경우
+        editedTitle.trim() === "" ||
+        // 내용이 공백인경우
+        editedBody.trim() === ""
+      ) {
+        return alert("수정할 내용이 없거나 제목 또는 내용이 빈칸입니다!");
       } else {
         await updateDoc(GrooveTopRef, { title: editedTitle, body: editedBody });
         setIsEditing(false);

@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { auth, db } from "../firebase";
-import { collection, query, where, getDocs, getFirestore, doc, updateDoc } from 'firebase/firestore';
+import { collection, query, where, getDocs, getFirestore, doc, updateDoc } from "firebase/firestore";
 import GrooveHeader from "../components/Groove/GrooveHeader";
 import GrooveFooter from "../components/Groove/GrooveFooter";
-import styled from 'styled-components';
+import styled from "styled-components";
 
 function MyPage() {
   const [currentUser, setCurrentUser] = useState(null);
@@ -60,13 +60,13 @@ function MyPage() {
       const q = query(collection(db, "GrooveTop"), where("authorId", "==", uid));
       const querySnapshot = await getDocs(q);
       const userPostsData = [];
-      querySnapshot.forEach(doc => {
+      querySnapshot.forEach((doc) => {
         const postData = doc.data();
         userPostsData.push(postData);
       });
       setUserPosts(userPostsData);
     } catch (error) {
-      console.error('Error fetching user posts:', error);
+      console.error("Error fetching user posts:", error);
     }
   };
 
@@ -103,16 +103,14 @@ function MyPage() {
               <p>사용자 정보:</p>
               {editingNickname ? (
                 <div>
-                  <input
-                    type="text"
-                    value={newNickname}
-                    onChange={(e) => setNewNickname(e.target.value)}
-                  />
+                  <input type="text" value={newNickname} onChange={(e) => setNewNickname(e.target.value)} />
                   <button onClick={handleNicknameChange}>변경</button>
                   <button onClick={() => setEditingNickname(false)}>취소</button>
                 </div>
               ) : (
-                <p>Nickname: {userNickname} <button onClick={() => setEditingNickname(true)}>닉네임 변경</button></p>
+                <p>
+                  Nickname: {userNickname} <button onClick={() => setEditingNickname(true)}>닉네임 변경</button>
+                </p>
               )}
               <p>Email: {userEmail}</p>
               <p>작성한 글 목록:</p>

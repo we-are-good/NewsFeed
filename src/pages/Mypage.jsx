@@ -122,50 +122,55 @@ function MyPage({
       <StDiv>
         {currentUser ? (
           <StDiv>
-            <div>
+            <StDiv>
+            <StUserContainer>
               <p>사용자 정보:</p>
               {editingNickname ? (
                 <div>
-                  <input type="text" value={newNickname} onChange={(e) => setNewNickname(e.target.value)} />
+                  <p>닉네임:
+                  <StInput type="text" value={newNickname} onChange={(e) => setNewNickname(e.target.value)} />
                   <button onClick={handleNicknameChange}>변경</button>
                   <button onClick={() => setEditingNickname(false)}>취소</button>
+                  </p>
                 </div>
               ) : (
                 <p>
-                  Nickname: {nickname} <button onClick={() => setEditingNickname(true)}>닉네임 변경</button>
+                  닉네임: {nickname} <StEditbtn onClick={() => setEditingNickname(true)}>변경</StEditbtn>
                 </p>
               )}
-              <p>Email: {userEmail}</p>
+              <p>이메일 주소: {userEmail}</p>
+              </StUserContainer>
               <p>작성한 글 목록:</p>
               {userPosts.length > 0 ? (
                 <ul>
-                  {userPosts.map((post, index) => (
-                    <li key={index}>
-                      {/* 각 글을 클릭하면 detail 페이지로 이동 */}
-                      <Link
-                        key={post.id}
-                        to={{
-                          pathname: `/detail/${post.id}`
-                        }}
-                        state={userPosts}
-                        setUserPosts={setUserPosts}
-                      >
-                        <img src={post.imageUrl} alt="업로드된 이미지" />
-                        <p>{post.title}</p>
-                        <p>{post.body}</p>
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
+               {userPosts.map((post, index) => (
+                  <li key={index}>
+                    <StPostLink
+                      to={{
+                        pathname: `/detail/${post.id}`
+                      }}
+                      state={userPosts}
+                      setUserPosts={setUserPosts}
+                    >
+                      <StPostContainer>
+                      <StImage src={post.imageUrl} alt="업로드된 이미지" />
+                      <div>
+                        <StTitle>{post.title}</StTitle>
+                        <StContent>{post.body}</StContent>
+                      </div>
+                    </StPostContainer>
+                    </StPostLink>
+                  </li>
+                ))}
+              </ul>
               ) : (
                 <p>작성한 글이 없습니다.</p>
               )}
-            </div>
+            </StDiv>
           </StDiv>
         ) : (
           <StyledMessage>
             <p>로그인이 필요합니다.</p>
-            <Link to="/login">로그인하러 가기</Link>
           </StyledMessage>
         )}
       </StDiv>
@@ -181,12 +186,64 @@ const StDiv = styled.div`
   flex-direction: column;
 `;
 
+const StUserContainer = styled.div`
+  margin: 5vh;
+  line-height: 1.5;
+  & > p {
+    border-bottom: 1px solid #ffc41d;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+  }
+`;
+
 const StyledMessage = styled.div`
   display: flex;
   align-items: center;
   gap: 8px;
   font-size: 25px;
   color: #ffff;
+`;
+
+const StInput = styled.input`
+  border-color: #ffc41d;
+  background-color: transparent;
+`;
+
+const StEditbtn = styled.button`
+  background-color: transparent;
+  border: none;
+  color: #ffc41d;
+  cursor: pointer;
+  &:hover{  
+    filter: brightness(70%);
+  }
+`;
+
+const StPostLink = styled(Link)`
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: #ffff;
+`;
+
+const StPostContainer = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const StImage = styled.img`
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+`;
+
+const StTitle = styled.p`
+  font-size: 20px;
+  font-weight: bold;
+`;
+
+const StContent = styled.p`
+  font-size: 16px;
 `;
 
 export default MyPage;

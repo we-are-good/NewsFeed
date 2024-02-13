@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { auth, db } from "../firebase";
-import { collection, query, where, getDocs } from "firebase/firestore";
+import { collection, query, where, getDocs } from 'firebase/firestore';
 import GrooveHeader from "../components/Groove/GrooveHeader";
 import GrooveFooter from "../components/Groove/GrooveFooter";
-import styled from "styled-components";
+import styled from 'styled-components';
 
 function MyPage({}) {
   const [currentUser, setCurrentUser] = useState(null);
@@ -37,14 +37,14 @@ function MyPage({}) {
 
   const fetchData = async (email) => {
     try {
-      const querySnapshot = await db.collection("logInData").where("email", "==", email).get();
-      querySnapshot.forEach((doc) => {
+      const querySnapshot = await db.collection('logInData').where('email', '==', email).get();
+      querySnapshot.forEach(doc => {
         const userData = doc.data();
         const nickname = userData.nickname;
         setUserNickname(nickname);
       });
     } catch (error) {
-      console.error("Error fetching user info:", error);
+      console.error('Error fetching user info:', error);
     }
   };
 
@@ -53,31 +53,35 @@ function MyPage({}) {
       const q = query(collection(db, "GrooveTop"), where("authorId", "==", uid));
       const querySnapshot = await getDocs(q);
       const userPostsData = [];
-      querySnapshot.forEach((doc) => {
+      querySnapshot.forEach(doc => {
         const postData = doc.data();
         userPostsData.push(postData);
       });
       setUserPosts(userPostsData);
     } catch (error) {
-      console.error("Error fetching user posts:", error);
+      console.error('Error fetching user posts:', error);
     }
   };
 
   return (
     <div>
-      <GrooveHeader currentUser={currentUser} />
+      <GrooveHeader />
       <StDiv>
         {currentUser ? (
           <StDiv>
             <div>
               <p>사용자 정보:</p>
-              <p>이름: {userNickname}</p>
-              <p>이메일: {userEmail}</p>
+              <p>Nickname: {userNickname}</p>
+              <p>Email: {userEmail}</p>
               <p>작성한 글 목록:</p>
               {userPosts.length > 0 ? (
                 <ul>
                   {userPosts.map((post, index) => (
-                    <li key={index}>{post.title}</li>
+                    <li key={index}>
+                     <img src={post.imageUrl} alt="업로드된 이미지" />
+                    <p>{post.title}</p>
+                    <p>{post.body}</p>
+                    </li>
                   ))}
                 </ul>
               ) : (

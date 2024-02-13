@@ -19,12 +19,20 @@ import { GoogleAuthProvider, signInWithPopup, GithubAuthProvider } from "firebas
 import { auth, db } from "../../firebase";
 import { signOut } from "firebase/auth";
 
-function GrooveAuth({ currentUser, isUserLogIn, setIsUserLogIn, setLogInModal, logInModal, setTotalUsersInformation }) {
+function GrooveAuth({
+  currentUser,
+  isUserLogIn,
+  setIsUserLogIn,
+  setLogInModal,
+  logInModal,
+  setTotalUsersInformation,
+  nickname,
+  setNickname
+}) {
   const [signUpModal, setSignUpModal] = useState(false);
   const [socialLogInModal, setSocialLogInModal] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [nickname, setNickname] = useState("");
 
   const onEmailChange = (event) => {
     setEmail(event.target.value);

@@ -1,4 +1,4 @@
-import { Top, StyledLink, Title, Body } from "../../../style/GrooveFeedStyle";
+import { Top, StyledLink, ImgWrapBox, ContentWrapBox, Title, Body } from "../../../style/GrooveFeedStyle";
 
 const GrooveFeed = ({ GrooveTop, setGrooveTop }) => {
   return (
@@ -17,9 +17,13 @@ const GrooveFeed = ({ GrooveTop, setGrooveTop }) => {
               setGrooveTop={setGrooveTop}
             >
               {/* <div key={item.id} onClick={navigate(`/detail/${item.id}`)}> */}
-              <img src="" alt="업로드된 이미지"></img>
-              <Title>제목 :{item.title}</Title>
-              <Body>내용 :{item.body}</Body>
+              <ImgWrapBox>
+                <img src="" alt="업로드된 이미지"></img>
+              </ImgWrapBox>
+              <ContentWrapBox>
+                <Title>{item.title}</Title>
+                <Body>{item.body}</Body>
+              </ContentWrapBox>
               {/* </div> */}
             </StyledLink>
           );

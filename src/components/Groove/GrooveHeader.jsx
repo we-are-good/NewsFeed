@@ -21,6 +21,7 @@ function GrooveHeader({ currentUser }) {
         <GrooveHeaderLogo onClick={() => navigate("/")}>Groove</GrooveHeaderLogo>
         <GrooveHeaderIconWrap>
           <GrooveAuth currentUser={currentUser} />
+          <div>유저님 환영합니다!</div>
           <div>
             <GrooveHeaderIconHome onClick={() => navigate("/")}>
               <i className="fa-solid fa-house" />

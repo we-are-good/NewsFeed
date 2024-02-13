@@ -9,7 +9,7 @@ import { getDownloadURL, ref, uploadBytes } from "@firebase/storage";
 
 import GrooveHeader from "../components/Groove/GrooveHeader";
 
-function DetailPage() {
+function DetailPage({ currentUser }) {
   const navigate = useNavigate();
   const params = useParams();
   const location = useLocation();
@@ -166,7 +166,7 @@ function DetailPage() {
 
   return (
     <>
-      <GrooveHeader />
+      <GrooveHeader currentUser={currentUser} />
       <div>DetailPage</div>
       {isEditing ? (
         <>

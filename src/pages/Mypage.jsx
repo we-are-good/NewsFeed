@@ -1,56 +1,67 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { auth, db } from "../firebase";
+import { collection, query, where, getDocs } from 'firebase/firestore';
 import GrooveHeader from "../components/Groove/GrooveHeader";
 import GrooveFooter from "../components/Groove/GrooveFooter";
 import styled from 'styled-components';
 
 function MyPage() {
   const [currentUser, setCurrentUser] = useState(null);
-  const [userEmail, setUserEmail] = useState("");
   const [userNickname, setUserNickname] = useState("");
+  const [userEmail, setUserEmail] = useState("");
+  const [userUid, setUserUid] = useState("");
+  const [userPosts, setUserPosts] = useState([]);
 
   useEffect(() => {
-    // 사용자 로그인 상태가 변경될 때마다 호출되는 콜백 함수 등록
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
       if (user) {
         setCurrentUser(user);
-        setUserEmail(user.email);
+        setUserEmail(user.email); // 현재 로그인한 사용자의 이메일 설정
+        setUserUid(user.uid); // 현재 로그인한 사용자의 UID 설정
+        fetchData(user.email);
+        fetchUserPosts(user.uid); // 사용자가 작성한 글 가져오기
       } else {
         setCurrentUser(null);
-        setUserEmail("");
         setUserNickname("");
+        setUserEmail("");
+        setUserUid("");
+        setUserPosts([]);
       }
     });
 
-    // 컴포넌트가 언마운트될 때 등록된 콜백 함수 제거
     return () => {
       unsubscribe();
     };
   }, []);
-  // 사용자 정보를 가져오는 함수
+
   const fetchData = async (email) => {
     try {
-      // 이메일에 해당하는 사용자 정보 문서를 가져오기
       const querySnapshot = await db.collection('logInData').where('email', '==', email).get();
-      if (!querySnapshot.empty) {
-        // 이메일에 해당하는 사용자 정보가 있는 경우 닉네임 설정
-        const userData = querySnapshot.docs[0].data();
+      querySnapshot.forEach(doc => {
+        const userData = doc.data();
         const nickname = userData.nickname;
-        console.log("User's nickname:", nickname); // 닉네임을 콘솔에 출력
-        setUserNickname(nickname); // 받아온 닉네임을 userNickname에 설정
-      }
+        setUserNickname(nickname);
+      });
     } catch (error) {
       console.error('Error fetching user info:', error);
     }
   };
 
-  useEffect(() => {
-    // userEmail이 변경될 때마다 fetchData 함수 호출
-    if (userEmail) {
-      fetchData(userEmail);
+  const fetchUserPosts = async (uid) => {
+    try {
+      const q = query(collection(db, "GrooveTop"), where("authorId", "==", uid));
+      const querySnapshot = await getDocs(q);
+      const userPostsData = [];
+      querySnapshot.forEach(doc => {
+        const postData = doc.data();
+        userPostsData.push(postData);
+      });
+      setUserPosts(userPostsData);
+    } catch (error) {
+      console.error('Error fetching user posts:', error);
     }
-  }, [userEmail]);
+  };
 
   return (
     <div>
@@ -60,9 +71,18 @@ function MyPage() {
           <StDiv>
             <div>
               <p>사용자 정보:</p>
-              <p>이름: {userNickname}</p> {/* 닉네임을 이름으로 출력 */}
-              <p>이메일: {userEmail}</p> {/* 이메일 표시 */}
+              <p>이름: {userNickname}</p>
+              <p>이메일: {userEmail}</p>
               <p>작성한 글 목록:</p>
+              {userPosts.length > 0 ? (
+                <ul>
+                  {userPosts.map((post, index) => (
+                    <li key={index}>{post.title}</li>
+                  ))}
+                </ul>
+              ) : (
+                <p>작성한 글이 없습니다.</p>
+              )}
             </div>
           </StDiv>
         ) : (

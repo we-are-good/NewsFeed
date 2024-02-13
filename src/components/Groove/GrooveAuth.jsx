@@ -29,8 +29,6 @@ import { LOGIN, LOGOUT } from "../../shared/redux/authIsLogIn";
 
 import { auth, db } from "../../firebase";
 
-
-
 function GrooveAuth() {
   const [logInModal, setLogInModal] = useState(false);
   const [signUpModal, setSignUpModal] = useState(false);
@@ -39,14 +37,15 @@ function GrooveAuth() {
   const [password, setPassword] = useState("");
   const [nickname, setNickname] = useState("");
   const [totalUsersInformation, setTotalUsersInformation] = useState([]);
+  const [isUserLogIn, setIsUserLogIn] = useState("false");
 
   const nowLogInEmail = useRef("");
   const nowLogInNickname = useRef("");
   const nowUser = useRef("");
   let googleLogInUserEmail = "";
 
-  const dispatch = useDispatch();
-  const isUserLogIn = useSelector((state) => state.isUserLogIn);
+  // const dispatch = useDispatch();
+  // const isUserLogIn = useSelector((state) => state.isUserLogIn);
 
   console.log("nowLogInEmail", nowLogInEmail.current);
   console.log("nowLogInNickname", nowLogInNickname.current);
@@ -89,12 +88,12 @@ function GrooveAuth() {
     setLogInModal(false);
   };
 
-  const handleLogIn = () => {
-    dispatch(LOGIN());
-  };
-  const handleLogOut = () => {
-    dispatch(LOGOUT());
-  };
+  // const handleLogIn = () => {
+  //   dispatch(LOGIN());
+  // };
+  // const handleLogOut = () => {
+  //   dispatch(LOGOUT());
+  // };
 
   const Login = async (event) => {
     try {
@@ -103,8 +102,7 @@ function GrooveAuth() {
       }
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       closeLogInModal();
-      const login = handleLogIn;
-      console.log(login);
+      setIsUserLogIn(true);
     } catch (error) {
       const errorCode = error.code;
       const errorMessage = error.message;
@@ -118,7 +116,7 @@ function GrooveAuth() {
 
   const logOut = async (event) => {
     event.preventDefault();
-    handleLogOut();
+    setIsUserLogIn(false);
     await signOut(auth);
     nowUser.current = "";
   };
@@ -138,12 +136,12 @@ function GrooveAuth() {
       const collectionRef = collection(db, "logInData");
       await addDoc(collectionRef, newUser);
       closeSignUpModal();
-      handleLogIn();
+      setIsUserLogIn(true);
     } catch (error) {
       const errorCode = error.code;
       const errorMessage = error.message;
       alert(errorCode, errorMessage);
-      handleLogOut();
+      setIsUserLogIn(false);
     } finally {
       setEmail("");
       setNickname("");
@@ -177,7 +175,7 @@ function GrooveAuth() {
     if (user) {
       console.log("user", user);
       const userEmail = user.email;
-      handleLogIn();
+      setIsUserLogIn(true);
       setLogInModal(false);
       fetchData(userEmail);
     } else {
@@ -199,7 +197,7 @@ function GrooveAuth() {
       const popUpforLogin = await signInWithPopup(auth, provider);
 
       const alreadySignUpEmail = await fetchSignInMethodsForEmail(auth, googleLogInUserEmail);
-      handleLogIn(); // 오류가 수정되면 옮겨질 예정이다.
+      setIsUserLogIn(true);
 
       googleLogInUserEmail = popUpforLogin.user.email;
       console.log("googleLogInUserEmail", googleLogInUserEmail);
@@ -249,11 +247,12 @@ function GrooveAuth() {
 
   return (
     <div>
-      {isUserLogIn ? (
+      {isUserLogIn && (
         <button type="button" onClick={logOut}>
           Log out
         </button>
-      ) : (
+      )}
+      {!isUserLogIn && (
         <button type="button" onClick={openLogInModal}>
           Log in
         </button>

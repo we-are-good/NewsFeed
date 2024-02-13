@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { auth, db } from "../firebase";
-import { collection, query, where, getDocs } from 'firebase/firestore';
+import { collection, query, where, getDocs, getFirestore } from 'firebase/firestore';
 import GrooveHeader from "../components/Groove/GrooveHeader";
 import GrooveFooter from "../components/Groove/GrooveFooter";
 import styled from 'styled-components';
@@ -35,16 +35,19 @@ function MyPage({}) {
     };
   }, []);
 
+  const db = getFirestore();
   const fetchData = async (email) => {
     try {
-      const querySnapshot = await db.collection('logInData').where('email', '==', email).get();
-      querySnapshot.forEach(doc => {
+      const q = query(collection(db, "logInData"), where("email", "==", email));
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach((doc) => {
         const userData = doc.data();
         const nickname = userData.nickname;
+        console.log("userData", userData);
         setUserNickname(nickname);
       });
     } catch (error) {
-      console.error('Error fetching user info:', error);
+      console.error("Error fetching user info:", error);
     }
   };
 

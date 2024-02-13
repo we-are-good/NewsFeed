@@ -36,6 +36,11 @@ function GrooveHeader({
     return setIsMyIconClicked(true);
   };
 
+  const goMyPage = () => {
+    setIsMyIconClicked(false);
+    navigate("/mypage");
+  };
+
   const user = currentUser;
   useEffect(() => {
     const fetchData = async (userEmail) => {
@@ -101,7 +106,7 @@ function GrooveHeader({
               <button type="button" onClick={logOut}>
                 Logout
               </button>
-              <button type="button" onClick={() => navigate("/mypage")}>
+              <button type="button" onClick={goMyPage}>
                 My page
               </button>
             </div>

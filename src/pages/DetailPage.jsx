@@ -32,7 +32,10 @@ function DetailPage() {
       if (!askUpdate) return;
       const GrooveTopRef = doc(db, "GrooveTop", detailGroove.id);
       await updateDoc(GrooveTopRef, { title: editedTitle, body: editedBody });
-      setIsEditing(false);
+      if (editedTitle === originalTitle && editedBody === originalBody) {
+        return alert("수정사항이 없습니다!");
+      }
+      setIsEditing(false, alert("수정되었습니다!"));
       setOriginalTitle(editedTitle);
       setOriginalBody(editedBody);
     } catch (error) {
@@ -52,7 +55,7 @@ function DetailPage() {
       if (!askDelete) return;
       const GrooveTopRef = doc(db, "GrooveTop", detailGroove.id);
       await deleteDoc(GrooveTopRef);
-      navigate("/");
+      navigate("/", alert("삭제되었습니다!"));
     } catch (error) {
       console.error("Error deleting groove:", error);
     }

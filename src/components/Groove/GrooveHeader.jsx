@@ -9,7 +9,6 @@ import {
 } from "../../style/GrooveHeaderStyle";
 
 import GrooveAuth from "./GrooveAuth";
-
 import { useNavigate } from "react-router-dom";
 
 function GrooveHeader({ user }) {

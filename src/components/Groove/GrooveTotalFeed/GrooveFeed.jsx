@@ -87,7 +87,11 @@ import { app } from "../../../firebase";
 const GrooveFeed = ({ GrooveTop, totalUsersInformation }) => {
   console.log(GrooveTop);
   console.log("totalUsersInformation", totalUsersInformation);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+  useEffect(() => {
+    setIsLoggedIn(!!currentUser); // currentUser가 있으면 true, 없으면 false로 설정
+  }, [currentUser]);
   const [loginData, setLoginData] = useState([]);
   useEffect(() => {
     const fetchLoginData = async () => {
@@ -131,7 +135,7 @@ const GrooveFeed = ({ GrooveTop, totalUsersInformation }) => {
           const formattedTime = format(date, "yyyy-MM-dd HH:mm:ss");
 
           // userLoginData를 find로 찾도록 수정
-          const userLoginData = loginData.find((loginItem) => loginItem.email === item.userId);
+          const userLoginData = loginData.find((loginItem) => loginItem.id === currentUser.uid);
           console.log("loginData", loginData);
           console.log("userLoginData", userLoginData);
 

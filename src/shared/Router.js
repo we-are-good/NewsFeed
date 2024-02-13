@@ -7,7 +7,6 @@ import { getAuth } from "firebase/auth";
 import { useEffect, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 
-
 const Router = () => {
   const auth = getAuth();
   const [currentUser, setCurrentUser] = useState(auth.currentUser);
@@ -30,7 +29,7 @@ const Router = () => {
         <Route path="/" element={<Home currentUser={currentUser} />} />
         <Route path="/write" element={<WritePage currentUser={currentUser} />} />
         <Route path="/detail/:id" element={<DetailPage currentUser={currentUser} />} />
-        <Route path="/mypage" element={<MyPage />} />
+        <Route path="/mypage" element={<MyPage currentUser={currentUser} />} />
       </Routes>
     </BrowserRouter>
   );

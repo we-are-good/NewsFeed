@@ -1,12 +1,8 @@
 import React from "react";
+import { GrooveFooterWrap } from "../../style/GrooveFooterStyle";
 
 function GrooveFooter() {
-  return (
-    <>
-      <div>GrooveFooter</div>
-      //////////////////////////////////////////////////////////////////////////////////////////푸터영역//////////////////////////////////////////////////////////////////////////////////////////
-    </>
-  );
+  return <GrooveFooterWrap>GrooveFooter</GrooveFooterWrap>;
 }
 
 export default GrooveFooter;

@@ -118,6 +118,7 @@ function MyPage({
         nickname={nickname}
         setNickname={setNickname}
       />
+
       <StDiv>
         {currentUser ? (
           <StDiv>

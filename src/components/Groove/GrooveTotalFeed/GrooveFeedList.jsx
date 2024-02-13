@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import GrooveFeed from "./GrooveFeed";
-import { addDoc, collection, getDocs, orderBy, query } from "firebase/firestore";
-import { db } from "../../../firebase";
+import { addDoc, collection, getDocs, orderBy, query, where } from "firebase/firestore";
+import { auth, db } from "../../../firebase";
 
 const GrooveFeedList = () => {
   const [GrooveTop, setGrooveTop] = useState([]);
+
   // useEffect 안에서 async/await를 만드려면 새로운 함수를 만들어야함
   useEffect(() => {
     const fetchData = async () => {
@@ -29,10 +30,73 @@ const GrooveFeedList = () => {
     };
     fetchData();
   }, []);
+  // const [currentUser, setCurrentUser] = useState(null);
+  // const [userNickname, setUserNickname] = useState("");
+  // const [userEmail, setUserEmail] = useState("");
+  // const [userUid, setUserUid] = useState("");
+  // const [userDocId, setUserDocId] = useState(""); // 사용자 문서의 ID 추가
+  // const [userPosts, setUserPosts] = useState([]);
+  // useEffect(() => {
+  //   const unsubscribe = auth.onAuthStateChanged(async (user) => {
+  //     if (user) {
+  //       setCurrentUser(user);
+  //       setUserEmail(user.email);
+  //       setUserUid(user.uid);
+  //       fetchData(user.email);
+  //     } else {
+  //       setCurrentUser(null);
+  //       setUserNickname("");
+  //       setUserEmail("");
+  //       setUserUid("");
+  //       setUserDocId("");
+  //     }
+  //   });
+
+  //   return () => {
+  //     unsubscribe();
+  //   };
+  // }, []);
+  // const fetchData = async (email) => {
+  //   try {
+  //     const q = query(collection(db, "logInData"), where("email", "==", email));
+  //     const querySnapshot = await getDocs(q);
+  //     querySnapshot.forEach((doc) => {
+  //       const userData = doc.data();
+  //       const nickname = userData.nickname;
+  //       setUserNickname(nickname);
+  //       setUserDocId(doc.id); // 사용자 문서의 ID 저장
+  //       console.log(nickname);
+  //     });
+  //   } catch (error) {
+  //     console.error("Error fetching user info:", error);
+  //   }
+  // };
+  const [totalUsersInformation, setTotalUsersInformation] = useState([]);
+  const [isUserLogIn, setIsUserLogIn] = useState(false);
+  useEffect(() => {
+    const fetchData = async (userEmail) => {
+      const q = query(collection(db, "logInData"));
+      const querySnapshot = await getDocs(q);
+
+      const totalUsersInformation = await querySnapshot.docs.map((doc) => ({
+        email: doc.data().email,
+        nickname: doc.data().nickname
+      }));
+      setTotalUsersInformation(totalUsersInformation);
+      console.log(totalUsersInformation);
+      const nowLogIn = await totalUsersInformation.find((information) => information.email === userEmail);
+      if (!nowLogIn) {
+        return;
+      }
+      const nowLogInNickname = nowLogIn.nickname;
+      if (!totalUsersInformation) return;
+    };
+    fetchData();
+  }, []);
 
   return (
     <>
-      <GrooveFeed GrooveTop={GrooveTop} />
+      <GrooveFeed GrooveTop={GrooveTop} totalUsersInformation={totalUsersInformation} />
     </>
   );
 };

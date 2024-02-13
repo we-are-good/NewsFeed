@@ -1,3 +1,4 @@
+import { EditingTitle } from "../style/GrooveDetailStyle";
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { auth, db, storage } from "../firebase";
@@ -222,6 +223,10 @@ function DetailPage({
       <div>DetailPage</div>
       {isEditing ? (
         <>
+<<<<<<< HEAD
+=======
+          <EditingTitle>제목: </EditingTitle>
+>>>>>>> e3d9ac1195be82c85dfb266025ee88c91e4b3f8b
           <input type="text" value={editedTitle} onChange={(e) => setEditedTitle(e.target.value)} />
           <br />
           <label>내용: </label>

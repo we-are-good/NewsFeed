@@ -65,8 +65,8 @@ function WritePage({ currentUser }) {
     event.preventDefault();
     // Firestore에서 'grooveTop' 컬렉션에 대한 참조 생성하기
     const newGroove = {
-      body: titleText,
-      title: bodyText,
+      body: bodyText,
+      title: titleText,
       Timestamp: new Date(),
       isLiked: false,
       likeCount: 0,

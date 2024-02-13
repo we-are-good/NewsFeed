@@ -62,7 +62,7 @@ function MyPage() {
       const userPostsData = [];
       querySnapshot.forEach((doc) => {
         const postData = doc.data();
-        userPostsData.push(postData);
+        userPostsData.push({ ...postData, id: doc.id }); // 글의 id를 추가하여 저장
       });
       setUserPosts(userPostsData);
     } catch (error) {
@@ -95,7 +95,7 @@ function MyPage() {
 
   return (
     <div>
-      <GrooveHeader />
+      <GrooveHeader currentUser={currentUser}/>
       <StDiv>
         {currentUser ? (
           <StDiv>
@@ -118,7 +118,14 @@ function MyPage() {
               <ul>
                 {userPosts.map((post, index) => (
                   <li key={index}>
-                    <Link to={`/detail/${post.id}`}> 
+                    {/* 각 글을 클릭하면 detail 페이지로 이동 */}
+                    <Link  key={post.id}
+                      to={{
+                        pathname: `/detail/${post.id}`
+                      }}
+                      state={userPosts}
+                      setUserPosts={setUserPosts}
+                      >
                       <img src={post.imageUrl} alt="업로드된 이미지" />
                       <p>{post.title}</p>
                       <p>{post.body}</p>

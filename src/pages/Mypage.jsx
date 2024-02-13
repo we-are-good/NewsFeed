@@ -1,12 +1,12 @@
-import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { auth, db } from "../firebase";
-import { collection, query, where, getDocs } from 'firebase/firestore';
+import { collection, query, where, getDocs } from "firebase/firestore";
 import GrooveHeader from "../components/Groove/GrooveHeader";
 import GrooveFooter from "../components/Groove/GrooveFooter";
-import styled from 'styled-components';
+import styled from "styled-components";
 
-function MyPage() {
+function MyPage({}) {
   const [currentUser, setCurrentUser] = useState(null);
   const [userNickname, setUserNickname] = useState("");
   const [userEmail, setUserEmail] = useState("");
@@ -37,14 +37,14 @@ function MyPage() {
 
   const fetchData = async (email) => {
     try {
-      const querySnapshot = await db.collection('logInData').where('email', '==', email).get();
-      querySnapshot.forEach(doc => {
+      const querySnapshot = await db.collection("logInData").where("email", "==", email).get();
+      querySnapshot.forEach((doc) => {
         const userData = doc.data();
         const nickname = userData.nickname;
         setUserNickname(nickname);
       });
     } catch (error) {
-      console.error('Error fetching user info:', error);
+      console.error("Error fetching user info:", error);
     }
   };
 
@@ -53,19 +53,19 @@ function MyPage() {
       const q = query(collection(db, "GrooveTop"), where("authorId", "==", uid));
       const querySnapshot = await getDocs(q);
       const userPostsData = [];
-      querySnapshot.forEach(doc => {
+      querySnapshot.forEach((doc) => {
         const postData = doc.data();
         userPostsData.push(postData);
       });
       setUserPosts(userPostsData);
     } catch (error) {
-      console.error('Error fetching user posts:', error);
+      console.error("Error fetching user posts:", error);
     }
   };
 
   return (
     <div>
-      <GrooveHeader />
+      <GrooveHeader currentUser={currentUser} />
       <StDiv>
         {currentUser ? (
           <StDiv>

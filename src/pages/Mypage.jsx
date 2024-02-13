@@ -62,7 +62,7 @@ function MyPage() {
       const userPostsData = [];
       querySnapshot.forEach((doc) => {
         const postData = doc.data();
-        userPostsData.push(postData);
+        userPostsData.push({ ...postData, id: doc.id }); // 글의 id를 추가하여 저장
       });
       setUserPosts(userPostsData);
     } catch (error) {
@@ -75,10 +75,10 @@ function MyPage() {
       alert("닉네임을 입력해주세요.");
       return;
     }
-    
+
     const confirmUpdate = window.confirm("정말 변경 하시겠습니까?");
     if (!confirmUpdate) return; // 사용자가 취소를 누른 경우 함수 종료
-    
+
     try {
       const userDocRef = doc(db, "logInData", userDocId); // 사용자 문서의 ID 사용
       await updateDoc(userDocRef, {
@@ -91,7 +91,6 @@ function MyPage() {
       console.error("Error updating nickname:", error);
     }
   };
-  
 
   return (
     <div>
@@ -115,20 +114,28 @@ function MyPage() {
               <p>Email: {userEmail}</p>
               <p>작성한 글 목록:</p>
               {userPosts.length > 0 ? (
-              <ul>
-                {userPosts.map((post, index) => (
-                  <li key={index}>
-                    <Link to={`/detail/${post.id}`}> 
-                      <img src={post.imageUrl} alt="업로드된 이미지" />
-                      <p>{post.title}</p>
-                      <p>{post.body}</p>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p>작성한 글이 없습니다.</p>
-            )}
+                <ul>
+                  {userPosts.map((post, index) => (
+                    <li key={index}>
+                      {/* 각 글을 클릭하면 detail 페이지로 이동 */}
+                      <Link
+                        key={post.id}
+                        to={{
+                          pathname: `/detail/${post.id}`
+                        }}
+                        state={userPosts}
+                        setUserPosts={setUserPosts}
+                      >
+                        <img src={post.imageUrl} alt="업로드된 이미지" />
+                        <p>{post.title}</p>
+                        <p>{post.body}</p>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p>작성한 글이 없습니다.</p>
+              )}
             </div>
           </StDiv>
         ) : (

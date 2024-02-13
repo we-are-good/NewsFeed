@@ -15,6 +15,16 @@ function WritePage({ currentUser }) {
 
   const [selectedFile, setSelectedFile] = useState(null);
   const [imageUrl, setImageUrl] = useState();
+  console.log("writecurrentuser", currentUser);
+  // const [isLoggedIn, setIsLoggedIn] = useState(false);
+  // useEffect(() => {
+  //   if (isLoggedIn) {
+  //     return;
+  //   } else {
+  //     alert("로그인이 필요합니다");
+  //     navigate("/");
+  //   }
+  // }, []);
 
   const [isLoggedIn, setIsLoggedIn] = useState(currentUser);
   useEffect(() => {
@@ -100,7 +110,7 @@ function WritePage({ currentUser }) {
   };
   return (
     <>
-      <GrooveHeader />
+      <GrooveHeader currentUser={currentUser} />
       <form>
         <label> 글 작성 </label>
         <br />

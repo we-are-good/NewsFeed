@@ -4,11 +4,11 @@ import GrooveHeader from "../components/Groove/GrooveHeader";
 import GrooveFooter from "../components/Groove/GrooveFooter";
 import styled from "styled-components";
 
-function Home({ currentUser, setCurrentUser }) {
+function Home({ currentUser }) {
   return (
     <Wrapper>
-      <GrooveHeader currentUser={currentUser} setCurrentUser={setCurrentUser} />
-      <GrooveFeedList currentUser={currentUser} />
+      <GrooveHeader currentUser={currentUser} />
+      <GrooveFeedList />
       <GrooveFooter />
     </Wrapper>
   );

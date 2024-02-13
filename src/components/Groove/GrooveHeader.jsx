@@ -11,7 +11,8 @@ import {
 import GrooveAuth from "./GrooveAuth";
 import { useNavigate } from "react-router-dom";
 
-function GrooveHeader({ user }) {
+function GrooveHeader({ currentUser }) {
+  console.log("currentUser Header", currentUser);
   const navigate = useNavigate();
 
   return (
@@ -19,17 +20,18 @@ function GrooveHeader({ user }) {
       <GrooveHeaderWrap>
         <GrooveHeaderLogo onClick={() => navigate("/")}>Groove</GrooveHeaderLogo>
         <GrooveHeaderIconWrap>
-          <GrooveAuth user={user} />
-
-          <GrooveHeaderIconHome onClick={() => navigate("/")}>
-            <i className="fa-solid fa-house" />
-          </GrooveHeaderIconHome>
-          <GrooveHeaderIconWrite onClick={() => navigate("/write")}>
-            <i className="fa-solid fa-pen" />
-          </GrooveHeaderIconWrite>
-          <GrooveHeaderIconMy>
-            <i className="fa-solid fa-user" />
-          </GrooveHeaderIconMy>
+          <GrooveAuth currentUser={currentUser} />
+          <div>
+            <GrooveHeaderIconHome onClick={() => navigate("/")}>
+              <i className="fa-solid fa-house" />
+            </GrooveHeaderIconHome>
+            <GrooveHeaderIconWrite onClick={() => navigate("/write")}>
+              <i className="fa-solid fa-pen" />
+            </GrooveHeaderIconWrite>
+            <GrooveHeaderIconMy>
+              <i className="fa-solid fa-user" />
+            </GrooveHeaderIconMy>
+          </div>
         </GrooveHeaderIconWrap>
       </GrooveHeaderWrap>
     </>

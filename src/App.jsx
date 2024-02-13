@@ -7,7 +7,7 @@ import LoadFile from "./components/LoadFile";
 import GlobalStyle from "./shared/GlobalStyle";
 import Home from "./pages/Home";
 import Router from "./shared/Router";
-
+import React from "react";
 const App = () => {
   // useEffect(() => {
   //   onAuthStateChanged(auth, (user) => {

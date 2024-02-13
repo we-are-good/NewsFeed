@@ -2507,6 +2507,13 @@
   resolved "https://registry.npmjs.org/@types/range-parser/-/range-parser-1.2.7.tgz"
   integrity sha512-hKormJbkJqzQGhziax5PItDUTMAM9uE2XXQmM37dyd4hVM+5aVl7oVxMVUiVQn2oCQFN/LKCZdvSM0pFRqbSmQ==
 
+"@types/redux-persist@^4.3.1":
+  version "4.3.1"
+  resolved "https://registry.yarnpkg.com/@types/redux-persist/-/redux-persist-4.3.1.tgz#aa4c876859e0bea5155e5f7980e5b8c4699dc2e6"
+  integrity sha512-YkMnMUk+4//wPtiSTMfsxST/F9Gh9sPWX0LVxHuOidGjojHtMdpep2cYvQgfiDMnj34orXyZI+QJCQMZDlafKA==
+  dependencies:
+    redux-persist "*"
+
 "@types/resolve@1.17.1":
   version "1.17.1"
   resolved "https://registry.npmjs.org/@types/resolve/-/resolve-1.17.1.tgz"
@@ -8263,6 +8270,11 @@ recursive-readdir@^2.2.2:
   integrity sha512-8HrF5ZsXk5FAH9dgsx3BlUer73nIhuj+9OrQwEbLTPOBzGkL1lsFCR01am+v+0m2Cmbs1nP12hLDl5FA7EszKA==
   dependencies:
     minimatch "^3.0.5"
+
+redux-persist@*, redux-persist@^6.0.0:
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/redux-persist/-/redux-persist-6.0.0.tgz#b4d2972f9859597c130d40d4b146fecdab51b3a8"
+  integrity sha512-71LLMbUq2r02ng2We9S215LtPu3fY0KgaGE0k8WRgl6RkqxtGfl7HUozz1Dftwsb0D/5mZ8dwAaPbtnzfvbEwQ==
 
 reflect.getprototypeof@^1.0.4:
   version "1.0.5"

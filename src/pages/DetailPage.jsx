@@ -1,15 +1,13 @@
-//
-
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { auth, db, storage } from "../firebase";
 import { doc, updateDoc, deleteDoc, getDoc } from "firebase/firestore";
 import GrooveLikeBtn from "../components/Groove/GrooveTotalFeed/GrooveLikeBtn";
+import GrooveAuth from "../components/Groove/GrooveAuth";
 
 import { getDownloadURL, ref, uploadBytes } from "@firebase/storage";
 
 import GrooveHeader from "../components/Groove/GrooveHeader";
-
 
 function DetailPage() {
   const navigate = useNavigate();
@@ -20,6 +18,7 @@ function DetailPage() {
   const [editedBody, setEditedBody] = useState("");
   const [originalTitle, setOriginalTitle] = useState("");
   const [originalBody, setOriginalBody] = useState("");
+  const [user, setUser] = useState(null); // 사용자 상태 추가
 
   const detailGroove = location.state.find((item) => item.id === params.id);
 
@@ -28,6 +27,17 @@ function DetailPage() {
   const [clickDisabled, setClickDisabled] = useState(false);
   const [newImage, setNewImage] = useState(null);
   const [imageURL, setImageURL] = useState(detailGroove.imageUrl);
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      setUser(user); // 현재 사용자 업데이트
+    });
+
+    return () => {
+      unsubscribe(); // cleanup 함수
+    };
+  }, []); // 빈 배열을 전달하여 컴포넌트가 처음 마운트될 때만 실행
+
   useEffect(() => {
     const fetchLikeCount = async () => {
       // Firestore에서 해당 Groove의 데이터를 가져오기 위한 문서 참조를 만듭니다.
@@ -46,11 +56,19 @@ function DetailPage() {
     setEditedBody(detailGroove.body);
     setOriginalTitle(detailGroove.title);
     setOriginalBody(detailGroove.body);
-  }, [location.state]);
+  }, [location.state, detailGroove]);
 
   const toggleLike = async () => {
     try {
       if (clickDisabled) return;
+
+      // 로그인 상태 확인
+      if (!user) {
+        // 로그인되지 않았을 때 로그인을 유도하는 메시지 또는 경고창 표시
+        alert("로그인 후에 좋아요를 누르실 수 있습니다.");
+        return;
+      }
+
       setClickDisabled(true);
 
       const grooveRef = doc(db, "GrooveTop", detailGroove.id);
@@ -58,11 +76,11 @@ function DetailPage() {
       // Firestore에서 바로 업데이트
       await updateDoc(grooveRef, {
         isLiked: !isLiked,
-        likeCount: isLiked ? likeCount - 1 : likeCount + 1
+        likeCount: !isLiked ? likeCount + 1 : likeCount - 1
       });
 
-      setIsLiked(!isLiked);
-      setLikeCount(isLiked ? likeCount - 1 : likeCount + 1);
+      setIsLiked((prevIsLiked) => !prevIsLiked);
+      setLikeCount((prevLikeCount) => (!isLiked ? prevLikeCount + 1 : prevLikeCount - 1));
     } catch (error) {
       console.error("Error toggling like:", error);
     } finally {
@@ -75,33 +93,37 @@ function DetailPage() {
   };
 
   const handleSave = async () => {
-    const askUpdate = window.confirm("정말 수정하시겠습니까?");
-    if (!askUpdate) return;
+    try {
+      const askUpdate = window.confirm("정말 수정하시겠습니까?");
+      if (!askUpdate) return;
 
-    // 이미지 변경
-    if (newImage) {
-      // const imageRef = ref(storage, `${auth.currentUser.uid}/${selectedFile.name}`);
-      const imageRef = ref(storage, `${auth.uid}/${newImage.name}`);
-      await uploadBytes(imageRef, newImage);
-      const newImageURL = await getDownloadURL(imageRef);
+      // 이미지 변경
+      if (newImage) {
+        // const imageRef = ref(storage, `${auth.currentUser.uid}/${selectedFile.name}`);
+        const imageRef = ref(storage, `${auth.uid}/${newImage.name}`);
+        await uploadBytes(imageRef, newImage);
+        const newImageURL = await getDownloadURL(imageRef);
 
-      const grooveRef = doc(db, "GrooveTop", detailGroove.id);
-      await updateDoc(grooveRef, { imageUrl: newImageURL });
+        const grooveRef = doc(db, "GrooveTop", detailGroove.id);
+        await updateDoc(grooveRef, { imageUrl: newImageURL });
+        // 이미지가 변경되었을 때만 setImageUrl 호출
+        setImageURL(newImageURL);
+      }
 
-      setImageURL(newImageURL);
-    }
+      const GrooveTopRef = doc(db, "GrooveTop", detailGroove.id);
 
-    const GrooveTopRef = doc(db, "GrooveTop", detailGroove.id);
-    await updateDoc(GrooveTopRef, { title: editedTitle, body: editedBody });
-
-    if (editedTitle === originalTitle && editedBody === originalBody && !newImage) {
-      setIsEditing(false);
-      return alert("수정사항이 없습니다!");
-    } else {
-      setIsEditing(false);
-      alert("수정되었습니다!");
-      setOriginalTitle(editedTitle);
-      setOriginalBody(editedBody);
+      if (editedTitle === originalTitle && editedBody === originalBody && !newImage) {
+        return alert("수정사항이 없습니다!");
+      } else {
+        await updateDoc(GrooveTopRef, { title: editedTitle, body: editedBody });
+        setIsEditing(false);
+        alert("수정되었습니다!");
+        setOriginalTitle(editedTitle);
+        setOriginalBody(editedBody);
+      }
+    } catch (error) {
+      alert("에러발생");
+      console.error("Error updating groove:", error);
     }
   };
 
@@ -109,7 +131,6 @@ function DetailPage() {
     setEditedTitle(originalTitle);
     setEditedBody(originalBody);
     setIsEditing(false);
-
     setNewImage(null);
     setImageURL(detailGroove.imageUrl);
   };
@@ -120,8 +141,10 @@ function DetailPage() {
       if (!askDelete) return;
       const GrooveTopRef = doc(db, "GrooveTop", detailGroove.id);
       await deleteDoc(GrooveTopRef);
-      navigate("/", alert("삭제되었습니다!"));
+      navigate("/");
+      alert("삭제되었습니다!");
     } catch (error) {
+      alert("에러발생");
       console.error("Error deleting groove:", error);
     }
   };
@@ -137,25 +160,10 @@ function DetailPage() {
     // 새 이미지 URL 가져오기
     const newImageURL = await getDownloadURL(imageRef);
     console.log("newImageURL", newImageURL);
+    // 이미지 업로드 전에 setImageURL 호출
     setImageURL(newImageURL);
   };
 
-  // const handleImageChange = async (selectedFile) => {
-  //   const imageRef = ref(storage, `${auth.uid}/${selectedFile.name}`);
-  //   // const imageRef = ref(storage, `${auth.currentUser.uid}/${selectedFile.name}`);
-  //   await uploadBytes(imageRef, selectedFile);
-  //   // 새 이미지 URL 가져오기
-  //   const newImageURL = await getDownloadURL(imageRef);
-  //   console.log("newImageURL", newImageURL);
-
-  //   // Firestore에 새 이미지 URL 업데이트
-  //   const grooveRef = doc(db, "GrooveTop", detailGroove.id);
-  //   await updateDoc(grooveRef, { imageUrl: newImageURL });
-
-  //   // State 업데이트
-  //   setNewImage(selectedFile);
-  //   setImageURL(newImageURL);
-  // };
   return (
     <>
       <GrooveHeader />
@@ -180,7 +188,20 @@ function DetailPage() {
           <>제목: {originalTitle}</>
           <>내용: {originalBody}</>
           {/* 좋아요 버튼 컴포넌트를 렌더링하고, 필요한 props를 전달합니다. */}
-          <GrooveLikeBtn isLiked={isLiked} onLikeClick={toggleLike} likeCount={likeCount} grooveId={detailGroove?.id} />
+          {user ? (
+            // 로그인 상태일 때만 좋아요 버튼을 활성화
+            <>
+              <GrooveLikeBtn isLiked={isLiked} onLikeClick={toggleLike} grooveId={detailGroove?.id} />
+              <p>좋아요: {likeCount}개</p>
+            </>
+          ) : (
+            // 로그인 상태가 아닐 때 로그인을 유도하는 메시지 또는 경고창 표시
+            <>
+              <p>좋아요: {likeCount}개</p>
+              <p>로그인 후에 좋아요를 누르실 수 있습니다.</p>
+              <GrooveAuth />
+            </>
+          )}
           <br />
           <button onClick={handleEdit}>수정하기</button>
           <br />

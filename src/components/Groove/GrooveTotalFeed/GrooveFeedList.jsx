@@ -3,12 +3,12 @@ import GrooveFeed from "./GrooveFeed";
 import { addDoc, collection, getDocs, orderBy, query } from "firebase/firestore";
 import { db } from "../../../firebase";
 
-const GrooveFeedList = () => {
+const GrooveFeedList = ({ user }) => {
   const [GrooveTop, setGrooveTop] = useState([]);
 
   const [titleText, setTitleText] = useState("");
   const [bodyText, setBodyText] = useState("");
-
+  console.log(user);
   // console.log("GrooveTop", GrooveTop);
   // console.log("titleText", titleText);
   // console.log("bodyText", bodyText);
@@ -30,7 +30,7 @@ const GrooveFeedList = () => {
           id: doc.id, // 실제 firebase에서 "문서추가"부분
           ...doc.data()
         };
-        console.log("data", data);
+        // console.log("data", data);
         initialGrooveTop.push(data);
       });
 

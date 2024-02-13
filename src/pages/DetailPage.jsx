@@ -1,4 +1,13 @@
-import { EditingTitle, Wrap, Title, Body, EditingWrap, EditButtonWrap } from "../style/GrooveDetailStyle";
+import {
+  EditingTitle,
+  Wrap,
+  Title,
+  Body,
+  EditingWrap,
+  EditingButtonWrap,
+  EditingBody,
+  LikeWrap
+} from "../style/GrooveDetailStyle";
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { auth, db, storage } from "../firebase";
@@ -227,29 +236,30 @@ function DetailPage({
             제목: <input type="text" value={editedTitle} onChange={(e) => setEditedTitle(e.target.value)} />
           </EditingTitle>
 
-          <label>
-            내용:{" "}
+          <EditingBody>
+            내용:
             <textarea style={{ resize: "none" }} value={editedBody} onChange={(e) => setEditedBody(e.target.value)} />
-          </label>
-          <EditButtonWrap>
+          </EditingBody>
+          <EditingButtonWrap>
             <button onClick={handleSave}>저장</button>
             <button onClick={handleCancel}>취소</button>
-          </EditButtonWrap>
-          <input type="file" onChange={handleFileSelect} />
+          </EditingButtonWrap>
+          <input type="file" onChange={handleFileSelect} style={{ marginLeft: "95px" }} />
           {/* <button onClick={() => handleImageChange(newImage)}>이미지 변경하기</button> */}
           <br />
         </EditingWrap>
       ) : (
         <Wrap>
+          <img style={{ width: "400px", height: "400px" }} src={imageURL} alt="Groove Image"></img>
           <Title>제목: {originalTitle}</Title>
           <Body>내용: {originalBody}</Body>
           {/* 좋아요 버튼 컴포넌트를 렌더링하고, 필요한 props를 전달합니다. */}
           {user ? (
             // 로그인 상태일 때만 좋아요 버튼을 활성화
-            <>
-              <GrooveLikeBtn isLiked={isLiked} onLikeClick={toggleLike} grooveId={detailGroove?.id} />
+            <LikeWrap>
               <p>좋아요: {Object.keys(likes).length}개</p>
-            </>
+              <GrooveLikeBtn isLiked={isLiked} onLikeClick={toggleLike} grooveId={detailGroove?.id} />
+            </LikeWrap>
           ) : (
             // 로그인 상태가 아닐 때 로그인을 유도하는 메시지 또는 경고창 표시
             <>
@@ -278,7 +288,7 @@ function DetailPage({
           )}
           <button onClick={() => navigate("/")}>홈으로</button>
           <br />
-          <img style={{ width: "400px", height: "400px" }} src={imageURL} alt="Groove Image"></img>
+
           <br />
         </Wrap>
       )}

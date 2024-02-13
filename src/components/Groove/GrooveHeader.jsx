@@ -41,6 +41,16 @@ function GrooveHeader({
     navigate("/mypage");
   };
 
+  const goHome = () => {
+    setIsMyIconClicked(false);
+    navigate("/");
+  };
+
+  const goWrite = () => {
+    setIsMyIconClicked(false);
+    navigate("/write");
+  };
+
   const user = currentUser;
   useEffect(() => {
     const fetchData = async (userEmail) => {
@@ -73,17 +83,17 @@ function GrooveHeader({
   return (
     <>
       <GrooveHeaderWrap>
-        <GrooveHeaderLogo onClick={() => navigate("/")}>Groove</GrooveHeaderLogo>
+        <GrooveHeaderLogo onClick={goHome}>Groove</GrooveHeaderLogo>
         <GrooveHeaderIconWrap>
           {/* <GrooveAuth currentUser={currentUser} /> */}
           {currentUser ? (
             <div>
               <div>{logInUserNickname}님 환영합니다!</div>
               <div>
-                <GrooveHeaderIconHome onClick={() => navigate("/")}>
+                <GrooveHeaderIconHome onClick={goHome}>
                   <i className="fa-solid fa-house" />
                 </GrooveHeaderIconHome>
-                <GrooveHeaderIconWrite onClick={() => navigate("/write")}>
+                <GrooveHeaderIconWrite onClick={goWrite}>
                   <i className="fa-solid fa-pen" />
                 </GrooveHeaderIconWrite>
                 <GrooveHeaderIconMy onClick={() => myIconClick()}>

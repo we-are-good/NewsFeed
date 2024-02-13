@@ -27,8 +27,8 @@ function DetailPage({
   const [editedBody, setEditedBody] = useState("");
   const [originalTitle, setOriginalTitle] = useState("");
   const [originalBody, setOriginalBody] = useState("");
-  const [user, setUser] = useState(null);
-  console.log("user", user);
+  const [user, setUser] = useState(null); // 사용자 상태 추가
+
   const detailGroove = location.state.find((item) => item.id === params.id);
 
   const [isLiked, setIsLiked] = useState(false); // 좋아요 상태를 각 사용자 별로 따로 관리
@@ -37,8 +37,6 @@ function DetailPage({
   const [clickDisabled, setClickDisabled] = useState(false);
   const [newImage, setNewImage] = useState(null);
   const [imageURL, setImageURL] = useState(detailGroove.imageUrl);
-
-  const [isLoggedIn, setIsLoggedIn] = useState(currentUser);
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
@@ -73,6 +71,7 @@ function DetailPage({
   const toggleLike = async () => {
     try {
       if (clickDisabled) return;
+
       // 로그인 상태 확인
       if (!user) {
         // 로그인되지 않았을 때 로그인을 유도하는 메시지 또는 경고창 표시
@@ -116,12 +115,6 @@ function DetailPage({
   };
 
   const handleEdit = () => {
-    // 작성자와 로그인한 사용자가 동일한 경우에만 수정 가능하도록 체크
-    if (!user || user.uid !== detailGroove.authorId) {
-      alert("글 작성자만 수정할 수 있습니다.");
-      return;
-    }
-
     setIsEditing(true);
   };
 
@@ -129,6 +122,7 @@ function DetailPage({
     try {
       const askUpdate = window.confirm("정말 수정하시겠습니까?");
       if (!askUpdate) return;
+
       // 이미지 변경
       if (newImage) {
         // const imageRef = ref(storage, `${auth.currentUser.uid}/${selectedFile.name}`);
@@ -144,15 +138,8 @@ function DetailPage({
 
       const GrooveTopRef = doc(db, "GrooveTop", detailGroove.id);
 
-      if (
-        //수정된 제목이 원본 제목과 동일하고, 수정된 내용이 원본 내용과 동일하며, 새 이미지가 없는 경우
-        (editedTitle === originalTitle && editedBody === originalBody && !newImage) ||
-        // 제목이 공백인경우
-        editedTitle.trim() === "" ||
-        // 내용이 공백인경우
-        editedBody.trim() === ""
-      ) {
-        return alert("수정할 내용이 없거나 제목 또는 내용이 빈칸입니다!");
+      if (editedTitle === originalTitle && editedBody === originalBody && !newImage) {
+        return alert("수정사항이 없습니다!");
       } else {
         await updateDoc(GrooveTopRef, { title: editedTitle, body: editedBody });
         setIsEditing(false);
@@ -178,7 +165,6 @@ function DetailPage({
     try {
       const askDelete = window.confirm("정말 삭제하시겠습니까?");
       if (!askDelete) return;
-
       const GrooveTopRef = doc(db, "GrooveTop", detailGroove.id);
       await deleteDoc(GrooveTopRef);
       navigate("/");
@@ -199,6 +185,7 @@ function DetailPage({
     await uploadBytes(imageRef, file);
     // 새 이미지 URL 가져오기
     const newImageURL = await getDownloadURL(imageRef);
+    console.log("newImageURL", newImageURL);
     // 이미지 업로드 전에 setImageURL 호출
     setImageURL(newImageURL);
   };
@@ -251,15 +238,10 @@ function DetailPage({
             </>
           )}
           <br />
-          {/* 작성자와 로그인한 사용자가 동일한 경우에만 수정, 삭제 버튼 노출 */}
-          {user && user.uid === detailGroove.authorId && (
-            <>
-              <button onClick={handleEdit}>수정하기</button>
-              <br />
-              <button onClick={handleDelete}>삭제하기</button>
-              <br />
-            </>
-          )}
+          <button onClick={handleEdit}>수정하기</button>
+          <br />
+          <button onClick={handleDelete}>삭제하기</button>
+          <br />
           <button onClick={() => navigate("/")}>홈으로</button>
           <br />
           <img style={{ width: "200px", height: "200px" }} src={imageURL} alt="Groove Image"></img>

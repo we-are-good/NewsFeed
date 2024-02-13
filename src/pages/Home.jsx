@@ -8,7 +8,7 @@ function Home({ user }) {
   return (
     <Wrapper>
       <GrooveHeader user={user} />
-      <GrooveFeedList />
+      <GrooveFeedList user={user} />
       <GrooveFooter />
     </Wrapper>
   );

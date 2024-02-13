@@ -24,6 +24,7 @@ export const LogInForm = styled.form`
   height: 20rem;
   width: 15rem;
   gap: 1rem;
+  z-index: 1;
 `;
 
 export const LogSigninButton = styled.button`

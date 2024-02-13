@@ -1,14 +1,13 @@
 import { useEffect } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./firebase";
-import GrooveAuth from "./components/Groove/GrooveAuth";
 import GrooveFeedList from "./components/Groove/GrooveTotalFeed/GrooveFeedList";
 import FileUpload from "./components/FileUpload";
 import LoadFile from "./components/LoadFile";
 import GlobalStyle from "./shared/GlobalStyle";
 import Home from "./pages/Home";
 import Router from "./shared/Router";
-
+import React from "react";
 const App = () => {
   // useEffect(() => {
   //   onAuthStateChanged(auth, (user) => {
@@ -26,7 +25,10 @@ const App = () => {
       {/* <FileUpload /> */}
       {/* <LoadFile /> */}
 
+
+
       {/* <GrooveAuth /> */}
+
     </>
   );
 };

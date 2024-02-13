@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom'; // React Router를 사용하여 링크 추가
 import { auth, db } from "../firebase";
 import GrooveHeader from "../components/Groove/GrooveHeader";
 import GrooveFooter from "../components/Groove/GrooveFooter";
-import styled  from 'styled-components';
+import styled from 'styled-components';
+import { FaExclamationCircle } from 'react-icons/fa'; // 경고 아이콘 추가
 
 function MyPage() {
   const [currentUser, setCurrentUser] = useState(null); // 현재 로그인한 사용자 정보 상태
@@ -40,23 +42,27 @@ function MyPage() {
     <div>
       <GrooveHeader />
       <StDiv>
-      {currentUser ? (
-        <StDiv>
-        <div>
-          <p>사용자 정보:</p>
-          <p>이름: {currentUser.displayName}</p>
-          <p>이메일: {currentUser.email}</p>
-          <p>작성한 글 목록:</p>
-          </div>
-          <StList>
-            {userPosts.map((post) => (
-              <li key={post.id}>{post.title}</li>
-            ))}
-          </StList>
-        </StDiv>
-      ) : (
-        <p>로그인이 필요합니다.</p>
-      )}
+        {currentUser ? (
+          <StDiv>
+            <div>
+              <p>사용자 정보:</p>
+              <p>이름: {currentUser.displayName}</p>
+              <p>이메일: {currentUser.email}</p>
+              <p>작성한 글 목록:</p>
+            </div>
+            <StList>
+              {userPosts.map((post) => (
+                <li key={post.id}>{post.title}</li>
+              ))}
+            </StList>
+          </StDiv>
+        ) : (
+          <StyledMessage>
+            <FaExclamationCircle />
+            <p>로그인이 필요합니다.</p>
+            <Link to="/login">로그인하러 가기</Link>
+          </StyledMessage>
+        )}
       </StDiv>
       <GrooveFooter />
     </div>
@@ -75,6 +81,12 @@ const StList = styled.ul`
   padding: 0;
 `;
 
+const StyledMessage = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 25px;
+  color: #ffff;
+`;
+
 export default MyPage;
-
-

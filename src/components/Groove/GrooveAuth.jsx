@@ -19,12 +19,8 @@ import {
   signInWithEmailAndPassword,
   signOut
 } from "firebase/auth";
-import { getAuth } from "firebase/auth";
 import { collection, getDocs, query, addDoc } from "firebase/firestore";
-
 import { GoogleAuthProvider, signInWithPopup, GithubAuthProvider } from "firebase/auth";
-import { useRef } from "react";
-
 import { auth, db } from "../../firebase";
 
 function GrooveAuth({ user }) {

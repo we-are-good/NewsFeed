@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { updateDoc, doc } from "firebase/firestore";
 import { db } from "../../../firebase";
 
-const GrooveLikeBtn = ({ isLiked, onLikeClick, likeCount, grooveId }) => {
+const GrooveLikeBtn = ({ initialIsLiked, onLikeClick, likeCount, grooveId }) => {
+  const [isLiked, setIsLiked] = useState(initialIsLiked);
+
   const toggleLike = async () => {
     // Firestore 업데이트
     const grooveRef = doc(db, "GrooveTop", grooveId);
@@ -13,6 +15,9 @@ const GrooveLikeBtn = ({ isLiked, onLikeClick, likeCount, grooveId }) => {
 
     // 부모 컴포넌트에서 좋아요 상태를 업데이트하는 함수 호출
     onLikeClick();
+
+    // 로컬 상태 업데이트
+    setIsLiked(!isLiked);
   };
 
   return (
@@ -23,4 +28,4 @@ const GrooveLikeBtn = ({ isLiked, onLikeClick, likeCount, grooveId }) => {
   );
 };
 
-export default GrooveLikeBtn;
+export default React.memo(GrooveLikeBtn);

@@ -8,7 +8,7 @@ import GrooveAuth from "../components/Groove/GrooveAuth";
 import { getDownloadURL, ref, uploadBytes } from "@firebase/storage";
 import GrooveHeader from "../components/Groove/GrooveHeader";
 
-function DetailPage({ currentUser }) {
+const DetailPage = ({ currentUser }) => {
   const navigate = useNavigate();
   const params = useParams();
   const location = useLocation();
@@ -17,15 +17,18 @@ function DetailPage({ currentUser }) {
   const [editedBody, setEditedBody] = useState("");
   const [originalTitle, setOriginalTitle] = useState("");
   const [originalBody, setOriginalBody] = useState("");
-  const [user, setUser] = useState(null); // 사용자 상태 추가
-
+  const [user, setUser] = useState(null);
+  console.log("user", user);
   const detailGroove = location.state.find((item) => item.id === params.id);
 
-  const [isLiked, setIsLiked] = useState(detailGroove?.isLiked || false);
+  const [isLiked, setIsLiked] = useState(false); // 좋아요 상태를 각 사용자 별로 따로 관리
   const [likeCount, setLikeCount] = useState(detailGroove?.likeCount || 0);
+  const [likes, setLikes] = useState(detailGroove?.likes || {}); // 사용자의 좋아요 상태를 기록하는 객체
   const [clickDisabled, setClickDisabled] = useState(false);
   const [newImage, setNewImage] = useState(null);
   const [imageURL, setImageURL] = useState(detailGroove.imageUrl);
+
+  const [isLoggedIn, setIsLoggedIn] = useState(currentUser);
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
@@ -60,7 +63,6 @@ function DetailPage({ currentUser }) {
   const toggleLike = async () => {
     try {
       if (clickDisabled) return;
-
       // 로그인 상태 확인
       if (!user) {
         // 로그인되지 않았을 때 로그인을 유도하는 메시지 또는 경고창 표시
@@ -70,16 +72,32 @@ function DetailPage({ currentUser }) {
 
       setClickDisabled(true);
 
+      // 사용자의 UID
+      const userUid = user.uid;
+
+      // 사용자가 이미 좋아요를 눌렀는지 확인
+      const userLiked = likes[userUid];
+
+      // Firestore에서 해당 Groove의 데이터를 가져오기 위한 문서 참조를 만듭니다.
       const grooveRef = doc(db, "GrooveTop", detailGroove.id);
 
-      // Firestore에서 바로 업데이트
-      await updateDoc(grooveRef, {
-        isLiked: !isLiked,
-        likeCount: !isLiked ? likeCount + 1 : likeCount - 1
-      });
+      // 사용자가 이미 좋아요를 눌렀다면 취소, 아니면 좋아요 추가
+      if (userLiked) {
+        // 좋아요 취소
+        delete likes[userUid];
+      } else {
+        // 좋아요 추가
+        likes[userUid] = true;
+      }
 
-      setIsLiked((prevIsLiked) => !prevIsLiked);
-      setLikeCount((prevLikeCount) => (!isLiked ? prevLikeCount + 1 : prevLikeCount - 1));
+      // 좋아요 상태 업데이트
+      setLikes({ ...likes });
+
+      // 좋아요 개수 업데이트
+      setLikeCount(Object.keys(likes).length);
+
+      // Firestore에 좋아요 정보 업데이트
+      await updateDoc(grooveRef, { likes });
     } catch (error) {
       console.error("Error toggling like:", error);
     } finally {
@@ -88,6 +106,12 @@ function DetailPage({ currentUser }) {
   };
 
   const handleEdit = () => {
+    // 작성자와 로그인한 사용자가 동일한 경우에만 수정 가능하도록 체크
+    if (!user || user.uid !== detailGroove.authorId) {
+      alert("글 작성자만 수정할 수 있습니다.");
+      return;
+    }
+
     setIsEditing(true);
   };
 
@@ -95,7 +119,6 @@ function DetailPage({ currentUser }) {
     try {
       const askUpdate = window.confirm("정말 수정하시겠습니까?");
       if (!askUpdate) return;
-
       // 이미지 변경
       if (newImage) {
         // const imageRef = ref(storage, `${auth.currentUser.uid}/${selectedFile.name}`);
@@ -111,8 +134,15 @@ function DetailPage({ currentUser }) {
 
       const GrooveTopRef = doc(db, "GrooveTop", detailGroove.id);
 
-      if (editedTitle === originalTitle && editedBody === originalBody && !newImage) {
-        return alert("수정사항이 없습니다!");
+      if (
+        //수정된 제목이 원본 제목과 동일하고, 수정된 내용이 원본 내용과 동일하며, 새 이미지가 없는 경우
+        (editedTitle === originalTitle && editedBody === originalBody && !newImage) ||
+        // 제목이 공백인경우
+        editedTitle.trim() === "" ||
+        // 내용이 공백인경우
+        editedBody.trim() === ""
+      ) {
+        return alert("수정할 내용이 없거나 제목 또는 내용이 빈칸입니다!");
       } else {
         await updateDoc(GrooveTopRef, { title: editedTitle, body: editedBody });
         setIsEditing(false);
@@ -138,6 +168,7 @@ function DetailPage({ currentUser }) {
     try {
       const askDelete = window.confirm("정말 삭제하시겠습니까?");
       if (!askDelete) return;
+
       const GrooveTopRef = doc(db, "GrooveTop", detailGroove.id);
       await deleteDoc(GrooveTopRef);
       navigate("/");
@@ -158,7 +189,6 @@ function DetailPage({ currentUser }) {
     await uploadBytes(imageRef, file);
     // 새 이미지 URL 가져오기
     const newImageURL = await getDownloadURL(imageRef);
-    console.log("newImageURL", newImageURL);
     // 이미지 업로드 전에 setImageURL 호출
     setImageURL(newImageURL);
   };
@@ -191,21 +221,26 @@ function DetailPage({ currentUser }) {
             // 로그인 상태일 때만 좋아요 버튼을 활성화
             <>
               <GrooveLikeBtn isLiked={isLiked} onLikeClick={toggleLike} grooveId={detailGroove?.id} />
-              <p>좋아요: {likeCount}개</p>
+              <p>좋아요: {Object.keys(likes).length}개</p>
             </>
           ) : (
             // 로그인 상태가 아닐 때 로그인을 유도하는 메시지 또는 경고창 표시
             <>
-              <p>좋아요: {likeCount}개</p>
+              <p>좋아요: {Object.keys(likes).length}개</p>
               <p>로그인 후에 좋아요를 누르실 수 있습니다.</p>
               <GrooveAuth />
             </>
           )}
           <br />
-          <button onClick={handleEdit}>수정하기</button>
-          <br />
-          <button onClick={handleDelete}>삭제하기</button>
-          <br />
+          {/* 작성자와 로그인한 사용자가 동일한 경우에만 수정, 삭제 버튼 노출 */}
+          {user && user.uid === detailGroove.authorId && (
+            <>
+              <button onClick={handleEdit}>수정하기</button>
+              <br />
+              <button onClick={handleDelete}>삭제하기</button>
+              <br />
+            </>
+          )}
           <button onClick={() => navigate("/")}>홈으로</button>
           <br />
           <img style={{ width: "200px", height: "200px" }} src={imageURL} alt="Groove Image"></img>
@@ -214,6 +249,6 @@ function DetailPage({ currentUser }) {
       )}
     </>
   );
-}
+};
 
 export default DetailPage;

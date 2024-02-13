@@ -5,6 +5,7 @@ import {
   LogInForm,
   LogSigninButton,
   TopText,
+  IDPWBoxWrap,
   IDPWBox,
   LogInButtonsBox,
   LogInSmallButton,
@@ -248,23 +249,25 @@ function GrooveAuth({
                 <h3>Welcome back!</h3>
                 <h4>Please sign in to your account</h4>
               </TopText>
-              <IDPWBox>
-                <input placeholder="E-mail" type="text" name="email" value={email} onChange={onEmailChange} />
-              </IDPWBox>
-              <IDPWBox>
-                <input
-                  placeholder="PASSWORD"
-                  type="password"
-                  name="password"
-                  value={password}
-                  onChange={onPasswordChange}
-                />
-              </IDPWBox>
-              <LogInButtonsBox>
-                <LogInSmallButton type="button" onClick={Login}>
-                  Log in
-                </LogInSmallButton>
-              </LogInButtonsBox>
+              <IDPWBoxWrap>
+                <IDPWBox>
+                  <input placeholder="E-mail" type="text" name="email" value={email} onChange={onEmailChange} />
+                </IDPWBox>
+                <IDPWBox>
+                  <input
+                    placeholder="PASSWORD"
+                    type="password"
+                    name="password"
+                    value={password}
+                    onChange={onPasswordChange}
+                  />
+                </IDPWBox>
+                <LogInButtonsBox>
+                  <LogInSmallButton type="button" onClick={Login}>
+                    Log in
+                  </LogInSmallButton>
+                </LogInButtonsBox>
+              </IDPWBoxWrap>
             </LogInForm>
           </div>
         )}
@@ -289,35 +292,37 @@ function GrooveAuth({
                   Sign up
                 </LogSigninButton>
               </div>
-              <IDPWBox>
-                <input placeholder="E-mail" type="text" name="email" value={email} onChange={onEmailChange} />
-              </IDPWBox>
-              <IDPWBox>
-                <input placeholder="Nickname" type="text" name="text" value={nickname} onChange={onNicknameChange} />
-              </IDPWBox>
-              <IDPWBox>
-                <input
-                  placeholder="PASSWORD"
-                  type="password"
-                  name="password"
-                  value={password}
-                  onChange={onPasswordChange}
-                />
-              </IDPWBox>
-              <LogInButtonsBox>
-                <LogInSmallButton type="button" onClick={signUp}>
-                  Sign up
-                </LogInSmallButton>
-              </LogInButtonsBox>
+              <IDPWBoxWrap>
+                <IDPWBox>
+                  <input placeholder="E-mail" type="text" name="email" value={email} onChange={onEmailChange} />
+                </IDPWBox>
+                <IDPWBox>
+                  <input placeholder="Nickname" type="text" name="text" value={nickname} onChange={onNicknameChange} />
+                </IDPWBox>
+                <IDPWBox>
+                  <input
+                    placeholder="PASSWORD"
+                    type="password"
+                    name="password"
+                    value={password}
+                    onChange={onPasswordChange}
+                  />
+                </IDPWBox>
+                <LogInButtonsBox>
+                  <LogInSmallButton type="button" onClick={signUp}>
+                    Sign up
+                  </LogInSmallButton>
+                </LogInButtonsBox>
+              </IDPWBoxWrap>
 
               <div>or sign up with</div>
 
               <GoogleGitLogIn>
                 <PromptLogIn type="button" onClick={handleGoogleSignUp}>
-                  Google
+                  <i class="fa-brands fa-google" /> Google
                 </PromptLogIn>
                 <PromptLogIn type="button" onClick={handleGitLogin}>
-                  Github
+                  <i class="fa-brands fa-github" /> Github
                 </PromptLogIn>
               </GoogleGitLogIn>
             </LogInForm>

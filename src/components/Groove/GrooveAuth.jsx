@@ -10,7 +10,8 @@ import {
   LogInSmallButton,
   PromptLogIn,
   GoogleGitLogIn,
-  SocialLogInNickname
+  SocialLogInNickname,
+  BackgroundLogInButton
 } from "../../style/GrooveAuthStyle";
 
 import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
@@ -211,15 +212,10 @@ function GrooveAuth({
 
   return (
     <div>
-      {isUserLogIn && (
-        <button type="button" onClick={logOut}>
-          Log out
-        </button>
-      )}
       {!isUserLogIn && (
-        <button type="button" onClick={openLogInModal}>
+        <BackgroundLogInButton type="button" onClick={openLogInModal}>
           Log in
-        </button>
+        </BackgroundLogInButton>
       )}
       {(logInModal || signUpModal || socialLogInModal) && (
         <div>

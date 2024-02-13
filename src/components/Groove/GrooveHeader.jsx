@@ -5,7 +5,9 @@ import {
   GrooveHeaderIconWrap,
   GrooveHeaderIconHome,
   GrooveHeaderIconWrite,
-  GrooveHeaderIconMy
+  GrooveHeaderIconMy,
+  GrooveHeaderIconSelection,
+  GrooveHeaderIcons
 } from "../../style/GrooveHeaderStyle";
 
 import GrooveAuth from "./GrooveAuth";
@@ -86,22 +88,19 @@ function GrooveHeader({
       <GrooveHeaderWrap>
         <GrooveHeaderLogo onClick={goHome}>Groove</GrooveHeaderLogo>
         <GrooveHeaderIconWrap>
-          {/* <GrooveAuth currentUser={currentUser} /> */}
           {currentUser ? (
-            <div>
+            <GrooveHeaderIcons>
               <div>{nickname}님 환영합니다!</div>
-              <div>
-                <GrooveHeaderIconHome onClick={goHome}>
-                  <i className="fa-solid fa-house" />
-                </GrooveHeaderIconHome>
-                <GrooveHeaderIconWrite onClick={goWrite}>
-                  <i className="fa-solid fa-pen" />
-                </GrooveHeaderIconWrite>
-                <GrooveHeaderIconMy onClick={() => myIconClick()}>
-                  <i className="fa-solid fa-user" />
-                </GrooveHeaderIconMy>
-              </div>
-            </div>
+              <GrooveHeaderIconHome onClick={goHome}>
+                <i className="fa-solid fa-house" />
+              </GrooveHeaderIconHome>
+              <GrooveHeaderIconWrite onClick={goWrite}>
+                <i className="fa-solid fa-pen" />
+              </GrooveHeaderIconWrite>
+              <GrooveHeaderIconMy onClick={() => myIconClick()}>
+                <i className="fa-solid fa-user" />
+              </GrooveHeaderIconMy>
+            </GrooveHeaderIcons>
           ) : (
             <GrooveAuth
               nickname={nickname}
@@ -116,12 +115,14 @@ function GrooveHeader({
 
           {isMyIconClicked && (
             <div>
-              <button type="button" onClick={logOut}>
-                Logout
-              </button>
-              <button type="button" onClick={goMyPage}>
-                My page
-              </button>
+              <GrooveHeaderIconSelection>
+                <button type="button" onClick={logOut}>
+                  Logout
+                </button>
+                <button type="button" onClick={goMyPage}>
+                  My page
+                </button>
+              </GrooveHeaderIconSelection>
             </div>
           )}
         </GrooveHeaderIconWrap>

@@ -190,7 +190,7 @@ const DetailPage = ({ currentUser }) => {
 
   return (
     <>
-      <GrooveHeader />
+      <GrooveHeader currentUser={currentUser} />
       <div>DetailPage</div>
       {isEditing ? (
         <>

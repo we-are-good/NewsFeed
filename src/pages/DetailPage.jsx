@@ -9,7 +9,16 @@ import { getDownloadURL, ref, uploadBytes } from "@firebase/storage";
 
 import GrooveHeader from "../components/Groove/GrooveHeader";
 
-function DetailPage() {
+function DetailPage({
+  currentUser,
+  isUserLogIn,
+  setIsUserLogIn,
+  isMyIconClicked,
+  setIsMyIconClicked,
+  setTotalUsersInformation,
+  logInModal,
+  setLogInModal
+}) {
   const navigate = useNavigate();
   const params = useParams();
   const location = useLocation();
@@ -183,7 +192,16 @@ function DetailPage() {
 
   return (
     <>
-      <GrooveHeader />
+      <GrooveHeader
+        currentUser={currentUser}
+        isUserLogIn={isUserLogIn}
+        setIsUserLogIn={setIsUserLogIn}
+        isMyIconClicked={isMyIconClicked}
+        setIsMyIconClicked={setIsMyIconClicked}
+        setTotalUsersInformation={setTotalUsersInformation}
+        logInModal={logInModal}
+        setLogInModal={setLogInModal}
+      />
       <div>DetailPage</div>
       {isEditing ? (
         <>

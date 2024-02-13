@@ -141,7 +141,6 @@ function MyPage() {
         ) : (
           <StyledMessage>
             <p>로그인이 필요합니다.</p>
-            <Link to="/login">로그인하러 가기</Link>
           </StyledMessage>
         )}
       </StDiv>

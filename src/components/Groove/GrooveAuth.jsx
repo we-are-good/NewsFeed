@@ -4,6 +4,7 @@ import {
   OverlayForm,
   LogInForm,
   LogSigninButton,
+  TopText,
   IDPWBox,
   LogInButtonsBox,
   LogInSmallButton,
@@ -243,6 +244,10 @@ function GrooveAuth({
                   Sign up
                 </LogSigninButton>
               </div>
+              <TopText>
+                <h3>Welcome back!</h3>
+                <h4>Please sign in to your account</h4>
+              </TopText>
               <IDPWBox>
                 <input placeholder="E-mail" type="text" name="email" value={email} onChange={onEmailChange} />
               </IDPWBox>

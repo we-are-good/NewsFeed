@@ -6,8 +6,18 @@ import GrooveHeader from "../components/Groove/GrooveHeader";
 import GrooveFooter from "../components/Groove/GrooveFooter";
 import styled from "styled-components";
 
-function MyPage() {
-  const [currentUser, setCurrentUser] = useState(null);
+function MyPage({
+  currentUser,
+  setCurrentUser,
+  isUserLogIn,
+  setIsUserLogIn,
+  isMyIconClicked,
+  setIsMyIconClicked,
+  setTotalUsersInformation,
+  logInModal,
+  setLogInModal
+}) {
+  // const [currentUser, setCurrentUser] = useState(null);
   const [userNickname, setUserNickname] = useState("");
   const [userEmail, setUserEmail] = useState("");
   const [userUid, setUserUid] = useState("");
@@ -94,7 +104,17 @@ function MyPage() {
 
   return (
     <div>
-      <GrooveHeader currentUser={currentUser} />
+      <GrooveHeader
+        currentUser={currentUser}
+        isUserLogIn={isUserLogIn}
+        setIsUserLogIn={setIsUserLogIn}
+        isMyIconClicked={isMyIconClicked}
+        setIsMyIconClicked={setIsMyIconClicked}
+        setTotalUsersInformation={setTotalUsersInformation}
+        logInModal={logInModal}
+        setLogInModal={setLogInModal}
+      />
+
       <StDiv>
         {currentUser ? (
           <StDiv>

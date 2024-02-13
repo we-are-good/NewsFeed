@@ -11,6 +11,7 @@ export const GrooveHeaderWrap = styled.header`
 export const GrooveHeaderLogo = styled.h1`
   font-size: 2rem;
   font-weight: 600;
+  cursor: pointer;
 `;
 export const GrooveHeaderIconWrap = styled.div`
   display: flex;

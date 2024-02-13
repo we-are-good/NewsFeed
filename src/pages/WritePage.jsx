@@ -3,7 +3,10 @@ import React, { useEffect, useRef, useState } from "react";
 import { auth, db, storage } from "../firebase";
 import { useNavigate } from "react-router-dom";
 import GrooveHeader from "../components/Groove/GrooveHeader";
+
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+
+
 
 function WritePage() {
   const focusRef = useRef();

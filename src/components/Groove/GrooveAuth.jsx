@@ -9,7 +9,7 @@ import {
   LogInSmallButton,
   PromptLogIn,
   GoogleGitLogIn,
-  SocialLogInNickname
+  SocialLogInNickname 
 } from "../../style/GrooveAuthStyle";
 
 import {

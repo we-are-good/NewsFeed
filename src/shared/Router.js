@@ -8,6 +8,11 @@ import { useEffect, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 
 const Router = () => {
+  const [isUserLogIn, setIsUserLogIn] = useState(false);
+  const [isMyIconClicked, setIsMyIconClicked] = useState(false);
+  const [totalUsersInformation, setTotalUsersInformation] = useState([]);
+  const [logInModal, setLogInModal] = useState(false);
+
   const auth = getAuth();
   const [currentUser, setCurrentUser] = useState(auth.currentUser);
   console.log("currentUser------>>>>>", currentUser);
@@ -23,13 +28,67 @@ const Router = () => {
       }
     });
   }, [currentUser]);
+
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Home currentUser={currentUser} />} />
-        <Route path="/write" element={<WritePage currentUser={currentUser} />} />
-        <Route path="/detail/:id" element={<DetailPage currentUser={currentUser} />} />
-        <Route path="/mypage" element={<MyPage currentUser={(currentUser, setCurrentUser)} />} />
+        <Route
+          path="/"
+          element={
+            <Home
+              currentUser={currentUser}
+              isUserLogIn={isUserLogIn}
+              setIsUserLogIn={setIsUserLogIn}
+              isMyIconClicked={isMyIconClicked}
+              setIsMyIconClicked={setIsMyIconClicked}
+              setTotalUsersInformation={setTotalUsersInformation}
+              logInModal={logInModal}
+              setLogInModal={setLogInModal}
+            />
+          }
+        />
+        <Route
+          path="/write"
+          element={
+            <WritePage
+              currentUser={currentUser}
+              setIsUserLogIn={setIsUserLogIn}
+              isMyIconClicked={isMyIconClicked}
+              setIsMyIconClicked={setIsMyIconClicked}
+              setTotalUsersInformation={setTotalUsersInformation}
+              logInModal={logInModal}
+              setLogInModal={setLogInModal}
+            />
+          }
+        />
+        <Route
+          path="/detail/:id"
+          element={
+            <DetailPage
+              currentUser={currentUser}
+              setIsUserLogIn={setIsUserLogIn}
+              isMyIconClicked={isMyIconClicked}
+              setIsMyIconClicked={setIsMyIconClicked}
+              setTotalUsersInformation={setTotalUsersInformation}
+              logInModal={logInModal}
+              setLogInModal={setLogInModal}
+            />
+          }
+        />
+        <Route
+          path="/mypage"
+          element={
+            <MyPage
+              currentUser={(currentUser, setCurrentUser)}
+              setIsUserLogIn={setIsUserLogIn}
+              isMyIconClicked={isMyIconClicked}
+              setIsMyIconClicked={setIsMyIconClicked}
+              setTotalUsersInformation={setTotalUsersInformation}
+              logInModal={logInModal}
+              setLogInModal={setLogInModal}
+            />
+          }
+        />
       </Routes>
     </BrowserRouter>
   );

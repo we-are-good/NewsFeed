@@ -6,7 +6,6 @@ import GrooveLikeBtn from "../components/Groove/GrooveTotalFeed/GrooveLikeBtn";
 import GrooveAuth from "../components/Groove/GrooveAuth";
 
 import { getDownloadURL, ref, uploadBytes } from "@firebase/storage";
-
 import GrooveHeader from "../components/Groove/GrooveHeader";
 
 function DetailPage({ currentUser }) {

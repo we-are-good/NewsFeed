@@ -12,24 +12,15 @@ import {
   SocialLogInNickname
 } from "../../style/GrooveAuthStyle";
 
-import {
-  createUserWithEmailAndPassword,
-  fetchSignInMethodsForEmail,
-  onAuthStateChanged,
-  signInWithEmailAndPassword,
-  signOut
-} from "firebase/auth";
+import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
 import { collection, getDocs, query, addDoc } from "firebase/firestore";
 import { GoogleAuthProvider, signInWithPopup, GithubAuthProvider } from "firebase/auth";
 import { auth, db } from "../../firebase";
-import { getAuth } from "firebase/auth";
+import { signOut } from "firebase/auth";
 
-function GrooveAuth({ currentUser }) {
-  const [logInModal, setLogInModal] = useState(false);
+function GrooveAuth({ currentUser, isUserLogIn, setIsUserLogIn, setLogInModal, logInModal, setTotalUsersInformation }) {
   const [signUpModal, setSignUpModal] = useState(false);
   const [socialLogInModal, setSocialLogInModal] = useState(false);
-  const [totalUsersInformation, setTotalUsersInformation] = useState([]);
-  const [isUserLogIn, setIsUserLogIn] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [nickname, setNickname] = useState("");
@@ -82,6 +73,9 @@ function GrooveAuth({ currentUser }) {
     } catch (error) {
       const errorCode = error.code;
       const errorMessage = error.message;
+      console.log("errorCode", errorCode);
+      console.log("errorMessage", errorMessage);
+
       alert("오류가 발생했습니다.");
     } finally {
       setEmail("");
@@ -129,7 +123,6 @@ function GrooveAuth({ currentUser }) {
   };
 
   const user = currentUser;
-  console.log("currentUser", currentUser);
   useEffect(() => {
     const fetchData = async (userEmail) => {
       const q = query(collection(db, "logInData"));
@@ -140,7 +133,6 @@ function GrooveAuth({ currentUser }) {
         nickname: doc.data().nickname
       }));
       setTotalUsersInformation(totalUsersInformation);
-      console.log(totalUsersInformation);
       const nowLogIn = await totalUsersInformation.find((information) => information.email === userEmail);
       if (!nowLogIn) {
         return;

@@ -30,7 +30,7 @@ const GrooveFeedList = () => {
           id: doc.id, // 실제 firebase에서 "문서추가"부분
           ...doc.data()
         };
-        console.log("data", data);
+        // console.log("data", data);
         initialGrooveTop.push(data);
       });
 

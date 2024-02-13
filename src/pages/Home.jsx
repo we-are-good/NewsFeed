@@ -4,10 +4,10 @@ import GrooveHeader from "../components/Groove/GrooveHeader";
 import GrooveFooter from "../components/Groove/GrooveFooter";
 import styled from "styled-components";
 
-function Home({ user }) {
+function Home({ currentUser }) {
   return (
     <Wrapper>
-      <GrooveHeader user={user} />
+      <GrooveHeader currentUser={currentUser} />
       <GrooveFeedList />
       <GrooveFooter />
     </Wrapper>

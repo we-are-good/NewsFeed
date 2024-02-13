@@ -24,7 +24,7 @@ import { GoogleAuthProvider, signInWithPopup, GithubAuthProvider } from "firebas
 import { auth, db } from "../../firebase";
 import { getAuth } from "firebase/auth";
 
-function GrooveAuth() {
+function GrooveAuth({ currentUser }) {
   const [logInModal, setLogInModal] = useState(false);
   const [signUpModal, setSignUpModal] = useState(false);
   const [socialLogInModal, setSocialLogInModal] = useState(false);
@@ -128,8 +128,8 @@ function GrooveAuth() {
     }
   };
 
-  const auth = getAuth();
-  const user = auth.currentUser;
+  const user = currentUser;
+  console.log("currentUser", currentUser);
   useEffect(() => {
     const fetchData = async (userEmail) => {
       const q = query(collection(db, "logInData"));
@@ -210,11 +210,11 @@ function GrooveAuth() {
 
   return (
     <div>
-      {/* {isUserLogIn && (
+      {isUserLogIn && (
         <button type="button" onClick={logOut}>
           Log out
         </button>
-      )} */}
+      )}
       {!isUserLogIn && (
         <button type="button" onClick={openLogInModal}>
           Log in

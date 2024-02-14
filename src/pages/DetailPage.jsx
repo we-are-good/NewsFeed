@@ -12,8 +12,8 @@ import {
 import { FileBox, Input, TextArea } from "../style/GrooveWriteStyle";
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { auth, db, storage } from "../firebase";
-import { doc, updateDoc, deleteDoc, getDoc } from "firebase/firestore";
+import { app, auth, db, storage } from "../firebase";
+import { doc, updateDoc, deleteDoc, getDoc, getFirestore, collection, getDocs } from "firebase/firestore";
 import GrooveLikeBtn from "../components/Groove/GrooveTotalFeed/GrooveLikeBtn";
 import GrooveAuth from "../components/Groove/GrooveAuth";
 import { getDownloadURL, ref, uploadBytes } from "@firebase/storage";
@@ -41,7 +41,7 @@ function DetailPage({
   const [originalTitle, setOriginalTitle] = useState("");
   const [originalBody, setOriginalBody] = useState("");
   const [user, setUser] = useState(null);
-  console.log("user", user);
+
   const detailGroove = location.state.find((item) => item.id === params.id);
 
   const [isLiked, setIsLiked] = useState(false); // 좋아요 상태를 각 사용자 별로 따로 관리
@@ -50,8 +50,31 @@ function DetailPage({
   const [clickDisabled, setClickDisabled] = useState(false);
   const [newImage, setNewImage] = useState(null);
   const [imageURL, setImageURL] = useState(detailGroove.imageUrl);
+  const [loginData, setLoginData] = useState([]);
+  useEffect(() => {
+    const fetchLoginData = async () => {
+      try {
+        const db = getFirestore(app);
+        const loginDataCollection = collection(db, "logInData");
+        const snapshot = await getDocs(loginDataCollection);
+        const loginDataArray = [];
 
-  const [isLoggedIn, setIsLoggedIn] = useState(currentUser);
+        snapshot.forEach((doc) => {
+          const data = doc.data();
+          loginDataArray.push({
+            id: doc.id,
+            email: data.email,
+            nickname: data.nickname
+          });
+        });
+        setLoginData(loginDataArray);
+      } catch (error) {
+        console.error("Error fetching loginData:", error);
+      }
+    };
+    fetchLoginData();
+  }, []);
+
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       setUser(user); // 현재 사용자 업데이트
@@ -214,6 +237,7 @@ function DetailPage({
     // 이미지 업로드 전에 setImageURL 호출
     setImageURL(newImageURL);
   };
+  const userLoginData = loginData.find((loginItem) => loginItem.email === detailGroove.email);
 
   return (
     <>
@@ -282,7 +306,10 @@ function DetailPage({
           {/* 좋아요 버튼 컴포넌트를 렌더링하고, 필요한 props를 전달합니다. */}
           {user ? (
             // 로그인 상태일 때만 좋아요 버튼을 활성화
+
             <LikeWrap>
+              {/* {userLoginData.nickname}으로 하려했으나 실패 */}
+              {userLoginData?.nickname}
               <p>좋아요: {Object.keys(likes).length}개</p>
               <GrooveLikeBtn isLiked={isLiked} onLikeClick={toggleLike} grooveId={detailGroove?.id} />
             </LikeWrap>
@@ -290,6 +317,8 @@ function DetailPage({
             // 로그인 상태가 아닐 때 로그인을 유도하는 메시지 또는 경고창 표시
             <>
               <NoneLoggedLike>
+                {/* {userLoginData.nickname}으로 하려했으나 실패 */}
+                {userLoginData?.nickname}
                 <p>좋아요: {Object.keys(likes).length}개</p>
                 <p>로그인 후에 좋아요를 누르실 수 있습니다.</p>
               </NoneLoggedLike>

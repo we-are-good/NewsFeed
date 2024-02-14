@@ -66,6 +66,7 @@ export const GrooveHeaderIconSelection = styled.div`
   flex-direction: column;
   align-content: center;
   gap: 0.5rem;
+  z-index: 1; 
   & > button {
     background-color: #333;
     height: 1.5rem;

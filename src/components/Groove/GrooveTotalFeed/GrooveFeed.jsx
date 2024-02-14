@@ -5,15 +5,7 @@ import { getFirestore, collection, getDocs } from "firebase/firestore";
 import { app } from "../../../firebase";
 import defaultImage from "../../../assets/defaultImage.jpg";
 
-const GrooveFeed = ({ GrooveTop, currentUser }) => {
-  console.log(GrooveTop);
-
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  useEffect(() => {
-    setIsLoggedIn(!!currentUser); // currentUser가 있으면 true, 없으면 false로 설정
-  }, [currentUser]);
-
+const GrooveFeed = ({ GrooveTop }) => {
   const [loginData, setLoginData] = useState([]);
   useEffect(() => {
     const fetchLoginData = async () => {
@@ -31,15 +23,11 @@ const GrooveFeed = ({ GrooveTop, currentUser }) => {
             nickname: data.nickname
           });
         });
-
-        console.log("Fetched loginData:", loginDataArray);
-
         setLoginData(loginDataArray);
       } catch (error) {
         console.error("Error fetching loginData:", error);
       }
     };
-
     fetchLoginData();
   }, []);
 
@@ -50,12 +38,7 @@ const GrooveFeed = ({ GrooveTop, currentUser }) => {
           const timestampSeconds = item.Timestamp.seconds;
           const date = new Date(timestampSeconds * 1000);
           const formattedTime = format(date, "yyyy-MM-dd HH:mm:ss");
-
-          // userLoginData를 find로 찾음
           const userLoginData = loginData.find((loginItem) => loginItem.email === item.email);
-          console.log("loginData", loginData);
-          console.log("userLoginData", userLoginData);
-
           return (
             <StyledLink
               key={item.id}

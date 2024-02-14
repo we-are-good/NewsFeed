@@ -16,12 +16,11 @@ const Router = () => {
 
   const auth = getAuth();
   const [currentUser, setCurrentUser] = useState(auth.currentUser);
-  console.log("currentUser------>>>>>", currentUser);
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
         const uid = user.uid;
-        console.log(user);
+        console.log("user", user);
         setCurrentUser(user);
       } else {
         console.log("유저없음");

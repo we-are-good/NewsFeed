@@ -5,7 +5,6 @@ import { auth, db } from "../../../firebase";
 
 const GrooveFeedList = () => {
   const [GrooveTop, setGrooveTop] = useState([]);
-
   // useEffect 안에서 async/await를 만드려면 새로운 함수를 만들어야함
   useEffect(() => {
     const fetchData = async () => {

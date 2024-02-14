@@ -20,35 +20,39 @@ function MyPage({
   nickname,
   setNickname
 }) {
-  const [profileImageUrl, setProfileImageUrl] = useState("");
+  // const [currentUser, setCurrentUser] = useState(null);
+  // const [userNickname, setUserNickname] = useState("");
+  const [userEmail, setUserEmail] = useState("");
+  const [userUid, setUserUid] = useState("");
+  const [userDocId, setUserDocId] = useState(""); // 사용자 문서의 ID 추가
   const [userPosts, setUserPosts] = useState([]);
   const [newNickname, setNewNickname] = useState("");
   const [editingNickname, setEditingNickname] = useState(false);
 
   useEffect(() => {
-    const fetchUserProfileImageUrl = async (email) => {
-      try {
-        const q = query(collection(db, "logInData"), where("email", "==", email));
-        const querySnapshot = await getDocs(q);
-        querySnapshot.forEach((doc) => {
-          const userData = doc.data();
-          const profileImageUrl = userData.profileImage;
-          setProfileImageUrl(profileImageUrl);
-        });
-      } catch (error) {
-        console.error("Error fetching user profile image:", error);
+    const unsubscribe = auth.onAuthStateChanged(async (user) => {
+      if (user) {
+        setCurrentUser(user);
+        setUserEmail(user.email);
+        setUserUid(user.uid);
+        fetchData(user.email);
+        fetchUserPosts(user.uid);
+      } else {
+        setCurrentUser(null);
+        setNickname("");
+        setUserEmail("");
+        setUserUid("");
+        setUserDocId("");
+        setUserPosts([]);
       }
+    });
+
+    return () => {
+      unsubscribe();
     };
+  }, []);
 
-    if (currentUser) {
-      const userEmail = currentUser.email;
-      setIsUserLogIn(true);
-      setLogInModal(false);
-      fetchData(userEmail);
-      fetchUserProfileImageUrl(userEmail);
-    }
-  }, [currentUser]);
-
+  const db = getFirestore();
   const fetchData = async (email) => {
     try {
       const q = query(collection(db, "logInData"), where("email", "==", email));
@@ -57,6 +61,7 @@ function MyPage({
         const userData = doc.data();
         const nickname = userData.nickname;
         setNickname(nickname);
+        setUserDocId(doc.id); // 사용자 문서의 ID 저장
       });
     } catch (error) {
       console.error("Error fetching user info:", error);
@@ -93,10 +98,10 @@ function MyPage({
     }
 
     const confirmUpdate = window.confirm("정말 변경 하시겠습니까?");
-    if (!confirmUpdate) return;
+    if (!confirmUpdate) return; // 사용자가 취소를 누른 경우 함수 종료
 
     try {
-      const userDocRef = doc(db, "logInData", currentUser.uid);
+      const userDocRef = doc(db, "logInData", userDocId); // 사용자 문서의 ID 사용
       await updateDoc(userDocRef, {
         nickname: newNickname.trim()
       });
@@ -126,56 +131,56 @@ function MyPage({
       <StDiv>
         {currentUser ? (
           <StDiv>
-            <StUserContainer>
-              {profileImageUrl && <StProfileImage src={profileImageUrl} alt="Profile" />}
-
-              <StInfo>사용자 정보:</StInfo>
-              {editingNickname ? (
-                <div>
-                  <p>
-                    닉네임:
-                    <StInput type="text" value={newNickname} onChange={(e) => setNewNickname(e.target.value)} />
-                    <button onClick={handleNicknameChange}>변경</button>
-                    <button onClick={() => setEditingNickname(false)}>취소</button>
-                  </p>
-                </div>
+            <StDiv>
+              <StUserContainer>
+                <StInfo>사용자 정보:</StInfo>
+                {editingNickname ? (
+                  <div>
+                    <p>
+                      닉네임:
+                      <StInput type="text" value={newNickname} onChange={(e) => setNewNickname(e.target.value)} />
+                      <button onClick={handleNicknameChange}>변경</button>
+                      <button onClick={() => setEditingNickname(false)}>취소</button>
+                    </p>
+                  </div>
+                ) : (
+                  <StNickname>
+                    닉네임: {nickname} <StEditbtn onClick={() => setEditingNickname(true)}>변경</StEditbtn>
+                  </StNickname>
+                )}
+                <p>이메일 주소: {userEmail}</p>
+              </StUserContainer>
+              <p>작성한 글 목록:</p>
+              {userPosts.length > 0 ? (
+                <StUl>
+                  {userPosts.map((post, index) => (
+                    <li key={index}>
+                      <StPostLink
+                        to={{
+                          pathname: `/detail/${post.id}`
+                        }}
+                        state={userPosts}
+                        setUserPosts={setUserPosts}
+                      >
+                        <StPostContainer>
+                          <div>
+                            <StTitle>{post.title}</StTitle>
+                            <StContent>{post.body}</StContent>
+                            <p>{post.formattedTime}</p> {/* 작성 시간 렌더링 */}
+                            <i className="fa-solid fa-heart" /> {Object.keys(post.likes || {}).length}개
+                          </div>
+                          <StImageWrapper> {/* 이미지를 감싸는 div */}
+                            <StImage src={post.imageUrl} alt="업로드된 이미지" />
+                          </StImageWrapper>
+                        </StPostContainer>
+                      </StPostLink>
+                    </li>
+                  ))}
+                </StUl>
               ) : (
-                <StNickname>
-                  닉네임: {nickname} <StEditbtn onClick={() => setEditingNickname(true)}>변경</StEditbtn>
-                </StNickname>
+                <p>작성한 글이 없습니다.</p>
               )}
-              <p>이메일 주소: {currentUser.email}</p>
-            </StUserContainer>
-            <p>작성한 글 목록:</p>
-            {userPosts.length > 0 ? (
-              <StUl>
-                {userPosts.map((post, index) => (
-                  <li key={index}>
-                    <StPostLink
-                      to={{
-                        pathname: `/detail/${post.id}`
-                      }}
-                      state={userPosts}
-                      setUserPosts={setUserPosts}
-                    >
-                      <StPostContainer>
-                        <div>
-                          <StTitle>{post.title}</StTitle>
-                          <StContent>{post.body}</StContent>
-                          <p>{post.formattedTime}</p>
-                          <i className="fa-solid fa-heart" /> {Object.keys(post.likes || {}).length}개
-                        </div>
-                        <StImageWrapper>
-                          <StImage src={post.imageUrl} alt="Uploaded" />
-                        </StImageWrapper>
-                      </StPostContainer>
-                    </StPostLink>
-                  </li>
-                ))}
-              </StUl>
-            ) : (
-              <p>작성한 글이 없습니다.</p>
-            )}
+            </StDiv>
           </StDiv>
         ) : (
           <StyledMessage>
@@ -183,7 +188,7 @@ function MyPage({
           </StyledMessage>
         )}
       </StDiv>
-      <GrooveFooter />
+      <StGrooveFooter />
     </div>
   );
 }
@@ -215,7 +220,7 @@ const StInfo = styled.p`
 
 const StNickname = styled.p`
   justify-content: space-between;
-  display: flex;
+  display: flex; 
   align-items: center;
 `;
 
@@ -252,9 +257,9 @@ const StPostLink = styled(Link)`
   align-items: center;
   text-decoration: none;
   color: #ffff;
-  border-bottom: 2px solid #ffc41d;
-  padding-bottom: 10px;
-  margin-bottom: 20px;
+  border-bottom: 2px solid #ffc41d; /* 밑쪽 보더에 색상 추가 */
+  padding-bottom: 10px; /* 밑쪽 패딩 추가 */
+  margin-bottom: 20px; /* 글 사이의 간격 조정 */
 `;
 
 const StImage = styled.img`
@@ -271,12 +276,12 @@ const StTitle = styled.p`
 `;
 
 const StImageWrapper = styled.div`
-  justify-self: end;
+  justify-self: end; /* 그리드 아이템을 그리드 셀의 끝으로 정렬 */
 `;
 
 const StPostContainer = styled.div`
   display: grid;
-  grid-template-columns: 1fr auto;
+  grid-template-columns: 1fr auto; /* 첫 번째 컬럼은 비율에 따라 채우고, 두 번째 컬럼은 자식 요소의 크기에 따라 자동으로 조정 */
   align-items: center;
 `;
 
@@ -284,10 +289,8 @@ const StContent = styled.p`
   font-size: 16px;
 `;
 
-const StProfileImage = styled.img`
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
+const StGrooveFooter = styled(GrooveFooter)`
+  margin-top: auto; /* 화면 아래쪽으로 이동 */
 `;
 
 export default MyPage;

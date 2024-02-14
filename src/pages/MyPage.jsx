@@ -162,7 +162,6 @@ function MyPage({
                           pathname: `/detail/${post.id}`
                         }}
                         state={userPosts}
-                        setUserPosts={setUserPosts}
                       >
                         <StPostContainer>
                           <div>

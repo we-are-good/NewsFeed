@@ -1,5 +1,6 @@
 import {
   EditingTitle,
+  DetailFileBox,
   Wrap,
   Title,
   Body,
@@ -10,7 +11,6 @@ import {
   NoneLoggedLike
 } from "../style/GrooveDetailStyle";
 import styled from "styled-components";
-import { FileBox, Input, TextArea } from "../style/GrooveWriteStyle";
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { app, auth, db, storage } from "../firebase";
@@ -258,28 +258,23 @@ function DetailPage({
       {isEditing ? (
         <EditingWrap>
           {imageURL ? (
-            <img style={{ width: "400px", marginBottom: "12px" }} src={imageURL} alt="이미지 미리보기"></img>
+            <img src={imageURL} alt="이미지 미리보기"></img>
           ) : (
-            <img style={{ width: "400px", marginBottom: "12px" }} src={defaultImage} alt="기본 이미지"></img>
+            <img src={defaultImage} alt="기본 이미지"></img>
           )}
-          <FileBox>
+          <DetailFileBox>
             <label for="ex_file">이미지 업로드</label>
-            <Input type="file" id="ex_file" onChange={handleFileSelect} />
-          </FileBox>
+            <inpu type="file" id="ex_file" onChange={handleFileSelect} />
+          </DetailFileBox>
 
           <EditingTitle>
             제목:{" "}
-            <TextArea
-              type="text"
-              maxLength={"100"}
-              value={editedTitle}
-              onChange={(e) => setEditedTitle(e.target.value)}
-            />
+            <input type="text" maxLength={"100"} value={editedTitle} onChange={(e) => setEditedTitle(e.target.value)} />
           </EditingTitle>
 
           <EditingBody>
             내용:
-            <TextArea
+            <textarea
               type="text"
               maxLength={"100"}
               value={editedBody}
@@ -310,8 +305,8 @@ function DetailPage({
 
             <LikeWrap>
               {/* {userLoginData.nickname}으로 하려했으나 실패 */}
-              {userLoginData?.nickname}
-              <p>좋아요: {Object.keys(likes).length}개</p>
+              <span>{userLoginData?.nickname}</span>
+              <p>좋아요 : {Object.keys(likes).length}개</p>
               <GrooveLikeBtn isLiked={isLiked} onLikeClick={toggleLike} grooveId={detailGroove?.id} />
             </LikeWrap>
           ) : (

@@ -3,8 +3,11 @@ import styled from "styled-components";
 export const EditingWrap = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
+  /* align-items: center; */
+  & > img {
+  }
 `;
+export const DetailFileBox = styled.div``;
 export const EditingTitle = styled.h1`
   margin-top: 12px;
   font-size: 1.5rem;
@@ -28,7 +31,7 @@ export const Wrap = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
-  margin: 2rem;
+  padding: 2rem;
 `;
 export const Title = styled.div`
   font-size: 1.5rem;

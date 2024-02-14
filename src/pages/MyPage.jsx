@@ -55,7 +55,7 @@ function MyPage({
   }, []);
 
   const db = getFirestore();
-  const storageRef = ref(storage, 'avatars');
+  const storageRef = ref(storage, "avatars");
 
   const fetchData = async (email) => {
     try {
@@ -307,6 +307,7 @@ const StUl = styled.ul`
 const StInput = styled.input`
   border-color: #ffc41d;
   background-color: transparent;
+  color: #ffff;
 `;
 
 const StEditbtn = styled.button`

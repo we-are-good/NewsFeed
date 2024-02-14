@@ -22,15 +22,16 @@ function Home({
   return (
     <Wrapper>
       <GrooveHeader
+        nickname={nickname}
+        setNickname={setNickname}
         currentUser={currentUser}
+        isUserLogIn={isUserLogIn}
         setIsUserLogIn={setIsUserLogIn}
-        setIsMyIconClicked={setIsMyIconClicked}
         isMyIconClicked={isMyIconClicked}
+        setIsMyIconClicked={setIsMyIconClicked}
         setTotalUsersInformation={setTotalUsersInformation}
         logInModal={logInModal}
         setLogInModal={setLogInModal}
-        nickname={nickname}
-        setNickname={setNickname}
         nicknameModal={nicknameModal}
         setNicknameModal={setNicknameModal}
         onNicknameChange={onNicknameChange}

@@ -21,12 +21,14 @@ import { auth, db } from "../../firebase";
 import { signOut } from "firebase/auth";
 
 function GrooveAuth({
-  currentUser,
   isUserLogIn,
+  currentUser,
+  isMyIconClicked,
+  setIsMyIconClicked,
   setIsUserLogIn,
-  setLogInModal,
-  logInModal,
   setTotalUsersInformation,
+  logInModal,
+  setLogInModal,
   nickname,
   setNickname,
   nicknameModal,
@@ -154,24 +156,9 @@ function GrooveAuth({
     try {
       const provider = await new GoogleAuthProvider();
       const result = await signInWithPopup(auth, provider);
-      const user = result.user;
-      const newUser = {
-        email: user.email,
-<<<<<<< HEAD
-        nickname: user.displayName,
-        profileImage:
-          user.photoURL ||
-          "https://firebasestorage.googleapis.com/v0/b/groove-a1c3e.appspot.com/o/undefined%2Fchicken.png?alt=media&token=7b5470ae-2d55-4ef0-a018-ac5af31d2ab2"
-=======
-        nickname: user.displayName, 
-        profileImage: user.photoURL || "https://firebasestorage.googleapis.com/v0/b/groove-a1c3e.appspot.com/o/avatars%2F6jGLxl6CBvcl4vO5vtUvbLO2FN23_chicken.png?alt=media&token=3228961e-73b4-47e3-b371-ba9e3bf7207f"
->>>>>>> d0cbef559c3b415bcd251772bdab3a36afa98150
-      };
       setIsUserLogIn(true);
       setSignUpModal(false);
       setNicknameModal(true);
-      const collectionRef = collection(db, "logInData");
-      await addDoc(collectionRef, newUser);
     } catch (error) {
       const errorCode = error.code;
       const errorMessage = error.message;
@@ -206,13 +193,13 @@ function GrooveAuth({
           <i className="fa-solid fa-arrow-right-to-bracket" />
         </BackgroundLogInButton>
       )}
-      {(logInModal || signUpModal || nicknameModal) && (
+      {(logInModal || signUpModal) && (
         <div>
           <OverlayForm onClick={closeLogInSignUpModal} />
         </div>
       )}
       <div>
-        {logInModal && !signUpModal && !nicknameModal && (
+        {logInModal && !signUpModal && (
           <div>
             <LogInForm>
               <div>

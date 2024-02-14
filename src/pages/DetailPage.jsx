@@ -256,6 +256,9 @@ function DetailPage({
         setTotalUsersInformation={setTotalUsersInformation}
         logInModal={logInModal}
         setLogInModal={setLogInModal}
+        nicknameModal={nicknameModal}
+        setNicknameModal={setNicknameModal}
+        onNicknameChange={onNicknameChange}
       />
       {isEditing ? (
         <EditingWrap>

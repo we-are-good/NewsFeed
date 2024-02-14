@@ -123,46 +123,47 @@ function MyPage({
         {currentUser ? (
           <StDiv>
             <StDiv>
-            <StUserContainer>
-              <p>사용자 정보:</p>
-              {editingNickname ? (
-                <div>
-                  <p>닉네임:
-                  <StInput type="text" value={newNickname} onChange={(e) => setNewNickname(e.target.value)} />
-                  <button onClick={handleNicknameChange}>변경</button>
-                  <button onClick={() => setEditingNickname(false)}>취소</button>
+              <StUserContainer>
+                <p>사용자 정보:</p>
+                {editingNickname ? (
+                  <div>
+                    <p>
+                      닉네임:
+                      <StInput type="text" value={newNickname} onChange={(e) => setNewNickname(e.target.value)} />
+                      <button onClick={handleNicknameChange}>변경</button>
+                      <button onClick={() => setEditingNickname(false)}>취소</button>
+                    </p>
+                  </div>
+                ) : (
+                  <p>
+                    닉네임: {nickname} <StEditbtn onClick={() => setEditingNickname(true)}>변경</StEditbtn>
                   </p>
-                </div>
-              ) : (
-                <p>
-                  닉네임: {nickname} <StEditbtn onClick={() => setEditingNickname(true)}>변경</StEditbtn>
-                </p>
-              )}
-              <p>이메일 주소: {userEmail}</p>
+                )}
+                <p>이메일 주소: {userEmail}</p>
               </StUserContainer>
               <p>작성한 글 목록:</p>
               {userPosts.length > 0 ? (
                 <ul>
-               {userPosts.map((post, index) => (
-                  <li key={index}>
-                    <StPostLink
-                      to={{
-                        pathname: `/detail/${post.id}`
-                      }}
-                      state={userPosts}
-                      setUserPosts={setUserPosts}
-                    >
-                      <StPostContainer>
-                      <StImage src={post.imageUrl} alt="업로드된 이미지" />
-                      <div>
-                        <StTitle>{post.title}</StTitle>
-                        <StContent>{post.body}</StContent>
-                      </div>
-                    </StPostContainer>
-                    </StPostLink>
-                  </li>
-                ))}
-              </ul>
+                  {userPosts.map((post, index) => (
+                    <li key={index}>
+                      <StPostLink
+                        to={{
+                          pathname: `/detail/${post.id}`
+                        }}
+                        state={userPosts}
+                        setUserPosts={setUserPosts}
+                      >
+                        <StPostContainer>
+                          <StImage src={post.imageUrl} alt="업로드된 이미지" />
+                          <div>
+                            <StTitle>{post.title}</StTitle>
+                            <StContent>{post.body}</StContent>
+                          </div>
+                        </StPostContainer>
+                      </StPostLink>
+                    </li>
+                  ))}
+                </ul>
               ) : (
                 <p>작성한 글이 없습니다.</p>
               )}
@@ -214,7 +215,7 @@ const StEditbtn = styled.button`
   border: none;
   color: #ffc41d;
   cursor: pointer;
-  &:hover{  
+  &:hover {
     filter: brightness(70%);
   }
 `;

@@ -55,7 +55,7 @@ function MyPage({
   }, []);
 
   const db = getFirestore();
-  const storageRef = ref(storage, 'avatars');
+  const storageRef = ref(storage, "avatars");
 
   const fetchData = async (email) => {
     try {
@@ -174,28 +174,31 @@ function MyPage({
           <StDiv>
             <StUserContainer>
               <StInfo>사용자 정보:</StInfo>
-              {profileImageUrl && <img src={profileImageUrl} alt="프로필 사진" />}
-              {/* 프로필 이미지 수정 버튼 및 업로드 input */}
-              {!editingNickname && (
-                <div>
-                  <button onClick={() => setEditingProfileImage(true)}>프로필 이미지 수정</button>
-                </div>
-              )}
+              <section>
+                {profileImageUrl && <img src={profileImageUrl} alt="프로필 사진" />}
+                {/* 프로필 이미지 수정 버튼 및 업로드 input */}
+                {!editingNickname && (
+                  <EditProfileImage>
+                    <button onClick={() => setEditingProfileImage(true)}>프로필 이미지 수정</button>
+                  </EditProfileImage>
+                )}
+              </section>
               {editingProfileImage && (
-                <div>
+                <EditProfileImageChange>
                   <input type="file" accept="image/*" onChange={handleAvatarChange} />
                   <button onClick={confirmProfileImageChange}>확인</button>
                   <button onClick={cancelProfileImageChange}>취소</button>
-                </div>
+                </EditProfileImageChange>
               )}
+
               {editingNickname ? (
                 <div>
-                  <p>
-                    닉네임:
+                  <StNicknameEdit>
+                    닉네임 :
                     <StInput type="text" value={newNickname} onChange={(e) => setNewNickname(e.target.value)} />
                     <button onClick={handleNicknameChange}>변경</button>
                     <button onClick={() => setEditingNickname(false)}>취소</button>
-                  </p>
+                  </StNicknameEdit>
                 </div>
               ) : (
                 <StNickname>
@@ -265,15 +268,80 @@ const StDiv = styled.div`
 
 const StUserContainer = styled.div`
   width: 400px;
-  margin: 6vh;
+  margin: 1rem;
   line-height: 1.5;
   & > p {
     border-bottom: 1px solid #ffc41d;
     padding-bottom: 10px;
     margin-bottom: 10px;
   }
-  & > img {
+  & > section {
+    position: relative;
+  }
+  & > section > img {
     max-width: 400px;
+  }
+`;
+const EditProfileImage = styled.div`
+  position: absolute;
+  bottom: 10%;
+  left: 50%;
+  transform: translate(-50%, 0);
+  & > button {
+    font-size: 1rem;
+    border: 1px solid #ffc41d;
+    background-color: #ffc41daa;
+    font-weight: 500;
+    border-radius: 5px;
+    cursor: pointer;
+    &:hover {
+      background-color: #ffc41d;
+      color: #212121;
+    }
+  }
+`;
+const EditProfileImageChange = styled.div`
+  display: flex;
+  margin-bottom: 1rem;
+
+  & > input[type="file"] {
+    margin-right: auto;
+    &::file-selector-button {
+      border-radius: 5px;
+      border: none;
+      padding: 5px 10px;
+      margin-left: 0.5rem;
+      font-size: 0.8rem;
+      cursor: pointer;
+      background-color: #eeeeee66;
+    }
+    &::file-selector-button:hover {
+      background-color: #eeeeeeee;
+    }
+  }
+  & > button {
+    border-radius: 5px;
+    border: none;
+    padding: 5px 10px;
+    margin-left: 0.5rem;
+    font-size: 0.8rem;
+    cursor: pointer;
+  }
+  & > button:nth-of-type(1) {
+    background-color: rgba(65, 105, 225, 0.5);
+    color: #eee;
+  }
+  & > button:nth-of-type(2) {
+    background-color: rgba(255, 99, 71, 0.5);
+    color: #eee;
+  }
+  & > button:hover:nth-of-type(1) {
+    background-color: rgba(65, 105, 225, 1);
+    color: #eee;
+  }
+  & > button:hover:nth-of-type(2) {
+    background-color: rgba(255, 99, 71, 1);
+    color: #eee;
   }
 `;
 
@@ -290,6 +358,34 @@ const StNickname = styled.p`
   display: flex;
   align-items: center;
 `;
+const StNicknameEdit = styled.p`
+  display: flex;
+  margin: 1rem 0;
+  & > button {
+    border-radius: 5px;
+    border: none;
+    padding: 5px 10px;
+    margin-left: 0.5rem;
+    font-size: 0.8rem;
+    cursor: pointer;
+  }
+  & > button:nth-of-type(1) {
+    background-color: rgba(65, 105, 225, 0.5);
+    color: #eee;
+  }
+  & > button:nth-of-type(2) {
+    background-color: rgba(255, 99, 71, 0.5);
+    color: #eee;
+  }
+  & > button:hover:nth-of-type(1) {
+    background-color: rgba(65, 105, 225, 1);
+    color: #eee;
+  }
+  & > button:hover:nth-of-type(2) {
+    background-color: rgba(255, 99, 71, 1);
+    color: #eee;
+  }
+`;
 
 const StyledMessage = styled.div`
   display: flex;
@@ -305,8 +401,12 @@ const StUl = styled.ul`
 `;
 
 const StInput = styled.input`
+  margin-left: 5px;
   border-color: #ffc41d;
   background-color: transparent;
+  border-radius: 5px;
+  margin-right: auto;
+  color: #eee;
 `;
 
 const StEditbtn = styled.button`

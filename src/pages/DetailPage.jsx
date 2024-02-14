@@ -1,13 +1,11 @@
 import {
-  EditingTitle,
-  DetailFileBox,
   Wrap,
   Title,
   Body,
   EditingWrap,
   EditingButtonWrap,
   HomeBtn,
-  EditingBody,
+  DetailEdit,
   LikeWrap,
   NoneLoggedLike
 } from "../style/GrooveDetailStyle";
@@ -268,7 +266,7 @@ function DetailPage({
             <img src={defaultImage} alt="기본 이미지"></img>
           )}
           <FileBox>
-            <label for="ex_file">이미지 업로드</label>
+            <label htmlFor="ex_file">이미지 업로드</label>
             <Input type="file" id="ex_file" onChange={handleFileSelect} />
           </FileBox>
 
@@ -314,27 +312,18 @@ function DetailPage({
             <>
               <NoneLoggedLike>
                 {/* {userLoginData.nickname}으로 하려했으나 실패 */}
-                {userLoginData?.nickname}
+                <span>작성자 : {userLoginData?.nickname}</span>
                 <p>좋아요: {Object.keys(likes).length}개</p>
-                <p>로그인 후에 좋아요를 누르실 수 있습니다.</p>
+                <p>(로그인 후에 좋아요를 누르실 수 있습니다.)</p>
               </NoneLoggedLike>
-              <GrooveAuth
-                nickname={nickname}
-                setNickname={setNickname}
-                currentUser={currentUser}
-                setTotalUsersInformation={setTotalUsersInformation}
-                logInModal={logInModal}
-                setLogInModal={setLogInModal}
-                setIsUserLogIn={setIsUserLogIn}
-              />
             </>
           )}
           {/* 작성자와 로그인한 사용자가 동일한 경우에만 수정, 삭제 버튼 노출 */}
           {user && user.uid === detailGroove.authorId && (
-            <>
+            <DetailEdit>
               <button onClick={handleEdit}>수정하기</button>
               <button onClick={handleDelete}>삭제하기</button>
-            </>
+            </DetailEdit>
           )}
 
           <HomeBtn onClick={() => navigate("/")}>

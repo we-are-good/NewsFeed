@@ -148,7 +148,6 @@ function GrooveAuth({
     };
 
     if (user) {
-      console.log("user", user);
       const userEmail = user.email;
       setIsUserLogIn(true);
       setLogInModal(false);
@@ -195,7 +194,7 @@ function GrooveAuth({
     <div>
       {!isUserLogIn && (
         <BackgroundLogInButton type="button" onClick={openLogInModal}>
-          <i class="fa-solid fa-arrow-right-to-bracket" />
+          <i className="fa-solid fa-arrow-right-to-bracket" />
         </BackgroundLogInButton>
       )}
       {(logInModal || signUpModal || nicknameModal) && (

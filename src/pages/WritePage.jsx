@@ -32,28 +32,6 @@ function WritePage({
   const [GrooveTop, setGrooveTop] = useState([]);
   const [selectedFile, setSelectedFile] = useState(null);
   const [imageUrl, setImageUrl] = useState();
-  console.log("writecurrentuser", currentUser);
-
-  // const [isLoggedIn, setIsLoggedIn] = useState(false);
-  // useEffect(() => {
-  //   if (isLoggedIn) {
-  //     return;
-  //   } else {
-  //     alert("로그인이 필요합니다");
-  //     navigate("/");
-  //   }
-  // }, []);
-
-  // const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(currentUser);
-  useEffect(() => {
-    if (isLoggedIn) {
-      return;
-    } else {
-      alert("로그인이 필요합니다");
-      navigate("/");
-    }
-  }, []);
 
   useEffect(() => {
     focusRef.current.focus();
@@ -142,7 +120,7 @@ function WritePage({
           <div class="btn-upload">파일 업로드하기</div>
         </label> */}
         <FileBox>
-          <label for="ex_file">이미지 업로드</label>
+          <label htmlFor="ex_file">이미지 업로드</label>
           <Input type="file" id="ex_file" onChange={handleFileSelect} />
         </FileBox>
         {/* <input type="file" display="none" name="file" id="file" onChange={handleFileSelect} /> */}

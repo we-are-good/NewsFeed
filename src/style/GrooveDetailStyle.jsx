@@ -147,7 +147,10 @@ export const NoneLoggedLike = styled.div`
 `;
 export const HomeBtn = styled.button`
   position: fixed;
+  right: 3rem;
+  bottom: 3rem;
   width: 2rem;
   height: 2rem;
   border-radius: 50%;
+  border: 0px;
 `;

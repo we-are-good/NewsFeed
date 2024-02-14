@@ -326,7 +326,6 @@ function DetailPage({
               />
             </>
           )}
-          <br />
           {/* 작성자와 로그인한 사용자가 동일한 경우에만 수정, 삭제 버튼 노출 */}
           {user && user.uid === detailGroove.authorId && (
             <>
@@ -335,7 +334,9 @@ function DetailPage({
             </>
           )}
 
-          <HomeBtn onClick={() => navigate("/")}></HomeBtn>
+          <HomeBtn onClick={() => navigate("/")}>
+            <i className="fa-solid fa-house" />
+          </HomeBtn>
         </Wrap>
       )}
       <GrooveFooter />

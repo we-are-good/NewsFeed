@@ -154,10 +154,19 @@ function GrooveAuth({
     try {
       const provider = await new GoogleAuthProvider();
       const result = await signInWithPopup(auth, provider);
-
+      const user = result.user;
+      const newUser = {
+        email: user.email,
+        nickname: user.displayName,
+        profileImage:
+          user.photoURL ||
+          "https://firebasestorage.googleapis.com/v0/b/groove-a1c3e.appspot.com/o/undefined%2Fchicken.png?alt=media&token=7b5470ae-2d55-4ef0-a018-ac5af31d2ab2"
+      };
       setIsUserLogIn(true);
       setSignUpModal(false);
-      setNicknameModal(true); //이름바꾸기 setNicknameModal
+      setSocialLogInModal(true);
+      const collectionRef = collection(db, "logInData");
+      await addDoc(collectionRef, newUser);
     } catch (error) {
       const errorCode = error.code;
       const errorMessage = error.message;

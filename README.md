@@ -1,15 +1,15 @@
-
 ## 1. 프로젝트
 
-- 프로젝트 명 :  Groove
+- 프로젝트 명 : Groove
 - 소개
   - 뉴스피드 만들기
-  - 내용 :  React를 활용하여 뉴스피드 만들기
+  - 내용 : React를 활용하여 뉴스피드 만들기
+  - 사이트 :[ groove-swart.vercel.app](https://groove-swart.vercel.app/)
+
 ## 2. 시연 영상 및 정리
 
- - 시연 영상 녹화본
- - 프로젝트 정리 - https://www.notion.so/10-53efa92ebc714f988441e1336c1a50b7
-
+- 시연 영상 녹화본
+- 프로젝트 정리 - https://www.notion.so/10-53efa92ebc714f988441e1336c1a50b7
 
 ## 3. 필수 구현 기능
 
@@ -67,8 +67,8 @@ src
  ┣ components
  ┃ ┗ Groove
  ┃ ┃ ┣ GrooveTotalFeed
- ┃ ┃ ┃ ┣ GrooveFeed.jsx   
- ┃ ┃ ┃ ┣ GrooveFeedList.jsx 
+ ┃ ┃ ┃ ┣ GrooveFeed.jsx
+ ┃ ┃ ┃ ┣ GrooveFeedList.jsx
  ┃ ┃ ┃ ┗ GrooveLikeBtn.jsx
  ┃ ┃ ┣ GrooveAuth.jsx
  ┃ ┃ ┣ GrooveFooter.jsx

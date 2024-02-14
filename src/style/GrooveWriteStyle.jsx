@@ -100,6 +100,7 @@ export const Input = styled.input`
 export const TextArea = styled.textarea`
   width: 100%;
   padding: 0.5rem;
+
   resize: none;
   height: 6rem;
   font-size: 1rem;

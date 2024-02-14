@@ -40,12 +40,11 @@ export const Body = styled.div`
   display: flex;
   margin-top: 12px;
   margin-bottom: 12px;
-  font-size: 1.5rem;
+  font-size: 1rem;
   line-height: normal;
 `;
 
 export const LikeWrap = styled.div`
-  font-size: 1.5rem;
   display: flex;
   gap: 12px;
   margin-bottom: 12px;

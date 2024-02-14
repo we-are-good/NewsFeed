@@ -55,7 +55,7 @@ function MyPage({
   }, []);
 
   const db = getFirestore();
-  const storageRef = ref(storage, "avatars");
+  const storageRef = ref(storage, 'avatars');
 
   const fetchData = async (email) => {
     try {

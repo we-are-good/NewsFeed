@@ -157,7 +157,6 @@ function GrooveAuth({
     };
 
     if (user) {
-      console.log("user", user);
       const userEmail = user.email;
       setIsUserLogIn(true);
       setLogInModal(false);

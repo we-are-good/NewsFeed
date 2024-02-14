@@ -82,7 +82,8 @@ function WritePage({
       isLiked: false,
       likeCount: 0,
       imageUrl: selectedFile ? imageUrl : "",
-      authorId: currentUser.uid
+      authorId: currentUser.uid,
+      email: currentUser.email
     };
     if (titleText.length === 0 && bodyText.length === 0) {
       alert("제목과 내용은 필수 입력입니다");

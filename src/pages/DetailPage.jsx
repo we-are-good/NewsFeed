@@ -263,7 +263,7 @@ function DetailPage({
             <img src={defaultImage} alt="기본 이미지"></img>
           )}
           <FileBox>
-            <label for="ex_file">이미지 업로드</label>
+            <label htmlFor="ex_file">이미지 업로드</label>
             <Input type="file" id="ex_file" onChange={handleFileSelect} />
           </FileBox>
 

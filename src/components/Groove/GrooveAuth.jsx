@@ -115,7 +115,12 @@ function GrooveAuth({
         if (user) return;
       });
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      const newUser = { email: email, nickname: nickname, profileImage: "https://firebasestorage.googleapis.com/v0/b/groove-a1c3e.appspot.com/o/undefined%2Fchicken.png?alt=media&token=7b5470ae-2d55-4ef0-a018-ac5af31d2ab2" }; // 기본 프로필 이미지 URL 추가
+      const newUser = {
+        email: email,
+        nickname: nickname,
+        profileImage:
+          "https://firebasestorage.googleapis.com/v0/b/groove-a1c3e.appspot.com/o/undefined%2Fchicken.png?alt=media&token=7b5470ae-2d55-4ef0-a018-ac5af31d2ab2"
+      }; // 기본 프로필 이미지 URL 추가
       const collectionRef = collection(db, "logInData");
       await addDoc(collectionRef, newUser);
       closeSignUpModal();
@@ -212,7 +217,7 @@ function GrooveAuth({
     <div>
       {!isUserLogIn && (
         <BackgroundLogInButton type="button" onClick={openLogInModal}>
-          <i class="fa-solid fa-arrow-right-to-bracket" />
+          <i className="fa-solid fa-arrow-right-to-bracket" />
         </BackgroundLogInButton>
       )}
       {(logInModal || signUpModal || socialLogInModal) && (
@@ -312,10 +317,10 @@ function GrooveAuth({
 
               <GoogleGitLogIn>
                 <PromptLogIn type="button" onClick={handleGoogleSignUp}>
-                  <i class="fa-brands fa-google" /> Google
+                  <i className="fa-brands fa-google" /> Google
                 </PromptLogIn>
                 <PromptLogIn type="button" onClick={handleGitLogin}>
-                  <i class="fa-brands fa-github" /> Github
+                  <i className="fa-brands fa-github" /> Github
                 </PromptLogIn>
               </GoogleGitLogIn>
             </LogInForm>

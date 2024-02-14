@@ -136,7 +136,7 @@ function WritePage({
           <div class="btn-upload">파일 업로드하기</div>
         </label> */}
         <FileBox>
-          <label for="ex_file">이미지 업로드</label>
+          <label htmlFor="ex_file">이미지 업로드</label>
           <Input type="file" id="ex_file" onChange={handleFileSelect} />
         </FileBox>
         {/* <input type="file" display="none" name="file" id="file" onChange={handleFileSelect} /> */}

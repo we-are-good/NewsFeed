@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { auth, db } from "../firebase";
+import { auth, db, storage } from "../firebase"; // storage 추가
 import { collection, query, where, getDocs, getFirestore, doc, updateDoc } from "firebase/firestore";
 import GrooveHeader from "../components/Groove/GrooveHeader";
 import GrooveFooter from "../components/Groove/GrooveFooter";
@@ -20,14 +20,14 @@ function MyPage({
   nickname,
   setNickname
 }) {
-  // const [currentUser, setCurrentUser] = useState(null);
-  // const [userNickname, setUserNickname] = useState("");
   const [userEmail, setUserEmail] = useState("");
   const [userUid, setUserUid] = useState("");
-  const [userDocId, setUserDocId] = useState(""); // 사용자 문서의 ID 추가
+  const [userDocId, setUserDocId] = useState("");
   const [userPosts, setUserPosts] = useState([]);
   const [newNickname, setNewNickname] = useState("");
   const [editingNickname, setEditingNickname] = useState(false);
+  const [profileImageUrl, setProfileImageUrl] = useState(""); // 프로필 이미지 URL 추가
+  const [profileImageFile, setProfileImageFile] = useState(null); // 프로필 이미지 파일 추가
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
@@ -60,8 +60,10 @@ function MyPage({
       querySnapshot.forEach((doc) => {
         const userData = doc.data();
         const nickname = userData.nickname;
+        const profileImage = userData.profileImage; // 프로필 이미지 URL 가져오기
         setNickname(nickname);
-        setUserDocId(doc.id); // 사용자 문서의 ID 저장
+        setProfileImageUrl(profileImage); // 프로필 이미지 URL 설정
+        setUserDocId(doc.id);
       });
     } catch (error) {
       console.error("Error fetching user info:", error);
@@ -98,10 +100,10 @@ function MyPage({
     }
 
     const confirmUpdate = window.confirm("정말 변경 하시겠습니까?");
-    if (!confirmUpdate) return; // 사용자가 취소를 누른 경우 함수 종료
+    if (!confirmUpdate) return;
 
     try {
-      const userDocRef = doc(db, "logInData", userDocId); // 사용자 문서의 ID 사용
+      const userDocRef = doc(db, "logInData", userDocId);
       await updateDoc(userDocRef, {
         nickname: newNickname.trim()
       });
@@ -110,6 +112,34 @@ function MyPage({
       setNewNickname("");
     } catch (error) {
       console.error("Error updating nickname:", error);
+    }
+  };
+
+  const handleProfileImageChange = (e) => {
+    const file = e.target.files[0];
+    setProfileImageFile(file);
+  };
+
+  const handleProfileImageUpload = async () => {
+    if (!profileImageFile) {
+      alert("이미지를 선택해주세요.");
+      return;
+    }
+
+    try {
+      const storageRef = storage.ref();
+      const fileRef = storageRef.child(`profileImages/${currentUser.uid}/${profileImageFile.name}`);
+      await fileRef.put(profileImageFile);
+      const imageUrl = await fileRef.getDownloadURL();
+
+      const userDocRef = doc(db, "logInData", userDocId);
+      await updateDoc(userDocRef, {
+        profileImage: imageUrl
+      });
+      setProfileImageUrl(imageUrl);
+      setProfileImageFile(null);
+    } catch (error) {
+      console.error("Error uploading profile image:", error);
     }
   };
 
@@ -134,6 +164,10 @@ function MyPage({
             <StDiv>
               <StUserContainer>
                 <StInfo>사용자 정보:</StInfo>
+                {profileImageUrl && <img src={profileImageUrl} alt="프로필 사진" />} {/* 프로필 이미지 렌더링 */}
+                {/* 프로필 이미지 업로드 input */}
+                <input type="file" onChange={handleProfileImageChange} />
+                <button onClick={handleProfileImageUpload}>프로필 이미지 업로드</button>
                 {editingNickname ? (
                   <div>
                     <p>
@@ -166,10 +200,10 @@ function MyPage({
                           <div>
                             <StTitle>{post.title}</StTitle>
                             <StContent>{post.body}</StContent>
-                            <p>{post.formattedTime}</p> {/* 작성 시간 렌더링 */}
+                            <p>{post.formattedTime}</p>
                             <i className="fa-solid fa-heart" /> {Object.keys(post.likes || {}).length}개
                           </div>
-                          <StImageWrapper> {/* 이미지를 감싸는 div */}
+                          <StImageWrapper>
                             <StImage src={post.imageUrl} alt="업로드된 이미지" />
                           </StImageWrapper>
                         </StPostContainer>
@@ -220,7 +254,7 @@ const StInfo = styled.p`
 
 const StNickname = styled.p`
   justify-content: space-between;
-  display: flex; 
+  display: flex;
   align-items: center;
 `;
 
@@ -257,9 +291,9 @@ const StPostLink = styled(Link)`
   align-items: center;
   text-decoration: none;
   color: #ffff;
-  border-bottom: 2px solid #ffc41d; /* 밑쪽 보더에 색상 추가 */
-  padding-bottom: 10px; /* 밑쪽 패딩 추가 */
-  margin-bottom: 20px; /* 글 사이의 간격 조정 */
+  border-bottom: 2px solid #ffc41d;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
 `;
 
 const StImage = styled.img`
@@ -276,12 +310,12 @@ const StTitle = styled.p`
 `;
 
 const StImageWrapper = styled.div`
-  justify-self: end; /* 그리드 아이템을 그리드 셀의 끝으로 정렬 */
+  justify-self: end;
 `;
 
 const StPostContainer = styled.div`
   display: grid;
-  grid-template-columns: 1fr auto; /* 첫 번째 컬럼은 비율에 따라 채우고, 두 번째 컬럼은 자식 요소의 크기에 따라 자동으로 조정 */
+  grid-template-columns: 1fr auto;
   align-items: center;
 `;
 
@@ -290,7 +324,7 @@ const StContent = styled.p`
 `;
 
 const StGrooveFooter = styled(GrooveFooter)`
-  margin-top: auto; /* 화면 아래쪽으로 이동 */
+  margin-top: auto;
 `;
 
 export default MyPage;

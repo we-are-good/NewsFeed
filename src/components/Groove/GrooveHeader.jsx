@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import {
   GrooveHeaderWrap,
+  GrooveHeaderFixed,
   GrooveHeaderLogo,
   GrooveHeaderIconWrap,
   GrooveHeaderIconHome,
@@ -86,47 +87,49 @@ function GrooveHeader({
   return (
     <>
       <GrooveHeaderWrap>
-        <GrooveHeaderLogo onClick={goHome}>Groove</GrooveHeaderLogo>
-        <GrooveHeaderIconWrap>
-          {currentUser ? (
-            <GrooveHeaderIcons>
-              <div>{nickname}님 환영합니다!</div>
-              <GrooveHeaderIconHome onClick={goHome}>
-                <i className="fa-solid fa-house" />
-              </GrooveHeaderIconHome>
-              <GrooveHeaderIconWrite onClick={goWrite}>
-                <i className="fa-solid fa-pen" />
-              </GrooveHeaderIconWrite>
-              <GrooveHeaderIconMy onClick={myIconClick}>
-                <i className="fa-solid fa-user" />
-              </GrooveHeaderIconMy>
-            </GrooveHeaderIcons>
-          ) : (
-            <>
-              <GrooveAuth
-                nickname={nickname}
-                setNickname={setNickname}
-                currentUser={currentUser}
-                setTotalUsersInformation={setTotalUsersInformation}
-                logInModal={logInModal}
-                setLogInModal={setLogInModal}
-                setIsUserLogIn={setIsUserLogIn}
-              />
-            </>
-          )}
-          {isMyIconClicked && (
-            <div>
-              <GrooveHeaderIconSelection>
-                <button type="button" onClick={logOut}>
-                  Log-out
-                </button>
-                <button type="button" onClick={goMyPage}>
-                  My-page
-                </button>
-              </GrooveHeaderIconSelection>
-            </div>
-          )}
-        </GrooveHeaderIconWrap>
+        <GrooveHeaderFixed>
+          <GrooveHeaderLogo onClick={goHome}>Groove</GrooveHeaderLogo>
+          <GrooveHeaderIconWrap>
+            {currentUser ? (
+              <GrooveHeaderIcons>
+                <div>{nickname}님 환영합니다!</div>
+                <GrooveHeaderIconHome onClick={goHome}>
+                  <i className="fa-solid fa-house" />
+                </GrooveHeaderIconHome>
+                <GrooveHeaderIconWrite onClick={goWrite}>
+                  <i className="fa-solid fa-pen" />
+                </GrooveHeaderIconWrite>
+                <GrooveHeaderIconMy onClick={myIconClick}>
+                  <i className="fa-solid fa-user" />
+                </GrooveHeaderIconMy>
+              </GrooveHeaderIcons>
+            ) : (
+              <>
+                <GrooveAuth
+                  nickname={nickname}
+                  setNickname={setNickname}
+                  currentUser={currentUser}
+                  setTotalUsersInformation={setTotalUsersInformation}
+                  logInModal={logInModal}
+                  setLogInModal={setLogInModal}
+                  setIsUserLogIn={setIsUserLogIn}
+                />
+              </>
+            )}
+            {isMyIconClicked && (
+              <div>
+                <GrooveHeaderIconSelection>
+                  <button type="button" onClick={logOut}>
+                    Log-out
+                  </button>
+                  <button type="button" onClick={goMyPage}>
+                    My-page
+                  </button>
+                </GrooveHeaderIconSelection>
+              </div>
+            )}
+          </GrooveHeaderIconWrap>
+        </GrooveHeaderFixed>
       </GrooveHeaderWrap>
     </>
   );

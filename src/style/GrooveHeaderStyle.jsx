@@ -3,12 +3,21 @@ import styled from "styled-components";
 export const GrooveHeaderWrap = styled.header`
   width: 100%;
   height: 4rem;
+  padding: 1rem;
+`;
+export const GrooveHeaderFixed = styled.header`
+  position: fixed;
+  width: 100%;
+  height: 4rem;
   display: flex;
   align-items: center;
   padding: 1rem;
   background-color: #151515;
   box-shadow: 0 0 10px #000;
   color: #fff;
+  top: 0;
+  left: 0;
+  z-index: 10;
 `;
 export const GrooveHeaderLogo = styled.h1`
   font-size: 2rem;
@@ -66,7 +75,7 @@ export const GrooveHeaderIconSelection = styled.div`
   flex-direction: column;
   align-content: center;
   gap: 0.5rem;
-  z-index: 1; 
+  z-index: 1;
   & > button {
     background-color: #333;
     height: 1.5rem;

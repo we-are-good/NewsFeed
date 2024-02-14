@@ -3,6 +3,7 @@ import { Top, StyledLink, ImgWrapBox, ContentWrapBox, Title, Body, UserLikeBox }
 import { format } from "date-fns";
 import { getFirestore, collection, getDocs } from "firebase/firestore";
 import { app } from "../../../firebase";
+import defaultImage from "../../../assets/defaultImage.jpg";
 
 const GrooveFeed = ({ GrooveTop, currentUser }) => {
   console.log(GrooveTop);
@@ -64,7 +65,7 @@ const GrooveFeed = ({ GrooveTop, currentUser }) => {
               state={GrooveTop}
             >
               <ImgWrapBox>
-                <img src={item.imageUrl} alt="업로드된 이미지" />
+                {item.imageUrl ? <img src={item.imageUrl} alt="업로드된 이미지" /> : <img src={defaultImage}></img>}
               </ImgWrapBox>
               <ContentWrapBox>
                 <Title>{item.title}</Title>

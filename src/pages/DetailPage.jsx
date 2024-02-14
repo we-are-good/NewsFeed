@@ -6,8 +6,10 @@ import {
   EditingWrap,
   EditingButtonWrap,
   EditingBody,
-  LikeWrap
+  LikeWrap,
+  NoneLoggedLike
 } from "../style/GrooveDetailStyle";
+import { FileBox, Input } from "../style/GrooveWriteStyle";
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { auth, db, storage } from "../firebase";
@@ -231,32 +233,37 @@ function DetailPage({
       {isEditing ? (
         <EditingWrap>
           {imageURL ? (
-            <img style={{ width: "400px", height: "400px" }} src={imageURL} alt="이미지 미리보기"></img>
+            <img style={{ width: "400px", marginBottom: "12px" }} src={imageURL} alt="이미지 미리보기"></img>
           ) : (
-            <img style={{ width: "400px", height: "400px" }} src={defaultImage} alt="기본 이미지"></img>
+            <img style={{ width: "400px", marginBottom: "12px" }} src={defaultImage} alt="기본 이미지"></img>
           )}
+          <FileBox>
+            <label for="ex_file">이미지 업로드</label>
+            <Input type="file" id="ex_file" onChange={handleFileSelect} />
+          </FileBox>
+
           <EditingTitle>
             제목: <input type="text" value={editedTitle} onChange={(e) => setEditedTitle(e.target.value)} />
           </EditingTitle>
 
           <EditingBody>
             내용:
-            <textarea style={{ resize: "none" }} value={editedBody} onChange={(e) => setEditedBody(e.target.value)} />
+            <input type="text" value={editedBody} onChange={(e) => setEditedBody(e.target.value)} />
           </EditingBody>
           <EditingButtonWrap>
-            <button onClick={handleSave}>저장</button>
+            <button onClick={handleSave}>수정 완료</button>
             <button onClick={handleCancel}>취소</button>
           </EditingButtonWrap>
-          <input type="file" onChange={handleFileSelect} style={{ marginLeft: "95px" }} />
+
           {/* <button onClick={() => handleImageChange(newImage)}>이미지 변경하기</button> */}
           <br />
         </EditingWrap>
       ) : (
         <Wrap>
           {imageURL ? (
-            <img style={{ width: "400px", height: "400px" }} src={imageURL} alt="Groove Image"></img>
+            <img style={{ width: "400px", marginBottom: "12px" }} src={imageURL} alt="Groove Image"></img>
           ) : (
-            <img style={{ width: "400px", height: "400px" }} src={defaultImage} alt="기본 이미지"></img>
+            <img style={{ width: "400px", marginBottom: "12px" }} src={defaultImage} alt="기본 이미지"></img>
           )}
           {/* <img style={{ width: "400px", height: "400px" }} src={imageURL} alt="Groove Image"></img> */}
           <Title>제목: {originalTitle}</Title>
@@ -271,8 +278,10 @@ function DetailPage({
           ) : (
             // 로그인 상태가 아닐 때 로그인을 유도하는 메시지 또는 경고창 표시
             <>
-              <p>좋아요: {Object.keys(likes).length}개</p>
-              <p>로그인 후에 좋아요를 누르실 수 있습니다.</p>
+              <NoneLoggedLike>
+                <p>좋아요: {Object.keys(likes).length}개</p>
+                <p>로그인 후에 좋아요를 누르실 수 있습니다.</p>
+              </NoneLoggedLike>
               <GrooveAuth
                 nickname={nickname}
                 setNickname={setNickname}

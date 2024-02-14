@@ -19,6 +19,7 @@ import defaultImage from "../../../assets/defaultImage.jpg";
 
 const GrooveFeed = ({ GrooveTop }) => {
   const [loginData, setLoginData] = useState([]);
+
   useEffect(() => {
     const fetchLoginData = async () => {
       try {
@@ -60,7 +61,7 @@ const GrooveFeed = ({ GrooveTop }) => {
               state={GrooveTop}
             >
               <ImgWrapBox>
-                {item.imageUrl ? <img src={item.imageUrl} alt="업로드된 이미지" /> : <img src={defaultImage}></img>}
+                {item.imageUrl ? <img src={item.imageUrl} alt="업로드된 이미지" /> : <img src={defaultImage} alt="기본 이미지" />}
               </ImgWrapBox>
               <ContentWrapBox>
                 <ContentTop>
@@ -69,7 +70,6 @@ const GrooveFeed = ({ GrooveTop }) => {
                   <WriteTime>{formattedTime}</WriteTime>
                 </ContentTop>
                 <ContentBot>
-                  {/* nickname 값 렌더링 */}
                   <UserNicName>{userLoginData ? userLoginData.nickname : "Unknown"}</UserNicName>
                   <UserLikeBox>
                     <i className="fa-solid fa-heart" /> {Object.keys(item.likes || {}).length}개

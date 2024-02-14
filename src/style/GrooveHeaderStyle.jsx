@@ -15,9 +15,18 @@ export const GrooveHeaderFixed = styled.header`
   background-color: #151515;
   box-shadow: 0 0 10px #000;
   color: #fff;
-  top: 0;
-  left: 0;
+  top: 0%;
+  left: 0%;
   z-index: 10;
+  transition: all 0.5s;
+  &.scrolled-header {
+    top: 0.5rem;
+    width: calc(100% - 1rem);
+    left: 0.5rem;
+    border-radius: 10px;
+  }
+  &.normal-header-header {
+  }
 `;
 export const GrooveHeaderLogo = styled.h1`
   font-size: 2rem;
@@ -91,4 +100,8 @@ export const GrooveHeaderIconSelection = styled.div`
       color: #333;
     }
   }
+`;
+
+export const TopBtn = styled.span`
+  width: 40px;
 `;

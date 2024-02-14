@@ -8,7 +8,8 @@ import {
   GrooveHeaderIconWrite,
   GrooveHeaderIconMy,
   GrooveHeaderIconSelection,
-  GrooveHeaderIcons
+  GrooveHeaderIcons,
+  TopBtn
 } from "../../style/GrooveHeaderStyle";
 
 import GrooveAuth from "./GrooveAuth";
@@ -84,10 +85,44 @@ function GrooveHeader({
     }
   }, [user, nickname]);
 
+  const [scrolled, setScrolled] = useState(false);
+  useEffect(() => {
+    const handleScroll = () => {
+      const isScrolled = window.scrollY > 0;
+      if (isScrolled !== scrolled) {
+        setScrolled(isScrolled);
+      }
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [scrolled]);
+
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const shouldShowButton = window.scrollY > 100;
+      setIsVisible(shouldShowButton);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth" // 부드러운 스크롤 효과
+    });
+  };
+
   return (
     <>
       <GrooveHeaderWrap>
-        <GrooveHeaderFixed>
+        <GrooveHeaderFixed className={scrolled ? "scrolled-header" : "normal-header"}>
           <GrooveHeaderLogo onClick={goHome}>Groove</GrooveHeaderLogo>
           <GrooveHeaderIconWrap>
             {currentUser ? (
@@ -131,6 +166,7 @@ function GrooveHeader({
           </GrooveHeaderIconWrap>
         </GrooveHeaderFixed>
       </GrooveHeaderWrap>
+      <TopBtn className="scroll-to-top" onClick={scrollToTop}></TopBtn>
     </>
   );
 }

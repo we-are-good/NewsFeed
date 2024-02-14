@@ -1,4 +1,4 @@
-import { FileBox, Form, Input } from "../style/GrooveWriteStyle";
+import { FileBox, Form, Input, TextArea } from "../style/GrooveWriteStyle";
 import { Body, EditingButtonWrap, Title } from "../style/GrooveDetailStyle";
 import { addDoc, collection } from "firebase/firestore";
 import React, { useEffect, useRef, useState } from "react";
@@ -8,6 +8,8 @@ import GrooveHeader from "../components/Groove/GrooveHeader";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
 import defaultImage from "../assets/defaultImage.jpg";
+import GrooveFooter from "../components/Groove/GrooveFooter";
+import styled from "styled-components";
 
 function WritePage({
   currentUser,
@@ -116,7 +118,7 @@ function WritePage({
   };
 
   return (
-    <>
+    <Wrapper>
       <GrooveHeader
         currentUser={currentUser}
         isUserLogIn={isUserLogIn}
@@ -145,25 +147,34 @@ function WritePage({
         {/* <input type="file" display="none" name="file" id="file" onChange={handleFileSelect} /> */}
         <Title>
           제목:
-          <input
+          <TextArea
             type="text"
+            maxLength={"100"}
             value={titleText}
             name="titleText"
             onChange={onChangeTitle}
             ref={focusRef}
             required
-          ></input>
+          />
         </Title>
         <Body>
-          내용:<input type="text" value={bodyText} name="bodyText" onChange={onChangeBody} required></input>
+          내용:
+          <TextArea type="text" maxLength={"100"} value={bodyText} name="bodyText" onChange={onChangeBody} required />
         </Body>
         <EditingButtonWrap>
           <button onClick={addTodo}>추가</button>
           <button onClick={() => navigate("/")}>취소</button>
         </EditingButtonWrap>
       </Form>
-    </>
+      <GrooveFooter />
+    </Wrapper>
   );
 }
 
 export default WritePage;
+
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+`;

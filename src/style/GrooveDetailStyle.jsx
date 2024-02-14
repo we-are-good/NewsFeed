@@ -9,12 +9,14 @@ export const EditingTitle = styled.h1`
   margin-top: 12px;
   font-size: 1.5rem;
   display: flex;
+  line-height: normal;
 `;
 export const EditingBody = styled.h1`
   display: flex;
   margin-top: 12px;
   margin-bottom: 12px;
   font-size: 1.5rem;
+  line-height: normal;
 `;
 export const EditingButtonWrap = styled.div`
   display: flex;
@@ -26,17 +28,20 @@ export const Wrap = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
+  margin: 2rem;
 `;
 export const Title = styled.div`
   font-size: 1.5rem;
   display: flex;
   margin-top: 12px;
+  line-height: normal;
 `;
 export const Body = styled.div`
   display: flex;
   margin-top: 12px;
   margin-bottom: 12px;
   font-size: 1.5rem;
+  line-height: normal;
 `;
 
 export const LikeWrap = styled.div`

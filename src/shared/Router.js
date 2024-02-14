@@ -20,7 +20,7 @@ const Router = () => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
         const uid = user.uid;
-        console.log("user", user);
+        console.log("현재user", user);
         setCurrentUser(user);
       } else {
         console.log("유저없음");

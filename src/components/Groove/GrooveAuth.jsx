@@ -158,8 +158,6 @@ function GrooveAuth({
       setIsUserLogIn(true);
       setLogInModal(false);
       fetchData(userEmail);
-    } else {
-      console.log("user in else", user);
     }
   }, [user]);
 

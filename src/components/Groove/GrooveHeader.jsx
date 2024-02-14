@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
 import {
   GrooveHeaderWrap,
+  GrooveHeaderFixed,
   GrooveHeaderLogo,
   GrooveHeaderIconWrap,
   GrooveHeaderIconHome,
   GrooveHeaderIconWrite,
   GrooveHeaderIconMy,
   GrooveHeaderIconSelection,
-  GrooveHeaderIcons
+  GrooveHeaderIcons,
+  TopBtn
 } from "../../style/GrooveHeaderStyle";
 
 import GrooveAuth from "./GrooveAuth";
@@ -101,60 +103,96 @@ function GrooveHeader({
     } else {
     }
   }, [user, nickname]);
-  console.log("currentUser", currentUser);
+
+  const [scrolled, setScrolled] = useState(false);
+  useEffect(() => {
+    const handleScroll = () => {
+      const isScrolled = window.scrollY > 0;
+      if (isScrolled !== scrolled) {
+        setScrolled(isScrolled);
+      }
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [scrolled]);
+
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const shouldShowButton = window.scrollY > 100;
+      setIsVisible(shouldShowButton);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth" // 부드러운 스크롤 효과
+    });
+  };
 
   return (
     <>
       <GrooveHeaderWrap>
-        <GrooveHeaderLogo onClick={goHome}>Groove</GrooveHeaderLogo>
-        <GrooveHeaderIconWrap>
-          {currentUser ? (
-            <GrooveHeaderIcons>
-              <div>{nickname}님 환영합니다!</div>
-              <GrooveHeaderIconHome onClick={goHome}>
-                <i className="fa-solid fa-house" />
-              </GrooveHeaderIconHome>
-              <GrooveHeaderIconWrite onClick={goWrite}>
-                <i className="fa-solid fa-pen" />
-              </GrooveHeaderIconWrite>
-              <GrooveHeaderIconMy onClick={myIconClick}>
-                <i className="fa-solid fa-user" />
-              </GrooveHeaderIconMy>
-            </GrooveHeaderIcons>
-          ) : (
-            <GrooveAuth
-              nickname={nickname}
-              setNickname={setNickname}
-              currentUser={currentUser}
-              setTotalUsersInformation={setTotalUsersInformation}
-              logInModal={logInModal}
-              setLogInModal={setLogInModal}
-              setIsUserLogIn={setIsUserLogIn}
-              onNicknameChange={onNicknameChange}
-              nicknameModal={nicknameModal}
-              setNicknameModal={setNicknameModal}
-            />
-          )}
-          {isMyIconClicked && (
-            <div>
-              <GrooveHeaderIconSelection>
-                <button type="button" onClick={logOut}>
-                  Log-out
-                </button>
-                <button type="button" onClick={goMyPage}>
-                  My-page
-                </button>
-              </GrooveHeaderIconSelection>
-            </div>
-          )}
-          {nicknameModal && (
-            <SocialLogInNickname>
-              <input placeholder="Nickname" type="text" required value={nickname} onChange={onNicknameChange} />
-              <button onClick={socialLogInNickname}>확인</button>
-            </SocialLogInNickname>
-          )}
-        </GrooveHeaderIconWrap>
+        <GrooveHeaderFixed className={scrolled ? "scrolled-header" : "normal-header"}>
+          <GrooveHeaderLogo onClick={goHome}>Groove</GrooveHeaderLogo>
+          <GrooveHeaderIconWrap>
+            {currentUser ? (
+              <GrooveHeaderIcons>
+                <div>{nickname}님 환영합니다!</div>
+                <GrooveHeaderIconHome onClick={goHome}>
+                  <i className="fa-solid fa-house" />
+                </GrooveHeaderIconHome>
+                <GrooveHeaderIconWrite onClick={goWrite}>
+                  <i className="fa-solid fa-pen" />
+                </GrooveHeaderIconWrite>
+                <GrooveHeaderIconMy onClick={myIconClick}>
+                  <i className="fa-solid fa-user" />
+                </GrooveHeaderIconMy>
+              </GrooveHeaderIcons>
+            ) : (
+              <GrooveAuth
+                nickname={nickname}
+                setNickname={setNickname}
+                currentUser={currentUser}
+                setTotalUsersInformation={setTotalUsersInformation}
+                logInModal={logInModal}
+                setLogInModal={setLogInModal}
+                setIsUserLogIn={setIsUserLogIn}
+                onNicknameChange={onNicknameChange}
+                nicknameModal={nicknameModal}
+                setNicknameModal={setNicknameModal}
+              />
+            )}
+            {isMyIconClicked && (
+              <div>
+                <GrooveHeaderIconSelection>
+                  <button type="button" onClick={logOut}>
+                    Log-out
+                  </button>
+                  <button type="button" onClick={goMyPage}>
+                    My-page
+                  </button>
+                </GrooveHeaderIconSelection>
+              </div>
+            )}
+            {nicknameModal && (
+              <SocialLogInNickname>
+                <input placeholder="Nickname" type="text" required value={nickname} onChange={onNicknameChange} />
+                <button onClick={socialLogInNickname}>확인</button>
+              </SocialLogInNickname>
+            )}
+          </GrooveHeaderIconWrap>
+        </GrooveHeaderFixed>
       </GrooveHeaderWrap>
+      <TopBtn className="scroll-to-top" onClick={scrollToTop}></TopBtn>
     </>
   );
 }

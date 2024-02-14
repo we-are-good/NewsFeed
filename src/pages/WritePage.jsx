@@ -1,9 +1,13 @@
-import { Timestamp, addDoc, collection } from "firebase/firestore";
+import { FileBox, Form, Input } from "../style/GrooveWriteStyle";
+import { Body, EditingButtonWrap, Title } from "../style/GrooveDetailStyle";
+import { addDoc, collection } from "firebase/firestore";
 import React, { useEffect, useRef, useState } from "react";
 import { auth, db, storage } from "../firebase";
 import { useNavigate } from "react-router-dom";
 import GrooveHeader from "../components/Groove/GrooveHeader";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+
+import defaultImage from "../assets/defaultImage.jpg";
 
 function WritePage({
   currentUser,
@@ -83,7 +87,7 @@ function WritePage({
       authorId: currentUser.uid,
       email: currentUser.email
     };
-    if (titleText.length === 0 && bodyText.length === 0) {
+    if (titleText.trim().length === 0 || bodyText.trim().length === 0) {
       alert("제목과 내용은 필수 입력입니다");
       return;
     }
@@ -125,19 +129,39 @@ function WritePage({
         nickname={nickname}
         setNickname={setNickname}
       />
-      <form>
-        <label> 글 작성 </label>
-        <br />
-        제목:
-        <input type="text" value={titleText} name="titleText" onChange={onChangeTitle} ref={focusRef} required></input>
-        <br />
-        내용:<input type="text" value={bodyText} name="bodyText" onChange={onChangeBody} required></input>
-        <br />
-        <button onClick={addTodo}>추가</button>
-        <button onClick={() => navigate("/")}>취소</button>
-        <input type="file" onChange={handleFileSelect} />
-        <img src={imageUrl} alt="기본이미지" style={{ width: "200px", height: "200px" }}></img>
-      </form>
+      <Form>
+        {imageUrl ? (
+          <img style={{ width: "400px", marginBottom: "12px" }} src={imageUrl} alt="Groove Image"></img>
+        ) : (
+          <img style={{ width: "400px", marginBottom: "12px" }} src={defaultImage} alt="기본 이미지"></img>
+        )}
+        {/* <label for="file">
+          <div class="btn-upload">파일 업로드하기</div>
+        </label> */}
+        <FileBox>
+          <label for="ex_file">이미지 업로드</label>
+          <Input type="file" id="ex_file" onChange={handleFileSelect} />
+        </FileBox>
+        {/* <input type="file" display="none" name="file" id="file" onChange={handleFileSelect} /> */}
+        <Title>
+          제목:
+          <input
+            type="text"
+            value={titleText}
+            name="titleText"
+            onChange={onChangeTitle}
+            ref={focusRef}
+            required
+          ></input>
+        </Title>
+        <Body>
+          내용:<input type="text" value={bodyText} name="bodyText" onChange={onChangeBody} required></input>
+        </Body>
+        <EditingButtonWrap>
+          <button onClick={addTodo}>추가</button>
+          <button onClick={() => navigate("/")}>취소</button>
+        </EditingButtonWrap>
+      </Form>
     </>
   );
 }

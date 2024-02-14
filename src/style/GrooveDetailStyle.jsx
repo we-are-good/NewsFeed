@@ -122,9 +122,13 @@ export const LikeWrap = styled.div`
   & > button {
     /* width: 2rem;
     height: 2rem; */
+    cursor: pointer;
     color: #ffc41d;
     background-color: transparent;
     border: 0px;
+    &:hover {
+      filter: brightness(50%);
+    }
   }
 `;
 

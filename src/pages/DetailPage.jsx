@@ -9,6 +9,7 @@ import {
   LikeWrap,
   NoneLoggedLike
 } from "../style/GrooveDetailStyle";
+import styled from "styled-components";
 import { FileBox, Input, TextArea } from "../style/GrooveWriteStyle";
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
@@ -19,6 +20,7 @@ import GrooveAuth from "../components/Groove/GrooveAuth";
 import { getDownloadURL, ref, uploadBytes } from "@firebase/storage";
 import defaultImage from "../assets/defaultImage.jpg";
 import GrooveHeader from "../components/Groove/GrooveHeader";
+import GrooveFooter from "../components/Groove/GrooveFooter";
 
 function DetailPage({
   currentUser,
@@ -240,7 +242,7 @@ function DetailPage({
   const userLoginData = loginData.find((loginItem) => loginItem.email === detailGroove.email);
 
   return (
-    <>
+    <Wrapper>
       <GrooveHeader
         nickname={nickname}
         setNickname={setNickname}
@@ -253,7 +255,6 @@ function DetailPage({
         logInModal={logInModal}
         setLogInModal={setLogInModal}
       />
-
       {isEditing ? (
         <EditingWrap>
           {imageURL ? (
@@ -349,8 +350,15 @@ function DetailPage({
           <br />
         </Wrap>
       )}
-    </>
+      <GrooveFooter />
+    </Wrapper>
   );
 }
 
 export default DetailPage;
+
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+`;

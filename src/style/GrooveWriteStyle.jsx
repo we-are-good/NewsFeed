@@ -33,6 +33,6 @@ export const Input = styled.input`
 `;
 
 export const TextArea = styled.textarea`
-  width: 300px;
+  width: 500px;
   resize: none;
 `;

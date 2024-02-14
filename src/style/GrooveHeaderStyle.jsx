@@ -48,9 +48,14 @@ export const GrooveHeaderIconWrap = styled.div`
 `;
 export const GrooveHeaderIconHome = styled.button`
   display: flex;
+  cursor: pointer;
 `;
-export const GrooveHeaderIconWrite = styled.button``;
-export const GrooveHeaderIconMy = styled.button``;
+export const GrooveHeaderIconWrite = styled.button`
+cursor: pointer;
+`;
+export const GrooveHeaderIconMy = styled.button`
+cursor: pointer;
+`;
 export const GrooveHeaderIcons = styled.div`
   display: flex;
   flex-direction: row;
@@ -72,5 +77,6 @@ export const GrooveHeaderIconSelection = styled.div`
     font-size: 0.8rem;
     font-weight: 600;
     border-radius: 0.4rem;
+    cursor: pointer;
   }
 `;

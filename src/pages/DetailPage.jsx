@@ -1,13 +1,21 @@
-import { EditingTitle } from "../style/GrooveDetailStyle";
+import {
+  EditingTitle,
+  Wrap,
+  Title,
+  Body,
+  EditingWrap,
+  EditingButtonWrap,
+  EditingBody,
+  LikeWrap
+} from "../style/GrooveDetailStyle";
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { auth, db, storage } from "../firebase";
 import { doc, updateDoc, deleteDoc, getDoc } from "firebase/firestore";
 import GrooveLikeBtn from "../components/Groove/GrooveTotalFeed/GrooveLikeBtn";
 import GrooveAuth from "../components/Groove/GrooveAuth";
-
 import { getDownloadURL, ref, uploadBytes } from "@firebase/storage";
-
+import defaultImage from "../assets/defaultImage.jpg";
 import GrooveHeader from "../components/Groove/GrooveHeader";
 
 function DetailPage({
@@ -219,34 +227,47 @@ function DetailPage({
         logInModal={logInModal}
         setLogInModal={setLogInModal}
       />
-      <div>DetailPage</div>
-      <div>DetailPage</div>
+
       {isEditing ? (
-        <>
-          <EditingTitle>제목: </EditingTitle>
-          <input type="text" value={editedTitle} onChange={(e) => setEditedTitle(e.target.value)} />
-          <br />
-          <label>내용: </label>
-          <textarea style={{ resize: "none" }} value={editedBody} onChange={(e) => setEditedBody(e.target.value)} />
-          <br />
-          <button onClick={handleSave}>저장</button>
-          <button onClick={handleCancel}>취소</button>
-          <img style={{ width: "200px", height: "200px" }} src={imageURL} alt="미리보기"></img>
-          <input type="file" onChange={handleFileSelect} />
+        <EditingWrap>
+          {imageURL ? (
+            <img style={{ width: "400px", height: "400px" }} src={imageURL} alt="이미지 미리보기"></img>
+          ) : (
+            <img style={{ width: "400px", height: "400px" }} src={defaultImage} alt="기본 이미지"></img>
+          )}
+          <EditingTitle>
+            제목: <input type="text" value={editedTitle} onChange={(e) => setEditedTitle(e.target.value)} />
+          </EditingTitle>
+
+          <EditingBody>
+            내용:
+            <textarea style={{ resize: "none" }} value={editedBody} onChange={(e) => setEditedBody(e.target.value)} />
+          </EditingBody>
+          <EditingButtonWrap>
+            <button onClick={handleSave}>저장</button>
+            <button onClick={handleCancel}>취소</button>
+          </EditingButtonWrap>
+          <input type="file" onChange={handleFileSelect} style={{ marginLeft: "95px" }} />
           {/* <button onClick={() => handleImageChange(newImage)}>이미지 변경하기</button> */}
           <br />
-        </>
+        </EditingWrap>
       ) : (
-        <>
-          <>제목: {originalTitle}</>
-          <>내용: {originalBody}</>
+        <Wrap>
+          {imageURL ? (
+            <img style={{ width: "400px", height: "400px" }} src={imageURL} alt="Groove Image"></img>
+          ) : (
+            <img style={{ width: "400px", height: "400px" }} src={defaultImage} alt="기본 이미지"></img>
+          )}
+          {/* <img style={{ width: "400px", height: "400px" }} src={imageURL} alt="Groove Image"></img> */}
+          <Title>제목: {originalTitle}</Title>
+          <Body>내용: {originalBody}</Body>
           {/* 좋아요 버튼 컴포넌트를 렌더링하고, 필요한 props를 전달합니다. */}
           {user ? (
             // 로그인 상태일 때만 좋아요 버튼을 활성화
-            <>
-              <GrooveLikeBtn isLiked={isLiked} onLikeClick={toggleLike} grooveId={detailGroove?.id} />
+            <LikeWrap>
               <p>좋아요: {Object.keys(likes).length}개</p>
-            </>
+              <GrooveLikeBtn isLiked={isLiked} onLikeClick={toggleLike} grooveId={detailGroove?.id} />
+            </LikeWrap>
           ) : (
             // 로그인 상태가 아닐 때 로그인을 유도하는 메시지 또는 경고창 표시
             <>
@@ -275,9 +296,9 @@ function DetailPage({
           )}
           <button onClick={() => navigate("/")}>홈으로</button>
           <br />
-          <img style={{ width: "200px", height: "200px" }} src={imageURL} alt="Groove Image"></img>
+
           <br />
-        </>
+        </Wrap>
       )}
     </>
   );

@@ -164,7 +164,7 @@ function GrooveAuth({
       };
       setIsUserLogIn(true);
       setSignUpModal(false);
-      setSocialLogInModal(true);
+      setNicknameModal(true);
       const collectionRef = collection(db, "logInData");
       await addDoc(collectionRef, newUser);
     } catch (error) {

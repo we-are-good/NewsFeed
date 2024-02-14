@@ -5,7 +5,7 @@ export const GrooveHeaderWrap = styled.header`
   height: 4rem;
   padding: 1rem;
 `;
-export const GrooveHeaderFixed = styled.header`
+export const GrooveHeaderFixed = styled.div`
   position: fixed;
   width: 100%;
   height: 4rem;
@@ -103,5 +103,23 @@ export const GrooveHeaderIconSelection = styled.div`
 `;
 
 export const TopBtn = styled.span`
-  width: 40px;
+  display: none;
+  &.scroll-to-top {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    position: fixed;
+    right: 4rem;
+    bottom: 4rem;
+    background-color: aliceblue;
+    color: #212121;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    z-index: 1;
+    &:hover {
+      background-color: #ffc41d;
+    }
+  }
 `;

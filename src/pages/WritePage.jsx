@@ -1,5 +1,4 @@
-import { FileBox, Form, Input, TextArea } from "../style/GrooveWriteStyle";
-import { Body, EditingButtonWrap, Title } from "../style/GrooveDetailStyle";
+import { FileBox, Form, Input, TextArea, FormTitle, FormBody, FormEditingBtnWrap } from "../style/GrooveWriteStyle";
 import { addDoc, collection } from "firebase/firestore";
 import React, { useEffect, useRef, useState } from "react";
 import { auth, db, storage } from "../firebase";
@@ -132,11 +131,7 @@ function WritePage({
         setNickname={setNickname}
       />
       <Form>
-        {imageUrl ? (
-          <img style={{ width: "400px", marginBottom: "12px" }} src={imageUrl} alt="Groove Image"></img>
-        ) : (
-          <img style={{ width: "400px", marginBottom: "12px" }} src={defaultImage} alt="기본 이미지"></img>
-        )}
+        {imageUrl ? <img src={imageUrl} alt="Groove Image"></img> : <img src={defaultImage} alt="기본 이미지"></img>}
         {/* <label for="file">
           <div class="btn-upload">파일 업로드하기</div>
         </label> */}
@@ -145,26 +140,34 @@ function WritePage({
           <Input type="file" id="ex_file" onChange={handleFileSelect} />
         </FileBox>
         {/* <input type="file" display="none" name="file" id="file" onChange={handleFileSelect} /> */}
-        <Title>
-          제목:
-          <TextArea
+        <FormTitle>
+          <input
             type="text"
             maxLength={"100"}
             value={titleText}
             name="titleText"
             onChange={onChangeTitle}
             ref={focusRef}
+            placeholder="제목"
             required
           />
-        </Title>
-        <Body>
-          내용:
-          <TextArea type="text" maxLength={"100"} value={bodyText} name="bodyText" onChange={onChangeBody} required />
-        </Body>
-        <EditingButtonWrap>
+        </FormTitle>
+        <FormBody>
+          <TextArea
+            type="text"
+            maxLength={"100"}
+            value={bodyText}
+            name="bodyText"
+            onChange={onChangeBody}
+            placeholder="내용을 입력하세요."
+            required
+          />
+        </FormBody>
+        <FormEditingBtnWrap>
+          <span>*제목과 내용은 100글자 이내로 작성하야 합니다.</span>
           <button onClick={addTodo}>추가</button>
           <button onClick={() => navigate("/")}>취소</button>
-        </EditingButtonWrap>
+        </FormEditingBtnWrap>
       </Form>
       <GrooveFooter />
     </Wrapper>

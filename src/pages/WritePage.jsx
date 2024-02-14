@@ -8,6 +8,8 @@ import GrooveHeader from "../components/Groove/GrooveHeader";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
 import defaultImage from "../assets/defaultImage.jpg";
+import GrooveFooter from "../components/Groove/GrooveFooter";
+import styled from "styled-components";
 
 function WritePage({
   currentUser,
@@ -116,7 +118,7 @@ function WritePage({
   };
 
   return (
-    <>
+    <Wrapper>
       <GrooveHeader
         currentUser={currentUser}
         isUserLogIn={isUserLogIn}
@@ -164,8 +166,15 @@ function WritePage({
           <button onClick={() => navigate("/")}>취소</button>
         </EditingButtonWrap>
       </Form>
-    </>
+      <GrooveFooter />
+    </Wrapper>
   );
 }
 
 export default WritePage;
+
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+`;

@@ -102,25 +102,26 @@ function GrooveHeader({
               </GrooveHeaderIconMy>
             </GrooveHeaderIcons>
           ) : (
-            <GrooveAuth
-              nickname={nickname}
-              setNickname={setNickname}
-              currentUser={currentUser}
-              setTotalUsersInformation={setTotalUsersInformation}
-              logInModal={logInModal}
-              setLogInModal={setLogInModal}
-              setIsUserLogIn={setIsUserLogIn}
-            />
+            <>
+              <GrooveAuth
+                nickname={nickname}
+                setNickname={setNickname}
+                currentUser={currentUser}
+                setTotalUsersInformation={setTotalUsersInformation}
+                logInModal={logInModal}
+                setLogInModal={setLogInModal}
+                setIsUserLogIn={setIsUserLogIn}
+              />
+            </>
           )}
-
           {isMyIconClicked && (
             <div>
               <GrooveHeaderIconSelection>
                 <button type="button" onClick={logOut}>
-                  Logout
+                  Log-out
                 </button>
                 <button type="button" onClick={goMyPage}>
-                  My page
+                  My-page
                 </button>
               </GrooveHeaderIconSelection>
             </div>

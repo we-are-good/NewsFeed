@@ -9,12 +9,14 @@ export const EditingWrap = styled.div`
 `;
 export const EditingTitle = styled.h1`
   margin-top: 12px;
+  font-size: 1.5rem;
 `;
 export const EditingBody = styled.h1`
   display: flex;
   align-items: center;
   margin-top: 12px;
   margin-bottom: 12px;
+  font-size: 1.5rem;
 `;
 export const EditingButtonWrap = styled.div`
   display: flex;
@@ -31,6 +33,7 @@ export const Wrap = styled.div`
   justify-content: center;
 `;
 export const Title = styled.div`
+  font-size: 1.5rem;
   display: flex;
   margin-top: 12px;
 `;
@@ -38,9 +41,11 @@ export const Body = styled.div`
   display: flex;
   margin-top: 12px;
   margin-bottom: 12px;
+  font-size: 1.5rem;
 `;
 
 export const LikeWrap = styled.div`
   display: flex;
   gap: 12px;
+  margin-bottom: 12px;
 `;

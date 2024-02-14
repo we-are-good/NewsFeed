@@ -6,10 +6,12 @@ import {
   Body,
   EditingWrap,
   EditingButtonWrap,
+  HomeBtn,
   EditingBody,
   LikeWrap,
   NoneLoggedLike
 } from "../style/GrooveDetailStyle";
+import { FileBox, Input, FormTitle, FormBody, TextArea } from "../style/GrooveWriteStyle";
 import styled from "styled-components";
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
@@ -262,26 +264,25 @@ function DetailPage({
           ) : (
             <img src={defaultImage} alt="기본 이미지"></img>
           )}
-          <DetailFileBox>
+          <FileBox>
             <label for="ex_file">이미지 업로드</label>
-            <inpu type="file" id="ex_file" onChange={handleFileSelect} />
-          </DetailFileBox>
+            <Input type="file" id="ex_file" onChange={handleFileSelect} />
+          </FileBox>
 
-          <EditingTitle>
-            제목:{" "}
+          <FormTitle>
             <input type="text" maxLength={"100"} value={editedTitle} onChange={(e) => setEditedTitle(e.target.value)} />
-          </EditingTitle>
+          </FormTitle>
 
-          <EditingBody>
-            내용:
-            <textarea
+          <FormBody>
+            <TextArea
               type="text"
               maxLength={"100"}
               value={editedBody}
               onChange={(e) => setEditedBody(e.target.value)}
             />
-          </EditingBody>
+          </FormBody>
           <EditingButtonWrap>
+            <span>*제목과 내용은 100글자 이내로 작성하야 합니다.</span>
             <button onClick={handleSave}>수정 완료</button>
             <button onClick={handleCancel}>취소</button>
           </EditingButtonWrap>
@@ -291,11 +292,7 @@ function DetailPage({
         </EditingWrap>
       ) : (
         <Wrap>
-          {imageURL ? (
-            <img style={{ width: "400px", marginBottom: "12px" }} src={imageURL} alt="Groove Image"></img>
-          ) : (
-            <img style={{ width: "400px", marginBottom: "12px" }} src={defaultImage} alt="기본 이미지"></img>
-          )}
+          {imageURL ? <img src={imageURL} alt="Groove Image"></img> : <img src={defaultImage} alt="기본 이미지"></img>}
           {/* <img style={{ width: "400px", height: "400px" }} src={imageURL} alt="Groove Image"></img> */}
           <Title>제목: {originalTitle}</Title>
           <Body>내용: {originalBody}</Body>
@@ -305,7 +302,7 @@ function DetailPage({
 
             <LikeWrap>
               {/* {userLoginData.nickname}으로 하려했으나 실패 */}
-              <span>{userLoginData?.nickname}</span>
+              <span>작성자 : {userLoginData?.nickname}</span>
               <p>좋아요 : {Object.keys(likes).length}개</p>
               <GrooveLikeBtn isLiked={isLiked} onLikeClick={toggleLike} grooveId={detailGroove?.id} />
             </LikeWrap>
@@ -334,15 +331,11 @@ function DetailPage({
           {user && user.uid === detailGroove.authorId && (
             <>
               <button onClick={handleEdit}>수정하기</button>
-              <br />
               <button onClick={handleDelete}>삭제하기</button>
-              <br />
             </>
           )}
-          <button onClick={() => navigate("/")}>홈으로</button>
-          <br />
 
-          <br />
+          <HomeBtn onClick={() => navigate("/")}></HomeBtn>
         </Wrap>
       )}
       <GrooveFooter />

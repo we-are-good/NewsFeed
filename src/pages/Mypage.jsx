@@ -169,7 +169,9 @@ function MyPage({
                             <p>{post.formattedTime}</p> {/* 작성 시간 렌더링 */}
                             <i className="fa-solid fa-heart" /> {Object.keys(post.likes || {}).length}개
                           </div>
-                          <StImageWrapper> {/* 이미지를 감싸는 div */}
+                          <StImageWrapper>
+                            {" "}
+                            {/* 이미지를 감싸는 div */}
                             <StImage src={post.imageUrl} alt="업로드된 이미지" />
                           </StImageWrapper>
                         </StPostContainer>
@@ -220,7 +222,7 @@ const StInfo = styled.p`
 
 const StNickname = styled.p`
   justify-content: space-between;
-  display: flex; 
+  display: flex;
   align-items: center;
 `;
 

@@ -39,7 +39,6 @@ function WritePage({
   // const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(currentUser);
   useEffect(() => {
-    console.log("currentUser", currentUser);
     if (isLoggedIn) {
       return;
     } else {
@@ -72,7 +71,6 @@ function WritePage({
   };
 
   const addTodo = async (event) => {
-    console.log(currentUser);
     event.preventDefault();
     // Firestore에서 'grooveTop' 컬렉션에 대한 참조 생성하기
     const newGroove = {
@@ -93,8 +91,6 @@ function WritePage({
     const collectionRef = collection(db, "GrooveTop");
     // 여기서 id는  firebase database -> grooveTop컬렉션의 문서값
     const { id } = await addDoc(collectionRef, newGroove);
-    console.log("id", id);
-
     setGrooveTop((prev) => {
       // 'GrooveTop' 컬렉션에 newTodo 문서를 추가합니다.
       return [...GrooveTop, { ...newGroove, id }];
@@ -106,15 +102,12 @@ function WritePage({
   const handleFileSelect = async (event) => {
     const file = event.target.files[0];
     setSelectedFile(event.target.files[0]);
-
     // ref 함수를 이용해서 Storage 내부 저장할 위치를 지정하고, uploadBytes 함수를 이용해서 파일을 저장합니다.
     // const imageRef = ref(storage, `${auth.currentUser.uid}/${selectedFile.name}`);
     const imageRef = ref(storage, `${auth.uid}/${file.name}`);
     await uploadBytes(imageRef, file);
-
     // 다운로드 URL 가져오기
     const downloadURL = await getDownloadURL(imageRef);
-    console.log("downloadURL", downloadURL);
     setImageUrl(downloadURL);
   };
 

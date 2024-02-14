@@ -14,9 +14,8 @@ import { auth, db, storage } from "../firebase";
 import { doc, updateDoc, deleteDoc, getDoc } from "firebase/firestore";
 import GrooveLikeBtn from "../components/Groove/GrooveTotalFeed/GrooveLikeBtn";
 import GrooveAuth from "../components/Groove/GrooveAuth";
-
 import { getDownloadURL, ref, uploadBytes } from "@firebase/storage";
-
+import defaultImage from "../assets/defaultImage.jpg";
 import GrooveHeader from "../components/Groove/GrooveHeader";
 
 function DetailPage({
@@ -231,7 +230,11 @@ function DetailPage({
 
       {isEditing ? (
         <EditingWrap>
-          <img style={{ width: "400px", height: "400px" }} src={imageURL} alt="미리보기"></img>
+          {imageURL ? (
+            <img style={{ width: "400px", height: "400px" }} src={imageURL} alt="이미지 미리보기"></img>
+          ) : (
+            <img style={{ width: "400px", height: "400px" }} src={defaultImage} alt="기본 이미지"></img>
+          )}
           <EditingTitle>
             제목: <input type="text" value={editedTitle} onChange={(e) => setEditedTitle(e.target.value)} />
           </EditingTitle>
@@ -250,7 +253,12 @@ function DetailPage({
         </EditingWrap>
       ) : (
         <Wrap>
-          <img style={{ width: "400px", height: "400px" }} src={imageURL} alt="Groove Image"></img>
+          {imageURL ? (
+            <img style={{ width: "400px", height: "400px" }} src={imageURL} alt="Groove Image"></img>
+          ) : (
+            <img style={{ width: "400px", height: "400px" }} src={defaultImage} alt="기본 이미지"></img>
+          )}
+          {/* <img style={{ width: "400px", height: "400px" }} src={imageURL} alt="Groove Image"></img> */}
           <Title>제목: {originalTitle}</Title>
           <Body>내용: {originalBody}</Body>
           {/* 좋아요 버튼 컴포넌트를 렌더링하고, 필요한 props를 전달합니다. */}

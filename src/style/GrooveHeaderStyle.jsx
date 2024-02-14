@@ -20,12 +20,12 @@ export const GrooveHeaderFixed = styled.div`
   z-index: 10;
   transition: all 0.5s;
   &.scrolled-header {
+    background-color: #151515dd;
     top: 0.5rem;
     width: calc(100% - 1rem);
     left: 0.5rem;
     border-radius: 10px;
-  }
-  &.normal-header-header {
+    box-shadow: 0 0 20px #000;
   }
 `;
 export const GrooveHeaderLogo = styled.h1`

@@ -1,5 +1,17 @@
 import { useEffect, useState } from "react";
-import { Top, StyledLink, ImgWrapBox, ContentWrapBox, Title, Body, UserLikeBox } from "../../../style/GrooveFeedStyle";
+import {
+  Top,
+  StyledLink,
+  ImgWrapBox,
+  ContentWrapBox,
+  Title,
+  Body,
+  WriteTime,
+  ContentTop,
+  ContentBot,
+  UserLikeBox,
+  UserNicName
+} from "../../../style/GrooveFeedStyle";
 import { format } from "date-fns";
 import { getFirestore, collection, getDocs } from "firebase/firestore";
 import { app } from "../../../firebase";
@@ -51,17 +63,18 @@ const GrooveFeed = ({ GrooveTop }) => {
                 {item.imageUrl ? <img src={item.imageUrl} alt="업로드된 이미지" /> : <img src={defaultImage}></img>}
               </ImgWrapBox>
               <ContentWrapBox>
-                <Title>{item.title}</Title>
-                <Body>{item.body}</Body>
-                <p>{formattedTime}</p>
-
-                <UserLikeBox>
-                  <p>
+                <ContentTop>
+                  <Title>{item.title}</Title>
+                  <Body>{item.body}</Body>
+                  <WriteTime>{formattedTime}</WriteTime>
+                </ContentTop>
+                <ContentBot>
+                  {/* nickname 값 렌더링 */}
+                  <UserNicName>{userLoginData ? userLoginData.nickname : "Unknown"}</UserNicName>
+                  <UserLikeBox>
                     <i className="fa-solid fa-heart" /> {Object.keys(item.likes || {}).length}개
-                  </p>
-                </UserLikeBox>
-                {/* nickname 값 렌더링 */}
-                <p>{userLoginData ? userLoginData.nickname : "Unknown"}</p>
+                  </UserLikeBox>
+                </ContentBot>
               </ContentWrapBox>
             </StyledLink>
           );

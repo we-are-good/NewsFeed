@@ -36,7 +36,7 @@ function GrooveHeader({
   };
 
   const myIconClick = () => {
-    return setIsMyIconClicked(true);
+    setIsMyIconClicked((prevState) => !prevState);
   };
 
   const goMyPage = () => {
@@ -97,7 +97,7 @@ function GrooveHeader({
               <GrooveHeaderIconWrite onClick={goWrite}>
                 <i className="fa-solid fa-pen" />
               </GrooveHeaderIconWrite>
-              <GrooveHeaderIconMy onClick={() => myIconClick()}>
+              <GrooveHeaderIconMy onClick={myIconClick}>
                 <i className="fa-solid fa-user" />
               </GrooveHeaderIconMy>
             </GrooveHeaderIcons>

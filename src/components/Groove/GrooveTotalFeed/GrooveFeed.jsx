@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Top,
   StyledLink,
@@ -10,7 +10,8 @@ import {
   ContentTop,
   ContentBot,
   UserLikeBox,
-  UserNicName
+  UserNicName,
+  ProfileImage
 } from "../../../style/GrooveFeedStyle";
 import { format } from "date-fns";
 import { getFirestore, collection, getDocs } from "firebase/firestore";
@@ -33,7 +34,8 @@ const GrooveFeed = ({ GrooveTop }) => {
           loginDataArray.push({
             id: doc.id,
             email: data.email,
-            nickname: data.nickname
+            nickname: data.nickname,
+            profileImage: data.profileImage // 프로필 이미지 URL 추가
           });
         });
         setLoginData(loginDataArray);
@@ -70,6 +72,10 @@ const GrooveFeed = ({ GrooveTop }) => {
                   <WriteTime>{formattedTime}</WriteTime>
                 </ContentTop>
                 <ContentBot>
+                <ProfileImage
+                    src={userLoginData && userLoginData.profileImage ? userLoginData.profileImage : ""}
+                    alt=""
+                  />
                   <UserNicName>{userLoginData ? userLoginData.nickname : "Unknown"}</UserNicName>
                   <UserLikeBox>
                     <i className="fa-solid fa-heart" /> {Object.keys(item.likes || {}).length}개

@@ -27,7 +27,7 @@
 - **스타일링 방식**
   - [x] styled-components 적용
 - **상태관리 라이브러리**
-  - [] Redux 적용
+  - [ ] Redux 적용
 - **GIT**
   - [x] git add / commit / push 활용
   - [x] git 브랜치/ PR / merge 활용

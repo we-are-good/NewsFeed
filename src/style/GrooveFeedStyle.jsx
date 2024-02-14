@@ -100,3 +100,9 @@ export const UserLikeBox = styled.div`
 `;
 
 export const UserNicName = styled.div``;
+
+export const ProfileImage = styled.img`
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+`;

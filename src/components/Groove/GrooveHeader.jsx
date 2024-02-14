@@ -192,7 +192,11 @@ function GrooveHeader({
           </GrooveHeaderIconWrap>
         </GrooveHeaderFixed>
       </GrooveHeaderWrap>
-      <TopBtn className="scroll-to-top" onClick={scrollToTop}></TopBtn>
+      {isVisible && (
+        <TopBtn className="scroll-to-top" onClick={scrollToTop}>
+          <i className="fa-solid fa-angles-up"></i>
+        </TopBtn>
+      )}
     </>
   );
 }

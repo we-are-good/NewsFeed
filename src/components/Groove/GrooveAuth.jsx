@@ -105,7 +105,7 @@ function GrooveAuth({
         email: email,
         nickname: nickname,
         profileImage:
-          "https://firebasestorage.googleapis.com/v0/b/groove-a1c3e.appspot.com/o/undefined%2Fchicken.png?alt=media&token=7b5470ae-2d55-4ef0-a018-ac5af31d2ab2"
+          "https://firebasestorage.googleapis.com/v0/b/groove-a1c3e.appspot.com/o/avatars%2F6jGLxl6CBvcl4vO5vtUvbLO2FN23_chicken.png?alt=media&token=3228961e-73b4-47e3-b371-ba9e3bf7207f"
       }; // 기본 프로필 이미지 URL 추가
       const collectionRef = collection(db, "logInData");
       await addDoc(collectionRef, newUser);
@@ -157,10 +157,15 @@ function GrooveAuth({
       const user = result.user;
       const newUser = {
         email: user.email,
+<<<<<<< HEAD
         nickname: user.displayName,
         profileImage:
           user.photoURL ||
           "https://firebasestorage.googleapis.com/v0/b/groove-a1c3e.appspot.com/o/undefined%2Fchicken.png?alt=media&token=7b5470ae-2d55-4ef0-a018-ac5af31d2ab2"
+=======
+        nickname: user.displayName, 
+        profileImage: user.photoURL || "https://firebasestorage.googleapis.com/v0/b/groove-a1c3e.appspot.com/o/avatars%2F6jGLxl6CBvcl4vO5vtUvbLO2FN23_chicken.png?alt=media&token=3228961e-73b4-47e3-b371-ba9e3bf7207f"
+>>>>>>> d0cbef559c3b415bcd251772bdab3a36afa98150
       };
       setIsUserLogIn(true);
       setSignUpModal(false);

@@ -86,11 +86,6 @@ function GrooveAuth({
     }
   };
 
-  const logOut = async (event) => {
-    setIsUserLogIn(false);
-    await signOut(auth);
-  };
-
   const signUp = async (event) => {
     event.preventDefault();
     try {

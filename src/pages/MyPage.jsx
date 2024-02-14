@@ -277,6 +277,7 @@ const StUserContainer = styled.div`
   }
   & > section {
     position: relative;
+    text-align: center;
   }
   & > section > img {
     max-width: 400px;

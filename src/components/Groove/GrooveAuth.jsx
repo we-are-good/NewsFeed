@@ -215,7 +215,7 @@ function GrooveAuth({
     <div>
       {!isUserLogIn && (
         <BackgroundLogInButton type="button" onClick={openLogInModal}>
-          Log in
+          <i class="fa-solid fa-arrow-right-to-bracket" />
         </BackgroundLogInButton>
       )}
       {(logInModal || signUpModal || socialLogInModal) && (

@@ -1,70 +1,91 @@
-# Getting Started with Create React App
+## 시연 영상 및 정리
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+1. 시연 영상 녹화본
+2. 프로젝트 결과물 정리본
 
-## Available Scripts
+## 필수 구현 기능
 
-In the project directory, you can run:
+- **회원 기능**
+  - [x] Authentication 에서 제공하는 api를 사용하여 회원 가입, 로그인 구현할 수 있다.
+  - [x] Authentication 과 Storage에서 제공하는 api를 사용하여 마이 페이지 프로필 수정 구현
+- **SPA**
+  - [x] react-router-dom 적용: path에 따라 렌더링할 페이지 컴포넌트를 지정
+  - [x] CSR (Client Side Rendering)적용 : 서버로부터 json 데이터 받아와 새로고침 없이 화면 전환
+- **CRUD**
+  - [x] 게시글 쓰기 기능 구현
+  - [x] 게시글 글 보여주기 구현
+  - [x] 게시글 글 수정 구현
+  - [x] 게시글 글 삭제 구현
+- **스타일링 방식**
+  - [x] styled-components 적용
+- **상태관리 라이브러리**
+  - [x] Redux 적용
+- **GIT**
+  - [x] git add / commit / push 활용
+  - [x] git 브랜치/ PR / merge 활용
+  - [ ] github pull request에서 Code review 활용
+- **배포**
+  - [ ] Vercel 을 이용하여 배포하기
+  - [ ] 가비아 또는 고대디 같은 도메인 판매 업체에서 도메인을 구매하여 커스텀 도메인 적용
 
-### `yarn start`
+## 와이어 프레임
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### 메인 페이지
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+![main](https://github.com/illuy/groove/assets/103303516/83b053f8-8ca6-4ae8-b273-2805d1879e1f)
 
-### `yarn test`
+### 로그인 모달
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+![login](https://github.com/illuy/groove/assets/103303516/c3ee5374-12ad-4a2d-a384-9b1f791a6552)
 
-### `yarn build`
+### 상세 페이지
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+![detailpage](https://github.com/illuy/groove/assets/103303516/76c4e747-6919-462e-8328-e082d40cd6cc)
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### 작성 페이지
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+![crud](https://github.com/illuy/groove/assets/103303516/8c84399a-7e74-4111-b302-4d24bd28ab7d)
 
-### `yarn eject`
+### 마이 페이지
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+![my](https://github.com/illuy/groove/assets/103303516/a5bdfbbf-3f12-4003-9c28-d3fc0e6e116a)
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## 파일구조
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+```
+src
+ ┣ assets
+ ┃ ┗ defaultImage.jpg
+ ┣ components
+ ┃ ┗ Groove
+ ┃ ┃ ┣ GrooveTotalFeed
+ ┃ ┃ ┃ ┣ GrooveFeed.jsx
+ ┃ ┃ ┃ ┣ GrooveFeedList.jsx
+ ┃ ┃ ┃ ┗ GrooveLikeBtn.jsx
+ ┃ ┃ ┣ GrooveAuth.jsx
+ ┃ ┃ ┣ GrooveFooter.jsx
+ ┃ ┃ ┗ GrooveHeader.jsx
+ ┣ dummyData
+ ┃ ┣ authdummy.jsx
+ ┃ ┣ FileUpload.jsx
+ ┃ ┗ FireStoredummy.jsx
+ ┣ pages
+ ┃ ┣ DetailPage.jsx
+ ┃ ┣ Home.jsx
+ ┃ ┣ MyPage.jsx
+ ┃ ┗ WritePage.jsx
+ ┣ shared
+ ┃ ┣ GlobalStyle.jsx
+ ┃ ┗ Router.js
+ ┣ style
+ ┃ ┣ GrooveAuthStyle.jsx
+ ┃ ┣ GrooveDetailStyle.jsx
+ ┃ ┣ GrooveFeedStyle.jsx
+ ┃ ┣ GrooveFooterStyle.jsx
+ ┃ ┣ GrooveHeaderStyle.jsx
+ ┃ ┗ GrooveWriteStyle.jsx
+ ┣ App.jsx
+ ┣ firebase.js
+ ┣ index.js
+ ┗ reportWebVitals.js
+```

@@ -115,8 +115,7 @@ function GrooveAuth({
         if (user) return;
       });
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      console.log("userCredential", userCredential);
-      const newUser = { email: email, nickname: nickname };
+      const newUser = { email: email, nickname: nickname, profileImage: "https://firebasestorage.googleapis.com/v0/b/groove-a1c3e.appspot.com/o/undefined%2Fchicken.png?alt=media&token=7b5470ae-2d55-4ef0-a018-ac5af31d2ab2" }; // 기본 프로필 이미지 URL 추가
       const collectionRef = collection(db, "logInData");
       await addDoc(collectionRef, newUser);
       closeSignUpModal();

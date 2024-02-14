@@ -1,13 +1,11 @@
 import {
-  EditingTitle,
-  DetailFileBox,
   Wrap,
   Title,
   Body,
   EditingWrap,
   EditingButtonWrap,
   HomeBtn,
-  EditingBody,
+  DetailEdit,
   LikeWrap,
   NoneLoggedLike
 } from "../style/GrooveDetailStyle";
@@ -328,10 +326,10 @@ function DetailPage({
           )}
           {/* 작성자와 로그인한 사용자가 동일한 경우에만 수정, 삭제 버튼 노출 */}
           {user && user.uid === detailGroove.authorId && (
-            <>
+            <DetailEdit>
               <button onClick={handleEdit}>수정하기</button>
               <button onClick={handleDelete}>삭제하기</button>
-            </>
+            </DetailEdit>
           )}
 
           <HomeBtn onClick={() => navigate("/")}>

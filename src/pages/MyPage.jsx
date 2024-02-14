@@ -55,7 +55,7 @@ function MyPage({
   }, []);
 
   const db = getFirestore();
-  const storageRef = ref(storage, 'avatars');
+  const storageRef = ref(storage, "avatars");
 
   const fetchData = async (email) => {
     try {
@@ -169,98 +169,111 @@ function MyPage({
         setNickname={setNickname}
       />
 
-      <StDiv>
+      <StDivWrap>
         {currentUser ? (
           <StDiv>
-            <StDiv>
-              <StUserContainer>
-                <StInfo>사용자 정보:</StInfo>
-                {profileImageUrl && <img src={profileImageUrl} alt="프로필 사진" />}
-                {/* 프로필 이미지 수정 버튼 및 업로드 input */}
-                {!editingNickname && (
-                  <div>
-                    <button onClick={() => setEditingProfileImage(true)}>프로필 이미지 수정</button>
-                  </div>
-                )}
-                {editingProfileImage && (
-                  <div>
-                    <input type="file" accept="image/*" onChange={handleAvatarChange} />
-                    <button onClick={confirmProfileImageChange}>확인</button>
-                    <button onClick={cancelProfileImageChange}>취소</button>
-                  </div>
-                )}
-                {editingNickname ? (
-                  <div>
-                    <p>
-                      닉네임:
-                      <StInput type="text" value={newNickname} onChange={(e) => setNewNickname(e.target.value)} />
-                      <button onClick={handleNicknameChange}>변경</button>
-                      <button onClick={() => setEditingNickname(false)}>취소</button>
-                    </p>
-                  </div>
-                ) : (
-                  <StNickname>
-                    닉네임: {nickname} <StEditbtn onClick={() => setEditingNickname(true)}>변경</StEditbtn>
-                  </StNickname>
-                )}
-                <p>이메일 주소: {userEmail}</p>
-              </StUserContainer>
-              <p>작성한 글 목록:</p>
-              {userPosts.length > 0 ? (
-                <StUl>
-                  {userPosts.map((post, index) => (
-                    <li key={index}>
-                      <StPostLink
-                        to={{
-                          pathname: `/detail/${post.id}`
-                        }}
-                        state={userPosts}
-                      >
-                        <StPostContainer>
-                          <div>
-                            <StTitle>{post.title}</StTitle>
-                            <StContent>{post.body}</StContent>
-                            <p>{post.formattedTime}</p>
-                            <i className="fa-solid fa-heart" /> {Object.keys(post.likes || {}).length}개
-                          </div>
-                          <StImageWrapper>
-                            <StImage src={post.imageUrl} alt="업로드된 이미지" />
-                          </StImageWrapper>
-                        </StPostContainer>
-                      </StPostLink>
-                    </li>
-                  ))}
-                </StUl>
-              ) : (
-                <p>작성한 글이 없습니다.</p>
+            <StUserContainer>
+              <StInfo>사용자 정보:</StInfo>
+              {profileImageUrl && <img src={profileImageUrl} alt="프로필 사진" />}
+              {/* 프로필 이미지 수정 버튼 및 업로드 input */}
+              {!editingNickname && (
+                <div>
+                  <button onClick={() => setEditingProfileImage(true)}>프로필 이미지 수정</button>
+                </div>
               )}
-            </StDiv>
+              {editingProfileImage && (
+                <div>
+                  <input type="file" accept="image/*" onChange={handleAvatarChange} />
+                  <button onClick={confirmProfileImageChange}>확인</button>
+                  <button onClick={cancelProfileImageChange}>취소</button>
+                </div>
+              )}
+              {editingNickname ? (
+                <div>
+                  <p>
+                    닉네임:
+                    <StInput type="text" value={newNickname} onChange={(e) => setNewNickname(e.target.value)} />
+                    <button onClick={handleNicknameChange}>변경</button>
+                    <button onClick={() => setEditingNickname(false)}>취소</button>
+                  </p>
+                </div>
+              ) : (
+                <StNickname>
+                  닉네임: {nickname} <StEditbtn onClick={() => setEditingNickname(true)}>변경</StEditbtn>
+                </StNickname>
+              )}
+              <p>이메일 주소: {userEmail}</p>
+            </StUserContainer>
+            <p>작성한 글 목록:</p>
+            {userPosts.length > 0 ? (
+              <StUl>
+                {userPosts.map((post, index) => (
+                  <li key={index}>
+                    <StPostLink
+                      to={{
+                        pathname: `/detail/${post.id}`
+                      }}
+                      state={userPosts}
+                    >
+                      <StPostContainer>
+                        <div>
+                          <StTitle>{post.title}</StTitle>
+                          <StContent>{post.body}</StContent>
+                          <div>
+                            <p>{post.formattedTime}</p>
+                            <p>
+                              <i className="fa-solid fa-heart" /> {Object.keys(post.likes || {}).length}개
+                            </p>
+                          </div>
+                        </div>
+                        <StImageWrapper>
+                          <StImage src={post.imageUrl} alt="업로드된 이미지" />
+                        </StImageWrapper>
+                      </StPostContainer>
+                    </StPostLink>
+                  </li>
+                ))}
+              </StUl>
+            ) : (
+              <p>작성한 글이 없습니다.</p>
+            )}
           </StDiv>
         ) : (
           <StyledMessage>
             <p>로그인이 필요합니다.</p>
           </StyledMessage>
         )}
-      </StDiv>
+      </StDivWrap>
       <StGrooveFooter />
     </div>
   );
 }
 
-const StDiv = styled.div`
+const StDivWrap = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
   min-height: 100vh;
+  padding: 2rem;
+`;
+const StDiv = styled.div`
+  display: flex;
+  /* justify-content: center; */
+  align-items: center;
+  flex-direction: column;
 `;
 
 const StUserContainer = styled.div`
+  width: 400px;
   margin: 6vh;
   line-height: 1.5;
   & > p {
     border-bottom: 1px solid #ffc41d;
     padding-bottom: 10px;
     margin-bottom: 10px;
+  }
+  & > img {
+    max-width: 400px;
   }
 `;
 
@@ -288,6 +301,7 @@ const StyledMessage = styled.div`
 
 const StUl = styled.ul`
   margin-top: 20px;
+  width: 1280px;
 `;
 
 const StInput = styled.input`
@@ -317,10 +331,8 @@ const StPostLink = styled(Link)`
 `;
 
 const StImage = styled.img`
-  width: 200px;
-  height: 200px;
+  height: 100%;
   object-fit: cover;
-  margin-left: 30px;
 `;
 
 const StTitle = styled.p`
@@ -329,18 +341,41 @@ const StTitle = styled.p`
   font-weight: bold;
 `;
 
-const StImageWrapper = styled.div`
-  justify-self: end;
+const StImageWrapper = styled.article`
+  width: 200px;
+  height: 200px;
+  overflow: hidden;
+  margin-left: 20px;
+  & > img {
+    width: 100%;
+  }
 `;
 
 const StPostContainer = styled.div`
-  display: grid;
-  grid-template-columns: 1fr auto;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
   align-items: center;
+  & > div {
+    width: calc(100% - 220px);
+    display: flex;
+    flex-direction: column;
+    height: 200px;
+  }
+  & > div > div {
+    margin-top: auto;
+  }
+  & > div > div > p:nth-of-type(1) {
+    margin-bottom: 0.5rem;
+    font-size: 14px;
+    font-weight: 200;
+    color: #ccc;
+  }
 `;
 
 const StContent = styled.p`
   font-size: 16px;
+  margin-bottom: 1rem;
 `;
 
 const StGrooveFooter = styled(GrooveFooter)`

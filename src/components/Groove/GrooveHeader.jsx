@@ -26,13 +26,11 @@ function GrooveHeader({
   logInModal,
   setTotalUsersInformation,
   nickname,
-  setNickname
+  setNickname,
+  nicknameModal,
+  setNicknameModal,
+  onNicknameChange
 }) {
-  const [nicknameModal, setNicknameModal] = useState(false);
-  const onNicknameChange = (event) => {
-    setNickname(event.target.value);
-  };
-
   const navigate = useNavigate();
 
   const logOut = async (event) => {
@@ -131,6 +129,8 @@ function GrooveHeader({
               setLogInModal={setLogInModal}
               setIsUserLogIn={setIsUserLogIn}
               onNicknameChange={onNicknameChange}
+              nicknameModal={nicknameModal}
+              setNicknameModal={setNicknameModal}
             />
           )}
           {isMyIconClicked && (

@@ -14,7 +14,10 @@ function Home({
   logInModal,
   setLogInModal,
   nickname,
-  setNickname
+  setNickname,
+  nicknameModal,
+  setNicknameModal,
+  onNicknameChange
 }) {
   return (
     <Wrapper>
@@ -28,6 +31,9 @@ function Home({
         setLogInModal={setLogInModal}
         nickname={nickname}
         setNickname={setNickname}
+        nicknameModal={nicknameModal}
+        setNicknameModal={setNicknameModal}
+        onNicknameChange={onNicknameChange}
       />
       <GrooveFeedList />
       <GrooveFooter />

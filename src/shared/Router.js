@@ -13,6 +13,11 @@ const Router = () => {
   const [totalUsersInformation, setTotalUsersInformation] = useState([]);
   const [logInModal, setLogInModal] = useState(false);
   const [nickname, setNickname] = useState("");
+  const [nicknameModal, setNicknameModal] = useState(false);
+
+  const onNicknameChange = (event) => {
+    setNickname(event.target.value);
+  };
 
   const auth = getAuth();
   const [currentUser, setCurrentUser] = useState(auth.currentUser);
@@ -46,6 +51,9 @@ const Router = () => {
               setTotalUsersInformation={setTotalUsersInformation}
               logInModal={logInModal}
               setLogInModal={setLogInModal}
+              nicknameModal={nicknameModal}
+              setNicknameModal={setNicknameModal}
+              onNicknameChange={onNicknameChange}
             />
           }
         />
@@ -63,6 +71,9 @@ const Router = () => {
               setTotalUsersInformation={setTotalUsersInformation}
               logInModal={logInModal}
               setLogInModal={setLogInModal}
+              nicknameModal={nicknameModal}
+              setNicknameModal={setNicknameModal}
+              onNicknameChange={onNicknameChange}
             />
           }
         />
@@ -80,6 +91,9 @@ const Router = () => {
               setTotalUsersInformation={setTotalUsersInformation}
               logInModal={logInModal}
               setLogInModal={setLogInModal}
+              nicknameModal={nicknameModal}
+              setNicknameModal={setNicknameModal}
+              onNicknameChange={onNicknameChange}
             />
           }
         />
@@ -98,6 +112,9 @@ const Router = () => {
               setTotalUsersInformation={setTotalUsersInformation}
               logInModal={logInModal}
               setLogInModal={setLogInModal}
+              nicknameModal={nicknameModal}
+              setNicknameModal={setNicknameModal}
+              onNicknameChange={onNicknameChange}
             />
           }
         />

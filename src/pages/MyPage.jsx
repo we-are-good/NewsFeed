@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { auth, db, storage } from "../firebase"; // storage 추가
+import { auth, db } from "../firebase";
 import { collection, query, where, getDocs, getFirestore, doc, updateDoc } from "firebase/firestore";
 import GrooveHeader from "../components/Groove/GrooveHeader";
 import GrooveFooter from "../components/Groove/GrooveFooter";
@@ -27,7 +27,6 @@ function MyPage({
   const [newNickname, setNewNickname] = useState("");
   const [editingNickname, setEditingNickname] = useState(false);
   const [profileImageUrl, setProfileImageUrl] = useState(""); // 프로필 이미지 URL 추가
-  const [profileImageFile, setProfileImageFile] = useState(null); // 프로필 이미지 파일 추가
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
@@ -115,34 +114,6 @@ function MyPage({
     }
   };
 
-  const handleProfileImageChange = (e) => {
-    const file = e.target.files[0];
-    setProfileImageFile(file);
-  };
-
-  const handleProfileImageUpload = async () => {
-    if (!profileImageFile) {
-      alert("이미지를 선택해주세요.");
-      return;
-    }
-
-    try {
-      const storageRef = storage.ref();
-      const fileRef = storageRef.child(`profileImages/${currentUser.uid}/${profileImageFile.name}`);
-      await fileRef.put(profileImageFile);
-      const imageUrl = await fileRef.getDownloadURL();
-
-      const userDocRef = doc(db, "logInData", userDocId);
-      await updateDoc(userDocRef, {
-        profileImage: imageUrl
-      });
-      setProfileImageUrl(imageUrl);
-      setProfileImageFile(null);
-    } catch (error) {
-      console.error("Error uploading profile image:", error);
-    }
-  };
-
   return (
     <div>
       <GrooveHeader
@@ -165,9 +136,6 @@ function MyPage({
               <StUserContainer>
                 <StInfo>사용자 정보:</StInfo>
                 {profileImageUrl && <img src={profileImageUrl} alt="프로필 사진" />} {/* 프로필 이미지 렌더링 */}
-                {/* 프로필 이미지 업로드 input */}
-                <input type="file" onChange={handleProfileImageChange} />
-                <button onClick={handleProfileImageUpload}>프로필 이미지 업로드</button>
                 {editingNickname ? (
                   <div>
                     <p>
@@ -194,7 +162,6 @@ function MyPage({
                           pathname: `/detail/${post.id}`
                         }}
                         state={userPosts}
-                        setUserPosts={setUserPosts}
                       >
                         <StPostContainer>
                           <div>

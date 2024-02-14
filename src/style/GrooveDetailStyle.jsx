@@ -130,12 +130,52 @@ export const LikeWrap = styled.div`
 
 export const NoneLoggedLike = styled.div`
   display: flex;
-  font-size: 1.5rem;
-  flex-direction: column;
   align-items: center;
+  width: 60%;
+  font-size: 0.9rem;
+  font-weight: 200;
+  color: #ccc;
   gap: 12px;
+  margin-bottom: 12px;
+  @media (max-width: 1280px) {
+    width: 80%;
+  }
+  & > span {
+    margin-right: auto;
+  }
 `;
-export const DetailEdit = styled.div``;
+export const DetailEdit = styled.div`
+  width: 60%;
+  display: flex;
+  justify-content: flex-end;
+  @media (max-width: 1280px) {
+    width: 80%;
+  }
+  & > button {
+    border-radius: 5px;
+    border: none;
+    padding: 5px 10px;
+    margin-left: 0.5rem;
+    font-size: 1rem;
+    cursor: pointer;
+  }
+  & > button:nth-of-type(1) {
+    background-color: rgba(65, 105, 225, 0.5);
+    color: #eee;
+  }
+  & > button:nth-of-type(2) {
+    background-color: rgba(255, 99, 71, 0.5);
+    color: #eee;
+  }
+  & > button:hover:nth-of-type(1) {
+    background-color: rgba(65, 105, 225, 1);
+    color: #eee;
+  }
+  & > button:hover:nth-of-type(2) {
+    background-color: rgba(255, 99, 71, 1);
+    color: #eee;
+  }
+`;
 export const HomeBtn = styled.button`
   position: fixed;
   right: 3rem;

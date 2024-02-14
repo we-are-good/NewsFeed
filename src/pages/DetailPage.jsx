@@ -4,7 +4,6 @@ import {
   Body,
   EditingWrap,
   EditingButtonWrap,
-  HomeBtn,
   DetailEdit,
   LikeWrap,
   NoneLoggedLike
@@ -322,10 +321,6 @@ function DetailPage({
               <button onClick={handleDelete}>삭제하기</button>
             </DetailEdit>
           )}
-
-          <HomeBtn onClick={() => navigate("/")}>
-            <i className="fa-solid fa-house" />
-          </HomeBtn>
         </Wrap>
       )}
       <GrooveFooter />

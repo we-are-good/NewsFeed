@@ -85,8 +85,9 @@ export const ContentTop = styled.div`
   height: 100%;
 `;
 export const ContentBot = styled.div`
-  margin-top: 1rem;
+  margin-top: 0.5rem;
   display: flex;
+  align-items: center;
   justify-content: space-between;
 `;
 export const WriteTime = styled.span`
@@ -96,13 +97,14 @@ export const WriteTime = styled.span`
   font-weight: 100;
 `;
 export const UserLikeBox = styled.div`
-  margin-top: auto;
+  margin-left: auto;
 `;
 
 export const UserNicName = styled.div``;
 
 export const ProfileImage = styled.img`
-  width: 40px;
-  height: 40px;
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
+  margin-right: 0.5rem;
 `;

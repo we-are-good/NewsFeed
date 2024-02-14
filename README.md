@@ -4,6 +4,7 @@
 - 소개
   - 뉴스피드 만들기
   - 내용 : React를 활용하여 뉴스피드 만들기
+  - 사이트 :[ groove-swart.vercel.app](https://groove-swart.vercel.app/)
 
 ## 2. 시연 영상 및 정리
 

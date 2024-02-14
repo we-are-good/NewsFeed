@@ -37,6 +37,8 @@ function GrooveHeader({
     await signOut(auth);
     setIsMyIconClicked(false);
     setIsUserLogIn(false);
+    setNicknameModal(false);
+    setNickname("");
   };
 
   const myIconClick = () => {
@@ -145,7 +147,7 @@ function GrooveHeader({
               </GrooveHeaderIconSelection>
             </div>
           )}
-          {!nickname && currentUser && (
+          {nicknameModal && (
             <SocialLogInNickname>
               <input placeholder="Nickname" type="text" required value={nickname} onChange={onNicknameChange} />
               <button onClick={socialLogInNickname}>확인</button>

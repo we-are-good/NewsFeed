@@ -34,7 +34,10 @@ function DetailPage({
   logInModal,
   setLogInModal,
   nickname,
-  setNickname
+  setNickname,
+  nicknameModal,
+  setNicknameModal,
+  onNicknameChange
 }) {
   const navigate = useNavigate();
   const params = useParams();

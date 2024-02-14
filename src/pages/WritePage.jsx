@@ -20,7 +20,10 @@ function WritePage({
   logInModal,
   setLogInModal,
   nickname,
-  setNickname
+  setNickname,
+  nicknameModal,
+  setNicknameModal,
+  onNicknameChange
 }) {
   const focusRef = useRef();
   const navigate = useNavigate();
@@ -129,6 +132,9 @@ function WritePage({
         setLogInModal={setLogInModal}
         nickname={nickname}
         setNickname={setNickname}
+        nicknameModal={nicknameModal}
+        setNicknameModal={setNicknameModal}
+        onNicknameChange={onNicknameChange}
       />
       <Form>
         {imageUrl ? <img src={imageUrl} alt="Groove Image"></img> : <img src={defaultImage} alt="기본 이미지"></img>}

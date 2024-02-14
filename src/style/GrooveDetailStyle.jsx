@@ -184,4 +184,5 @@ export const HomeBtn = styled.button`
   height: 2rem;
   border-radius: 50%;
   border: 0px;
+  cursor: pointer;
 `;

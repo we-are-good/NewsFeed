@@ -19,7 +19,10 @@ function MyPage({
   logInModal,
   setLogInModal,
   nickname,
-  setNickname
+  setNickname,
+  nicknameModal,
+  setNicknameModal,
+  onNicknameChange
 }) {
   const [userEmail, setUserEmail] = useState("");
   const [userUid, setUserUid] = useState("");
@@ -167,6 +170,9 @@ function MyPage({
         setLogInModal={setLogInModal}
         nickname={nickname}
         setNickname={setNickname}
+        nicknameModal={nicknameModal}
+        setNicknameModal={setNicknameModal}
+        onNicknameChange={onNicknameChange}
       />
 
       <StDivWrap>

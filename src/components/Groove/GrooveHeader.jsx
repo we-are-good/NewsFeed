@@ -20,13 +20,14 @@ import { addDoc, collection, getDocs, query } from "firebase/firestore";
 import { SocialLogInNickname } from "../../style/GrooveAuthStyle";
 
 function GrooveHeader({
+  isUserLogIn,
   currentUser,
-  setIsUserLogIn,
   isMyIconClicked,
   setIsMyIconClicked,
-  setLogInModal,
-  logInModal,
+  setIsUserLogIn,
   setTotalUsersInformation,
+  logInModal,
+  setLogInModal,
   nickname,
   setNickname,
   nicknameModal,
@@ -63,19 +64,23 @@ function GrooveHeader({
   };
 
   const user = currentUser;
-  const socialLogInNickname = () => {
+  const nicknameModalIn = () => {
     if (!nickname) {
       return alert("빈칸을 입력해 주세요!");
     }
     setNickname(nickname);
-    const newUser = { email: user.email, nickname };
+    const newUser = {
+      email: user.email,
+      nickname,
+      profileImage:
+        "https://firebasestorage.googleapis.com/v0/b/groove-a1c3e.appspot.com/o/avatars%2F6jGLxl6CBvcl4vO5vtUvbLO2FN23_chicken.png?alt=media&token=3228961e-73b4-47e3-b371-ba9e3bf7207f"
+    };
     const collectionRef = collection(db, "logInData");
     addDoc(collectionRef, newUser);
     setNicknameModal(false);
     setNickname("");
     console.log(newUser);
   };
-
   useEffect(() => {
     const fetchData = async (userEmail) => {
       const q = query(collection(db, "logInData"));
@@ -103,6 +108,7 @@ function GrooveHeader({
     } else {
     }
   }, [user, nickname]);
+  console.log("currentUser", currentUser);
 
   const [scrolled, setScrolled] = useState(false);
   useEffect(() => {
@@ -162,13 +168,16 @@ function GrooveHeader({
                 nickname={nickname}
                 setNickname={setNickname}
                 currentUser={currentUser}
+                isUserLogIn={isUserLogIn}
+                setIsUserLogIn={setIsUserLogIn}
+                isMyIconClicked={isMyIconClicked}
+                setIsMyIconClicked={setIsMyIconClicked}
                 setTotalUsersInformation={setTotalUsersInformation}
                 logInModal={logInModal}
                 setLogInModal={setLogInModal}
-                setIsUserLogIn={setIsUserLogIn}
-                onNicknameChange={onNicknameChange}
                 nicknameModal={nicknameModal}
                 setNicknameModal={setNicknameModal}
+                onNicknameChange={onNicknameChange}
               />
             )}
             {isMyIconClicked && (
@@ -186,7 +195,7 @@ function GrooveHeader({
             {nicknameModal && (
               <SocialLogInNickname>
                 <input placeholder="Nickname" type="text" required value={nickname} onChange={onNicknameChange} />
-                <button onClick={socialLogInNickname}>확인</button>
+                <button onClick={nicknameModalIn}>확인</button>
               </SocialLogInNickname>
             )}
           </GrooveHeaderIconWrap>

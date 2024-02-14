@@ -1,4 +1,4 @@
-import { FileBox, Form, Input } from "../style/GrooveWriteStyle";
+import { FileBox, Form, Input, TextArea } from "../style/GrooveWriteStyle";
 import { Body, EditingButtonWrap, Title } from "../style/GrooveDetailStyle";
 import { addDoc, collection } from "firebase/firestore";
 import React, { useEffect, useRef, useState } from "react";
@@ -145,17 +145,19 @@ function WritePage({
         {/* <input type="file" display="none" name="file" id="file" onChange={handleFileSelect} /> */}
         <Title>
           제목:
-          <input
+          <TextArea
             type="text"
+            maxLength={"100"}
             value={titleText}
             name="titleText"
             onChange={onChangeTitle}
             ref={focusRef}
             required
-          ></input>
+          />
         </Title>
         <Body>
-          내용:<input type="text" value={bodyText} name="bodyText" onChange={onChangeBody} required></input>
+          내용:
+          <TextArea type="text" maxLength={"100"} value={bodyText} name="bodyText" onChange={onChangeBody} required />
         </Body>
         <EditingButtonWrap>
           <button onClick={addTodo}>추가</button>

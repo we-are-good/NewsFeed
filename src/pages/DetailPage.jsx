@@ -9,7 +9,7 @@ import {
   LikeWrap,
   NoneLoggedLike
 } from "../style/GrooveDetailStyle";
-import { FileBox, Input } from "../style/GrooveWriteStyle";
+import { FileBox, Input, TextArea } from "../style/GrooveWriteStyle";
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { auth, db, storage } from "../firebase";
@@ -243,12 +243,23 @@ function DetailPage({
           </FileBox>
 
           <EditingTitle>
-            제목: <input type="text" value={editedTitle} onChange={(e) => setEditedTitle(e.target.value)} />
+            제목:{" "}
+            <TextArea
+              type="text"
+              maxLength={"100"}
+              value={editedTitle}
+              onChange={(e) => setEditedTitle(e.target.value)}
+            />
           </EditingTitle>
 
           <EditingBody>
             내용:
-            <input type="text" value={editedBody} onChange={(e) => setEditedBody(e.target.value)} />
+            <TextArea
+              type="text"
+              maxLength={"100"}
+              value={editedBody}
+              onChange={(e) => setEditedBody(e.target.value)}
+            />
           </EditingBody>
           <EditingButtonWrap>
             <button onClick={handleSave}>수정 완료</button>

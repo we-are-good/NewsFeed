@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { auth, db } from "../firebase";
-import { collection, query, where, getDocs, getFirestore, doc, updateDoc } from "firebase/firestore";
+import { auth, db, storage } from "../firebase";
+import { collection, query, where, getDocs, getFirestore, doc, updateDoc, setDoc } from "firebase/firestore";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import GrooveHeader from "../components/Groove/GrooveHeader";
 import GrooveFooter from "../components/Groove/GrooveFooter";
 import styled from "styled-components";
@@ -26,7 +27,9 @@ function MyPage({
   const [userPosts, setUserPosts] = useState([]);
   const [newNickname, setNewNickname] = useState("");
   const [editingNickname, setEditingNickname] = useState(false);
-  const [profileImageUrl, setProfileImageUrl] = useState(""); // 프로필 이미지 URL 추가
+  const [profileImageUrl, setProfileImageUrl] = useState("");
+  const [avatarFile, setAvatarFile] = useState(null);
+  const [editingProfileImage, setEditingProfileImage] = useState(false); // 프로필 이미지 수정 모드 추가
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
@@ -52,6 +55,8 @@ function MyPage({
   }, []);
 
   const db = getFirestore();
+  const storageRef = ref(storage, 'avatars');
+
   const fetchData = async (email) => {
     try {
       const q = query(collection(db, "logInData"), where("email", "==", email));
@@ -59,9 +64,9 @@ function MyPage({
       querySnapshot.forEach((doc) => {
         const userData = doc.data();
         const nickname = userData.nickname;
-        const profileImage = userData.profileImage; // 프로필 이미지 URL 가져오기
+        const profileImage = userData.profileImage;
         setNickname(nickname);
-        setProfileImageUrl(profileImage); // 프로필 이미지 URL 설정
+        setProfileImageUrl(profileImage);
         setUserDocId(doc.id);
       });
     } catch (error) {
@@ -114,6 +119,41 @@ function MyPage({
     }
   };
 
+  const handleAvatarChange = async (e) => {
+    const file = e.target.files[0];
+    setAvatarFile(file);
+  };
+
+  const confirmProfileImageChange = async () => {
+    if (avatarFile) {
+      const storageRefChild = ref(storageRef, `${currentUser.uid}_${avatarFile.name}`);
+      try {
+        await uploadBytes(storageRefChild, avatarFile);
+        const url = await getDownloadURL(storageRefChild);
+        await updateProfileImage(url);
+        setEditingProfileImage(false);
+      } catch (error) {
+        console.error("Error uploading avatar:", error);
+      }
+    }
+  };
+
+  const updateProfileImage = async (url) => {
+    try {
+      const userDocRef = doc(db, "logInData", userDocId);
+      await updateDoc(userDocRef, {
+        profileImage: url
+      });
+      setProfileImageUrl(url);
+    } catch (error) {
+      console.error("Error updating profile image URL:", error);
+    }
+  };
+
+  const cancelProfileImageChange = () => {
+    setEditingProfileImage(false);
+  };
+
   return (
     <div>
       <GrooveHeader
@@ -135,7 +175,20 @@ function MyPage({
             <StDiv>
               <StUserContainer>
                 <StInfo>사용자 정보:</StInfo>
-                {profileImageUrl && <img src={profileImageUrl} alt="프로필 사진" />} {/* 프로필 이미지 렌더링 */}
+                {profileImageUrl && <img src={profileImageUrl} alt="프로필 사진" />}
+                {/* 프로필 이미지 수정 버튼 및 업로드 input */}
+                {!editingNickname && (
+                  <div>
+                    <button onClick={() => setEditingProfileImage(true)}>프로필 이미지 수정</button>
+                  </div>
+                )}
+                {editingProfileImage && (
+                  <div>
+                    <input type="file" accept="image/*" onChange={handleAvatarChange} />
+                    <button onClick={confirmProfileImageChange}>확인</button>
+                    <button onClick={cancelProfileImageChange}>취소</button>
+                  </div>
+                )}
                 {editingNickname ? (
                   <div>
                     <p>

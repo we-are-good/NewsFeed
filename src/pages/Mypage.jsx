@@ -5,6 +5,7 @@ import { collection, query, where, getDocs, getFirestore, doc, updateDoc } from 
 import GrooveHeader from "../components/Groove/GrooveHeader";
 import GrooveFooter from "../components/Groove/GrooveFooter";
 import styled from "styled-components";
+import { format } from "date-fns";
 
 function MyPage({
   currentUser,
@@ -74,7 +75,15 @@ function MyPage({
       const userPostsData = [];
       querySnapshot.forEach((doc) => {
         const postData = doc.data();
-        userPostsData.push({ ...postData, id: doc.id }); // 글의 id를 추가하여 저장
+        const timestampSeconds = postData.Timestamp.seconds;
+        const date = new Date(timestampSeconds * 1000);
+        const formattedTime = format(date, "yyyy-MM-dd HH:mm:ss");
+        userPostsData.push({
+          ...postData,
+          id: doc.id,
+          formattedTime: formattedTime,
+          likesCount: Object.keys(postData.likes || {}).length
+        });
       });
       setUserPosts(userPostsData);
     } catch (error) {
@@ -124,7 +133,7 @@ function MyPage({
           <StDiv>
             <StDiv>
               <StUserContainer>
-                <p>사용자 정보:</p>
+                <StInfo>사용자 정보:</StInfo>
                 {editingNickname ? (
                   <div>
                     <p>
@@ -135,15 +144,15 @@ function MyPage({
                     </p>
                   </div>
                 ) : (
-                  <p>
+                  <StNickname>
                     닉네임: {nickname} <StEditbtn onClick={() => setEditingNickname(true)}>변경</StEditbtn>
-                  </p>
+                  </StNickname>
                 )}
                 <p>이메일 주소: {userEmail}</p>
               </StUserContainer>
               <p>작성한 글 목록:</p>
               {userPosts.length > 0 ? (
-                <ul>
+                <StUl>
                   {userPosts.map((post, index) => (
                     <li key={index}>
                       <StPostLink
@@ -154,16 +163,20 @@ function MyPage({
                         setUserPosts={setUserPosts}
                       >
                         <StPostContainer>
-                          <StImage src={post.imageUrl} alt="업로드된 이미지" />
                           <div>
                             <StTitle>{post.title}</StTitle>
                             <StContent>{post.body}</StContent>
+                            <p>{post.formattedTime}</p> {/* 작성 시간 렌더링 */}
+                            <i className="fa-solid fa-heart" /> {Object.keys(post.likes || {}).length}개
                           </div>
+                          <StImageWrapper> {/* 이미지를 감싸는 div */}
+                            <StImage src={post.imageUrl} alt="업로드된 이미지" />
+                          </StImageWrapper>
                         </StPostContainer>
                       </StPostLink>
                     </li>
                   ))}
-                </ul>
+                </StUl>
               ) : (
                 <p>작성한 글이 없습니다.</p>
               )}
@@ -175,20 +188,20 @@ function MyPage({
           </StyledMessage>
         )}
       </StDiv>
-      <GrooveFooter />
+      <StGrooveFooter />
     </div>
   );
 }
 
 const StDiv = styled.div`
   display: flex;
-  justify-content: center;
   align-items: center;
   flex-direction: column;
+  min-height: 100vh;
 `;
 
 const StUserContainer = styled.div`
-  margin: 5vh;
+  margin: 6vh;
   line-height: 1.5;
   & > p {
     border-bottom: 1px solid #ffc41d;
@@ -197,12 +210,30 @@ const StUserContainer = styled.div`
   }
 `;
 
+const StInfo = styled.p`
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: bold;
+`;
+
+const StNickname = styled.p`
+  justify-content: space-between;
+  display: flex; 
+  align-items: center;
+`;
+
 const StyledMessage = styled.div`
   display: flex;
   align-items: center;
   gap: 8px;
   font-size: 25px;
   color: #ffff;
+`;
+
+const StUl = styled.ul`
+  margin-top: 20px;
 `;
 
 const StInput = styled.input`
@@ -218,6 +249,7 @@ const StEditbtn = styled.button`
   &:hover {
     filter: brightness(70%);
   }
+  margin-left: auto;
 `;
 
 const StPostLink = styled(Link)`
@@ -225,26 +257,40 @@ const StPostLink = styled(Link)`
   align-items: center;
   text-decoration: none;
   color: #ffff;
-`;
-
-const StPostContainer = styled.div`
-  display: flex;
-  align-items: center;
+  border-bottom: 2px solid #ffc41d; /* 밑쪽 보더에 색상 추가 */
+  padding-bottom: 10px; /* 밑쪽 패딩 추가 */
+  margin-bottom: 20px; /* 글 사이의 간격 조정 */
 `;
 
 const StImage = styled.img`
-  width: 150px;
-  height: 150px;
+  width: 200px;
+  height: 200px;
   object-fit: cover;
+  margin-left: 30px;
 `;
 
 const StTitle = styled.p`
   font-size: 20px;
+  margin-bottom: 15px;
   font-weight: bold;
+`;
+
+const StImageWrapper = styled.div`
+  justify-self: end; /* 그리드 아이템을 그리드 셀의 끝으로 정렬 */
+`;
+
+const StPostContainer = styled.div`
+  display: grid;
+  grid-template-columns: 1fr auto; /* 첫 번째 컬럼은 비율에 따라 채우고, 두 번째 컬럼은 자식 요소의 크기에 따라 자동으로 조정 */
+  align-items: center;
 `;
 
 const StContent = styled.p`
   font-size: 16px;
+`;
+
+const StGrooveFooter = styled(GrooveFooter)`
+  margin-top: auto; /* 화면 아래쪽으로 이동 */
 `;
 
 export default MyPage;

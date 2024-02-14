@@ -31,13 +31,15 @@ export const StyledLink = styled(Link)`
   padding: 5px;
   /* border: 1px solid red; */
   &:hover > div > img {
-    transform: translate(-50%, -50%) scale(1.2);
+    transform: translate(-50%, -50%) scale(1.1);
+  }
+  &:hover > article > div > h3 {
+    color: #ffc41d;
   }
 `;
 export const ImgWrapBox = styled.div`
   width: 320px;
   height: 170px;
-  border: 1px solid #ffc41d;
   border-radius: 0.5rem;
   position: relative;
   overflow: hidden;
@@ -50,11 +52,12 @@ export const ImgWrapBox = styled.div`
     width: 100%;
   }
 `;
-export const ContentWrapBox = styled.div`
+export const ContentWrapBox = styled.article`
   padding: 0.8rem;
   height: calc(100% - 170px);
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
 `;
 export const Title = styled.h3`
   font-size: 1.5rem;
@@ -74,9 +77,26 @@ export const Body = styled.p`
   font-size: 14px;
   font-weight: 300;
   line-height: 1.3em;
-  color: #ccc;
+  color: #eee;
 `;
-
+export const ContentTop = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+`;
+export const ContentBot = styled.div`
+  margin-top: 1rem;
+  display: flex;
+  justify-content: space-between;
+`;
+export const WriteTime = styled.span`
+  font-size: 12px;
+  margin-top: auto;
+  color: #ccc;
+  font-weight: 100;
+`;
 export const UserLikeBox = styled.div`
   margin-top: auto;
 `;
+
+export const UserNicName = styled.div``;

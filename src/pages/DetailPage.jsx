@@ -1,22 +1,28 @@
 import {
   EditingTitle,
+  DetailFileBox,
   Wrap,
   Title,
   Body,
   EditingWrap,
   EditingButtonWrap,
+  HomeBtn,
   EditingBody,
-  LikeWrap
+  LikeWrap,
+  NoneLoggedLike
 } from "../style/GrooveDetailStyle";
+import { FileBox, Input, FormTitle, FormBody, TextArea } from "../style/GrooveWriteStyle";
+import styled from "styled-components";
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { auth, db, storage } from "../firebase";
-import { doc, updateDoc, deleteDoc, getDoc } from "firebase/firestore";
+import { app, auth, db, storage } from "../firebase";
+import { doc, updateDoc, deleteDoc, getDoc, getFirestore, collection, getDocs } from "firebase/firestore";
 import GrooveLikeBtn from "../components/Groove/GrooveTotalFeed/GrooveLikeBtn";
 import GrooveAuth from "../components/Groove/GrooveAuth";
 import { getDownloadURL, ref, uploadBytes } from "@firebase/storage";
 import defaultImage from "../assets/defaultImage.jpg";
 import GrooveHeader from "../components/Groove/GrooveHeader";
+import GrooveFooter from "../components/Groove/GrooveFooter";
 
 function DetailPage({
   currentUser,
@@ -39,7 +45,7 @@ function DetailPage({
   const [originalTitle, setOriginalTitle] = useState("");
   const [originalBody, setOriginalBody] = useState("");
   const [user, setUser] = useState(null);
-  console.log("user", user);
+
   const detailGroove = location.state.find((item) => item.id === params.id);
 
   const [isLiked, setIsLiked] = useState(false); // 좋아요 상태를 각 사용자 별로 따로 관리
@@ -48,8 +54,31 @@ function DetailPage({
   const [clickDisabled, setClickDisabled] = useState(false);
   const [newImage, setNewImage] = useState(null);
   const [imageURL, setImageURL] = useState(detailGroove.imageUrl);
+  const [loginData, setLoginData] = useState([]);
+  useEffect(() => {
+    const fetchLoginData = async () => {
+      try {
+        const db = getFirestore(app);
+        const loginDataCollection = collection(db, "logInData");
+        const snapshot = await getDocs(loginDataCollection);
+        const loginDataArray = [];
 
-  const [isLoggedIn, setIsLoggedIn] = useState(currentUser);
+        snapshot.forEach((doc) => {
+          const data = doc.data();
+          loginDataArray.push({
+            id: doc.id,
+            email: data.email,
+            nickname: data.nickname
+          });
+        });
+        setLoginData(loginDataArray);
+      } catch (error) {
+        console.error("Error fetching loginData:", error);
+      }
+    };
+    fetchLoginData();
+  }, []);
+
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       setUser(user); // 현재 사용자 업데이트
@@ -212,9 +241,10 @@ function DetailPage({
     // 이미지 업로드 전에 setImageURL 호출
     setImageURL(newImageURL);
   };
+  const userLoginData = loginData.find((loginItem) => loginItem.email === detailGroove.email);
 
   return (
-    <>
+    <Wrapper>
       <GrooveHeader
         nickname={nickname}
         setNickname={setNickname}
@@ -227,52 +257,64 @@ function DetailPage({
         logInModal={logInModal}
         setLogInModal={setLogInModal}
       />
-
       {isEditing ? (
         <EditingWrap>
           {imageURL ? (
-            <img style={{ width: "400px", height: "400px" }} src={imageURL} alt="이미지 미리보기"></img>
+            <img src={imageURL} alt="이미지 미리보기"></img>
           ) : (
-            <img style={{ width: "400px", height: "400px" }} src={defaultImage} alt="기본 이미지"></img>
+            <img src={defaultImage} alt="기본 이미지"></img>
           )}
-          <EditingTitle>
-            제목: <input type="text" value={editedTitle} onChange={(e) => setEditedTitle(e.target.value)} />
-          </EditingTitle>
+          <FileBox>
+            <label for="ex_file">이미지 업로드</label>
+            <Input type="file" id="ex_file" onChange={handleFileSelect} />
+          </FileBox>
 
-          <EditingBody>
-            내용:
-            <textarea style={{ resize: "none" }} value={editedBody} onChange={(e) => setEditedBody(e.target.value)} />
-          </EditingBody>
+          <FormTitle>
+            <input type="text" maxLength={"100"} value={editedTitle} onChange={(e) => setEditedTitle(e.target.value)} />
+          </FormTitle>
+
+          <FormBody>
+            <TextArea
+              type="text"
+              maxLength={"100"}
+              value={editedBody}
+              onChange={(e) => setEditedBody(e.target.value)}
+            />
+          </FormBody>
           <EditingButtonWrap>
-            <button onClick={handleSave}>저장</button>
+            <span>*제목과 내용은 100글자 이내로 작성하야 합니다.</span>
+            <button onClick={handleSave}>수정 완료</button>
             <button onClick={handleCancel}>취소</button>
           </EditingButtonWrap>
-          <input type="file" onChange={handleFileSelect} style={{ marginLeft: "95px" }} />
+
           {/* <button onClick={() => handleImageChange(newImage)}>이미지 변경하기</button> */}
           <br />
         </EditingWrap>
       ) : (
         <Wrap>
-          {imageURL ? (
-            <img style={{ width: "400px", height: "400px" }} src={imageURL} alt="Groove Image"></img>
-          ) : (
-            <img style={{ width: "400px", height: "400px" }} src={defaultImage} alt="기본 이미지"></img>
-          )}
+          {imageURL ? <img src={imageURL} alt="Groove Image"></img> : <img src={defaultImage} alt="기본 이미지"></img>}
           {/* <img style={{ width: "400px", height: "400px" }} src={imageURL} alt="Groove Image"></img> */}
           <Title>제목: {originalTitle}</Title>
           <Body>내용: {originalBody}</Body>
           {/* 좋아요 버튼 컴포넌트를 렌더링하고, 필요한 props를 전달합니다. */}
           {user ? (
             // 로그인 상태일 때만 좋아요 버튼을 활성화
+
             <LikeWrap>
-              <p>좋아요: {Object.keys(likes).length}개</p>
+              {/* {userLoginData.nickname}으로 하려했으나 실패 */}
+              <span>작성자 : {userLoginData?.nickname}</span>
+              <p>좋아요 : {Object.keys(likes).length}개</p>
               <GrooveLikeBtn isLiked={isLiked} onLikeClick={toggleLike} grooveId={detailGroove?.id} />
             </LikeWrap>
           ) : (
             // 로그인 상태가 아닐 때 로그인을 유도하는 메시지 또는 경고창 표시
             <>
-              <p>좋아요: {Object.keys(likes).length}개</p>
-              <p>로그인 후에 좋아요를 누르실 수 있습니다.</p>
+              <NoneLoggedLike>
+                {/* {userLoginData.nickname}으로 하려했으나 실패 */}
+                {userLoginData?.nickname}
+                <p>좋아요: {Object.keys(likes).length}개</p>
+                <p>로그인 후에 좋아요를 누르실 수 있습니다.</p>
+              </NoneLoggedLike>
               <GrooveAuth
                 nickname={nickname}
                 setNickname={setNickname}
@@ -284,24 +326,28 @@ function DetailPage({
               />
             </>
           )}
-          <br />
           {/* 작성자와 로그인한 사용자가 동일한 경우에만 수정, 삭제 버튼 노출 */}
           {user && user.uid === detailGroove.authorId && (
             <>
               <button onClick={handleEdit}>수정하기</button>
-              <br />
               <button onClick={handleDelete}>삭제하기</button>
-              <br />
             </>
           )}
-          <button onClick={() => navigate("/")}>홈으로</button>
-          <br />
 
-          <br />
+          <HomeBtn onClick={() => navigate("/")}>
+            <i className="fa-solid fa-house" />
+          </HomeBtn>
         </Wrap>
       )}
-    </>
+      <GrooveFooter />
+    </Wrapper>
   );
 }
 
 export default DetailPage;
+
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+`;

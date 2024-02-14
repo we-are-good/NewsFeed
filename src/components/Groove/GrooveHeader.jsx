@@ -42,7 +42,7 @@ function GrooveHeader({
   };
 
   const myIconClick = () => {
-    return setIsMyIconClicked(true);
+    setIsMyIconClicked((prevState) => !prevState);
   };
 
   const goMyPage = () => {
@@ -117,7 +117,7 @@ function GrooveHeader({
               <GrooveHeaderIconWrite onClick={goWrite}>
                 <i className="fa-solid fa-pen" />
               </GrooveHeaderIconWrite>
-              <GrooveHeaderIconMy onClick={() => myIconClick()}>
+              <GrooveHeaderIconMy onClick={myIconClick}>
                 <i className="fa-solid fa-user" />
               </GrooveHeaderIconMy>
             </GrooveHeaderIcons>
@@ -133,15 +133,14 @@ function GrooveHeader({
               onNicknameChange={onNicknameChange}
             />
           )}
-
           {isMyIconClicked && (
             <div>
               <GrooveHeaderIconSelection>
                 <button type="button" onClick={logOut}>
-                  Logout
+                  Log-out
                 </button>
                 <button type="button" onClick={goMyPage}>
-                  My page
+                  My-page
                 </button>
               </GrooveHeaderIconSelection>
             </div>

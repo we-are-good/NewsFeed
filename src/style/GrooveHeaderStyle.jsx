@@ -20,13 +20,13 @@ export const GrooveHeaderIconWrap = styled.div`
   display: flex;
   align-items: center;
   margin-left: auto;
-  & > button {
-    margin-left: 0.6rem;
+  & > div > button {
+    /* margin-left: 0.6rem; */
     width: 2rem;
     height: 2rem;
     border: 0;
-    background-color: transparent;
-    border-radius: 50%;
+    background-color: #333;
+    border-radius: 5px;
     overflow: hidden;
     cursor: pointer;
     position: relative;
@@ -48,35 +48,38 @@ export const GrooveHeaderIconWrap = styled.div`
 `;
 export const GrooveHeaderIconHome = styled.button`
   display: flex;
-  cursor: pointer;
 `;
-export const GrooveHeaderIconWrite = styled.button`
-cursor: pointer;
-`;
-export const GrooveHeaderIconMy = styled.button`
-cursor: pointer;
-`;
+export const GrooveHeaderIconWrite = styled.button``;
+export const GrooveHeaderIconMy = styled.button``;
 export const GrooveHeaderIcons = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 1rem;
-  margin-right: 3.5rem;
+  gap: 0.7rem;
+  /* margin-right: 3.5rem; */
 `;
 export const GrooveHeaderIconSelection = styled.div`
   position: absolute;
-  top: 3.2rem;
-  right: 3.2rem;
+  top: 75px;
+  right: 12px;
   display: flex;
   flex-direction: column;
   align-content: center;
-  font-size: 1.2rem;
-  gap: 0.3rem;
+  gap: 0.5rem;
+  z-index: 1; 
   & > button {
-    background-color: #ffc41d;
-    font-size: 0.8rem;
-    font-weight: 600;
-    border-radius: 0.4rem;
+    background-color: #333;
+    height: 1.5rem;
+    font-weight: 500;
+    font-size: 14px;
+    padding: 0 10px;
+    border-radius: 5px;
+    color: #eee;
+    border: none;
     cursor: pointer;
+    &:hover {
+      background-color: #ffc41d;
+      color: #333;
+    }
   }
 `;

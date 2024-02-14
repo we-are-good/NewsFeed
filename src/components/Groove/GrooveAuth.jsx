@@ -29,10 +29,12 @@ function GrooveAuth({
   logInModal,
   setTotalUsersInformation,
   nickname,
-  setNickname
+  setNickname,
+  nicknameModal,
+  setNicknameModal,
+  onNicknameChange
 }) {
   const [signUpModal, setSignUpModal] = useState(false);
-  const [socialLogInModal, setSocialLogInModal] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -41,9 +43,6 @@ function GrooveAuth({
   };
   const onPasswordChange = (event) => {
     setPassword(event.target.value);
-  };
-  const onNicknameChange = (event) => {
-    setNickname(event.target.value);
   };
 
   const openLogInModal = () => {
@@ -61,11 +60,8 @@ function GrooveAuth({
     setSignUpModal(false);
   };
 
-  const openSocialLogInModal = () => {
-    setSocialLogInModal(true);
-  };
-  const closeSocialLogInModal = () => {
-    setSocialLogInModal(false);
+  const openNicknameModal = () => {
+    setNicknameModal(true);
   };
 
   const closeLogInSignUpModal = () => {
@@ -163,25 +159,14 @@ function GrooveAuth({
     }
   }, [user]);
 
-  const socialLogInNickname = () => {
-    if (!nickname) {
-      return alert("빈칸을 입력해 주세요!");
-    }
-    setNickname(nickname);
-    const newUser = { email: user.email, nickname };
-    const collectionRef = collection(db, "logInData");
-    addDoc(collectionRef, newUser);
-    closeSocialLogInModal();
-    setNickname("");
-  };
-
   const handleGoogleSignUp = async () => {
     try {
       const provider = await new GoogleAuthProvider();
       const result = await signInWithPopup(auth, provider);
+
       setIsUserLogIn(true);
       setSignUpModal(false);
-      setSocialLogInModal(true);
+      setNicknameModal(true); //이름바꾸기 setNicknameModal
     } catch (error) {
       const errorCode = error.code;
       const errorMessage = error.message;
@@ -200,9 +185,8 @@ function GrooveAuth({
 
       setIsUserLogIn(true);
       setSignUpModal(false);
-      setSocialLogInModal(true);
-      const openModal = openSocialLogInModal;
-      const getSocialLogInNickName = await socialLogInNickname;
+      setNicknameModal(true);
+      const openModal = openNicknameModal;
     } catch (error) {
       const errorCode = error.code;
       const errorMessage = error.message;
@@ -218,13 +202,13 @@ function GrooveAuth({
           Log in
         </BackgroundLogInButton>
       )}
-      {(logInModal || signUpModal || socialLogInModal) && (
+      {(logInModal || signUpModal || nicknameModal) && (
         <div>
           <OverlayForm onClick={closeLogInSignUpModal} />
         </div>
       )}
       <div>
-        {logInModal && !signUpModal && !socialLogInModal && (
+        {logInModal && !signUpModal && !nicknameModal && (
           <div>
             <LogInForm>
               <div>
@@ -270,7 +254,7 @@ function GrooveAuth({
       </div>
 
       <div>
-        {signUpModal && !socialLogInModal && (
+        {signUpModal && !nicknameModal && (
           <div>
             <LogInForm>
               <div>
@@ -315,23 +299,14 @@ function GrooveAuth({
 
               <GoogleGitLogIn>
                 <PromptLogIn type="button" onClick={handleGoogleSignUp}>
-                  <i class="fa-brands fa-google" /> Google
+                  <i className="fa-brands fa-google" /> Google
                 </PromptLogIn>
                 <PromptLogIn type="button" onClick={handleGitLogin}>
-                  <i class="fa-brands fa-github" /> Github
+                  <i className="fa-brands fa-github" /> Github
                 </PromptLogIn>
               </GoogleGitLogIn>
             </LogInForm>
           </div>
-        )}
-      </div>
-
-      <div>
-        {socialLogInModal && (
-          <SocialLogInNickname>
-            <input placeholder="Nickname" type="text" required value={nickname} onChange={onNicknameChange} />
-            <button onClick={socialLogInNickname}>확인</button>
-          </SocialLogInNickname>
         )}
       </div>
     </div>

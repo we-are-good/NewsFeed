@@ -14,7 +14,8 @@ import GrooveAuth from "./GrooveAuth";
 import { useNavigate } from "react-router-dom";
 import { signOut } from "firebase/auth";
 import { auth, db } from "../../firebase";
-import { collection, getDocs, query } from "firebase/firestore";
+import { addDoc, collection, getDocs, query } from "firebase/firestore";
+import { SocialLogInNickname } from "../../style/GrooveAuthStyle";
 
 function GrooveHeader({
   currentUser,
@@ -27,6 +28,11 @@ function GrooveHeader({
   nickname,
   setNickname
 }) {
+  const [nicknameModal, setNicknameModal] = useState(false);
+  const onNicknameChange = (event) => {
+    setNickname(event.target.value);
+  };
+
   const navigate = useNavigate();
 
   const logOut = async (event) => {
@@ -55,6 +61,19 @@ function GrooveHeader({
   };
 
   const user = currentUser;
+  const socialLogInNickname = () => {
+    if (!nickname) {
+      return alert("빈칸을 입력해 주세요!");
+    }
+    setNickname(nickname);
+    const newUser = { email: user.email, nickname };
+    const collectionRef = collection(db, "logInData");
+    addDoc(collectionRef, newUser);
+    setNicknameModal(false);
+    setNickname("");
+    console.log(newUser);
+  };
+
   useEffect(() => {
     const fetchData = async (userEmail) => {
       const q = query(collection(db, "logInData"));
@@ -82,6 +101,7 @@ function GrooveHeader({
     } else {
     }
   }, [user, nickname]);
+  console.log("currentUser", currentUser);
 
   return (
     <>
@@ -110,6 +130,7 @@ function GrooveHeader({
               logInModal={logInModal}
               setLogInModal={setLogInModal}
               setIsUserLogIn={setIsUserLogIn}
+              onNicknameChange={onNicknameChange}
             />
           )}
 
@@ -124,6 +145,12 @@ function GrooveHeader({
                 </button>
               </GrooveHeaderIconSelection>
             </div>
+          )}
+          {!nickname && currentUser && (
+            <SocialLogInNickname>
+              <input placeholder="Nickname" type="text" required value={nickname} onChange={onNicknameChange} />
+              <button onClick={socialLogInNickname}>확인</button>
+            </SocialLogInNickname>
           )}
         </GrooveHeaderIconWrap>
       </GrooveHeaderWrap>

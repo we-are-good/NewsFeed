@@ -222,13 +222,21 @@ function GrooveAuth({
               </TopText>
               <IDPWBoxWrap>
                 <IDPWBox>
-                  <input placeholder="E-mail" type="text" name="email" value={email} onChange={onEmailChange} />
+                  <input
+                    placeholder="E-mail"
+                    type="text"
+                    name="email"
+                    autoComplete="username"
+                    value={email}
+                    onChange={onEmailChange}
+                  />
                 </IDPWBox>
                 <IDPWBox>
                   <input
                     placeholder="PASSWORD"
-                    type="current-password"
+                    type="password"
                     name="password"
+                    autoComplete="new-password"
                     value={password}
                     onChange={onPasswordChange}
                   />
@@ -265,16 +273,31 @@ function GrooveAuth({
               </div>
               <IDPWBoxWrap>
                 <IDPWBox>
-                  <input placeholder="E-mail" type="text" name="email" value={email} onChange={onEmailChange} />
+                  <input
+                    placeholder="E-mail"
+                    type="text"
+                    name="email"
+                    autoComplete="username"
+                    value={email}
+                    onChange={onEmailChange}
+                  />
                 </IDPWBox>
                 <IDPWBox>
-                  <input placeholder="Nickname" type="text" name="text" value={nickname} onChange={onNicknameChange} />
+                  <input
+                    placeholder="Nickname"
+                    type="text"
+                    name="text"
+                    autoComplete="username"
+                    value={nickname}
+                    onChange={onNicknameChange}
+                  />
                 </IDPWBox>
                 <IDPWBox>
                   <input
                     placeholder="PASSWORD"
-                    type="current-password"
+                    type="password"
                     name="password"
+                    autoComplete="new-password"
                     value={password}
                     onChange={onPasswordChange}
                   />

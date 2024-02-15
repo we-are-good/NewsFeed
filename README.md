@@ -3,6 +3,7 @@
 - 프로젝트 명 : Groove
 - 소개
   - 뉴스피드 만들기
+  - 프로젝트 기간 : 2024.2.7 ~ 2024.2.14
   - 내용 : React를 활용하여 뉴스피드 만들기
   - 사이트 : https://groove-alpha.vercel.app/
 
@@ -33,7 +34,7 @@
   - [x] git 브랜치/ PR / merge 활용
   - [ ] github pull request에서 Code review 활용
 - **배포**
-  - [ ] Vercel 을 이용하여 배포하기
+  - [x] Vercel 을 이용하여 배포하기
   - [ ] 가비아 또는 고대디 같은 도메인 판매 업체에서 도메인을 구매하여 커스텀 도메인 적용
 
 ## 4. 와이어 프레임

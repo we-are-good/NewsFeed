@@ -2,7 +2,7 @@ import { createUserWithEmailAndPassword, onAuthStateChanged } from "firebase/aut
 import { addDoc, collection } from "firebase/firestore";
 import React, { useContext } from "react";
 import { auth, db } from "../../../firebase";
-import GrooveSocialLogIn from "./GrooveSocialLogIn";
+import GrooveSocialLogIn from "./SocialLogIn";
 import { toast } from "react-toastify";
 import { GrooveContext } from "../../../shared/Context";
 
@@ -118,7 +118,7 @@ function GrooveMailSignUp() {
           />
         </IDPWBox>
         <LogInButtonsBox>
-          <LogInSmallButton type="button" onClick={signUp}>
+          <LogInSmallButton type="submit" onClick={(e) => signUp}>
             Sign up
           </LogInSmallButton>
         </LogInButtonsBox>

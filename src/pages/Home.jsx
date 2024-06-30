@@ -1,23 +1,17 @@
 import React from "react";
-import GrooveFeedList from "../components/Groove/GrooveTotalFeed/GrooveFeedList";
-import GrooveHeader from "../components/Groove/GrooveHeader";
 import GrooveFooter from "../components/Groove/GrooveFooter";
-import styled from "styled-components";
+import GrooveHeader from "../components/Groove/GrooveHeader";
+import GrooveFeedList from "../components/Groove/GrooveTotalFeed/GrooveFeedList";
+import { HomeWrapper } from "../style/HomeStyle";
 
 function Home() {
   return (
-    <Wrapper>
+    <HomeWrapper>
       <GrooveHeader />
       <GrooveFeedList />
       <GrooveFooter />
-    </Wrapper>
+    </HomeWrapper>
   );
 }
 
 export default Home;
-
-const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-`;

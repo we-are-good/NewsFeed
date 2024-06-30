@@ -79,17 +79,18 @@ export const GrooveHeaderIcons = styled.div`
 export const GrooveHeaderIconSelection = styled.div`
   position: absolute;
   top: 75px;
-  right: 12px;
+  right: 30px;
   display: flex;
   flex-direction: column;
   align-content: center;
-  gap: 0.5rem;
+  width: 100px;
+  gap: 1.5rem;
   z-index: 1;
   & > button {
     background-color: #333;
     height: 1.5rem;
     font-weight: 500;
-    font-size: 14px;
+    font-size: 20px;
     padding: 0 10px;
     border-radius: 5px;
     color: #eee;

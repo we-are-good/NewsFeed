@@ -4,8 +4,8 @@ import { OverlayForm, BackgroundLogInButton } from "../../../style/AuthStyle";
 import { collection, getDocs, query } from "firebase/firestore";
 import { db } from "../../../firebase";
 import { GrooveContext } from "../../../shared/Context";
-import GrooveMailLogIn from "./GrooveMailLogIn";
-import GrooveMailSignUp from "./GrooveMailSignUp";
+import GrooveMailLogIn from "./MailLogIn";
+import GrooveMailSignUp from "./MailSignUp";
 
 function GrooveAuth() {
   const {

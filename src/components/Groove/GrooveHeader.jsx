@@ -17,7 +17,7 @@ import {
   GrooveHeaderWrap,
   TopBtn
 } from "../../style/HeaderStyle";
-import GrooveAuth from "./GrooveAuthentication/GrooveAuth";
+import GrooveAuth from "./Authentication/Auth";
 
 function GrooveHeader() {
   const navigate = useNavigate();
@@ -148,7 +148,7 @@ function GrooveHeader() {
           <GrooveHeaderIconWrap>
             {currentUser ? (
               <GrooveHeaderIcons>
-                <div>{nickname}님 환영합니다!</div>
+                {nickname}님 환영합니다!
                 <GrooveHeaderIconHome onClick={goHome}>
                   <i className="fa-solid fa-house" />
                 </GrooveHeaderIconHome>
@@ -162,23 +162,23 @@ function GrooveHeader() {
             ) : (
               <GrooveAuth />
             )}
-            {isMyIconClicked && (
-              <GrooveHeaderIconSelection>
-                <button type="button" onClick={logOut}>
-                  Log-out
-                </button>
-                <button type="button" onClick={goMyPage}>
-                  My-page
-                </button>
-              </GrooveHeaderIconSelection>
-            )}
-            {nicknameModal && (
-              <SocialLogInNickname>
-                <input placeholder="Nickname" type="text" required value={nickname} onChange={onNicknameChange} />
-                <button onClick={nicknameModalIn}>확인</button>
-              </SocialLogInNickname>
-            )}
           </GrooveHeaderIconWrap>
+          {isMyIconClicked && (
+            <GrooveHeaderIconSelection>
+              <button type="button" onClick={logOut}>
+                Log-out
+              </button>
+              <button type="button" onClick={goMyPage}>
+                My-page
+              </button>
+            </GrooveHeaderIconSelection>
+          )}
+          {nicknameModal && (
+            <SocialLogInNickname>
+              <input placeholder="Nickname" type="text" required value={nickname} onChange={onNicknameChange} />
+              <button onClick={nicknameModalIn}>확인</button>
+            </SocialLogInNickname>
+          )}
         </GrooveHeaderFixed>
       </GrooveHeaderWrap>
       {isVisible && (

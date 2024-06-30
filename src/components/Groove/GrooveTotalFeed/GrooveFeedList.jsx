@@ -21,7 +21,6 @@ const GrooveFeedList = () => {
           id: doc.id, // 실제 firebase에서 "문서추가"부분
           ...doc.data()
         };
-        // console.log("data", data);
         initialNewsCards.push(data);
       });
       // firestore에서 가져온 데이터를 state에 전달

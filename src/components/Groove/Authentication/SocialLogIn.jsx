@@ -1,5 +1,6 @@
 import { GithubAuthProvider, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import React, { useContext } from "react";
+import { toast } from "react-toastify";
 import { auth } from "../../../firebase";
 import { GrooveContext } from "../../../shared/Context";
 
@@ -11,33 +12,29 @@ function GrooveSocialLogIn() {
   const handleGoogleSignUp = async () => {
     try {
       const provider = await new GoogleAuthProvider();
-      const result = await signInWithPopup(auth, provider);
+      await signInWithPopup(auth, provider);
       setIsUserLogIn(true);
       setSignUpModal(false);
       setNicknameModal(true);
     } catch (error) {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      console.log("errorCode", errorCode);
-      console.log("errorMessage", errorMessage);
-      const credential = GoogleAuthProvider.credentialFromError(error);
+      toast.error("Error Notification!", { position: "top-left" });
+      GoogleAuthProvider.credentialFromError(error);
       alert("오류가 발생했습니다.");
     }
   };
 
-  const handleGitLogin = async () => {
+  const handleGitHubLogin = async () => {
     try {
       const provider = new GithubAuthProvider();
       const popUpforLogin = await signInWithPopup(auth, provider);
-      const credential = GithubAuthProvider.credentialFromResult(popUpforLogin);
+      GithubAuthProvider.credentialFromResult(popUpforLogin);
 
       setIsUserLogIn(true);
       setSignUpModal(false);
       setNicknameModal(true);
     } catch (error) {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      const credential = GithubAuthProvider.credentialFromError(error);
+      toast.error("Error Notification!", { position: "top-left" });
+      GithubAuthProvider.credentialFromError(error);
       alert("오류가 발생했습니다.");
     }
   };
@@ -49,7 +46,7 @@ function GrooveSocialLogIn() {
         <PromptLogIn type="button" onClick={handleGoogleSignUp}>
           <i className="fa-brands fa-google" /> Google
         </PromptLogIn>
-        <PromptLogIn type="button" onClick={handleGitLogin}>
+        <PromptLogIn type="button" onClick={handleGitHubLogin}>
           <i className="fa-brands fa-github" /> Github
         </PromptLogIn>
       </GoogleGitLogIn>

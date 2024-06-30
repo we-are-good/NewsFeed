@@ -1,10 +1,9 @@
-import React from "react";
-import { useContext } from "react";
-import { GrooveContext } from "../../../shared/Context";
+import { GithubAuthProvider, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import React, { useContext } from "react";
 import { auth } from "../../../firebase";
-import { GoogleAuthProvider, signInWithPopup, GithubAuthProvider } from "firebase/auth";
+import { GrooveContext } from "../../../shared/Context";
 
-import { PromptLogIn, GoogleGitLogIn } from "../../../style/GrooveAuthStyle";
+import { GoogleGitLogIn, PromptLogIn } from "../../../style/AuthStyle";
 
 function GrooveSocialLogIn() {
   const { setIsUserLogIn, setSignUpModal, setNicknameModal } = useContext(GrooveContext);

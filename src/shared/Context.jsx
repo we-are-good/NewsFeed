@@ -1,4 +1,5 @@
-import { createContext, useState } from "react";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { createContext, useEffect, useState } from "react";
 import React from "react";
 export const GrooveContext = createContext(null);
 
@@ -28,6 +29,19 @@ const GrooveProvider = ({ children }) => {
     setLogInModal(true);
   };
 
+  const auth = getAuth();
+  const [currentUser, setCurrentUser] = useState(auth.currentUser);
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        console.log("현재user", user.email);
+        setCurrentUser(user);
+      } else {
+        setCurrentUser(null);
+      }
+    });
+  }, [currentUser, auth]);
+
   return (
     <GrooveContext.Provider
       value={{
@@ -52,7 +66,8 @@ const GrooveProvider = ({ children }) => {
         setPassword,
         onEmailChange,
         onPasswordChange,
-        openLogInModal
+        openLogInModal,
+        currentUser
       }}
     >
       {children}

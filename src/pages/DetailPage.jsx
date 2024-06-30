@@ -1,24 +1,24 @@
-import {
-  Wrap,
-  Title,
-  Body,
-  EditingWrap,
-  EditingButtonWrap,
-  DetailEdit,
-  LikeWrap,
-  NoneLoggedLike
-} from "../style/GrooveDetailStyle";
-import { FileBox, Input, FormTitle, FormBody, TextArea } from "../style/GrooveWriteStyle";
-import styled from "styled-components";
-import React, { useState, useEffect } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { app, auth, db, storage } from "../firebase";
-import { doc, updateDoc, deleteDoc, getDoc, getFirestore, collection, getDocs } from "firebase/firestore";
-import GrooveLikeBtn from "../components/Groove/GrooveTotalFeed/GrooveLikeBtn";
 import { getDownloadURL, ref, uploadBytes } from "@firebase/storage";
+import { collection, deleteDoc, doc, getDoc, getDocs, getFirestore, updateDoc } from "firebase/firestore";
+import React, { useEffect, useState } from "react";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+import styled from "styled-components";
 import defaultImage from "../assets/defaultImage.jpeg";
-import GrooveHeader from "../components/Groove/GrooveHeader";
 import GrooveFooter from "../components/Groove/GrooveFooter";
+import GrooveHeader from "../components/Groove/GrooveHeader";
+import GrooveLikeBtn from "../components/Groove/GrooveTotalFeed/GrooveLikeBtn";
+import { app, auth, db, storage } from "../firebase";
+import {
+  Body,
+  DetailEdit,
+  EditingButtonWrap,
+  EditingWrap,
+  LikeWrap,
+  NoneLoggedLike,
+  Title,
+  Wrap
+} from "../style/DetailStyle";
+import { FileBox, FormBody, FormTitle, Input, TextArea } from "../style/WriteStyle";
 
 function DetailPage() {
   const navigate = useNavigate();

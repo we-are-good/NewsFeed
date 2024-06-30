@@ -1,16 +1,15 @@
-import { FileBox, Form, Input, TextArea, FormTitle, FormBody, FormEditingBtnWrap } from "../style/GrooveWriteStyle";
 import { addDoc, collection } from "firebase/firestore";
-import React, { useContext, useEffect, useRef, useState } from "react";
-import { auth, db, storage } from "../firebase";
-import { useNavigate } from "react-router-dom";
-import GrooveHeader from "../components/Groove/GrooveHeader";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
-
+import React, { useContext, useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
 import defaultImage from "../assets/defaultImage.jpeg";
 import GrooveFooter from "../components/Groove/GrooveFooter";
-import styled from "styled-components";
+import GrooveHeader from "../components/Groove/GrooveHeader";
+import { auth, db, storage } from "../firebase";
 import { GrooveContext } from "../shared/Context";
 
+import { FileBox, Form, FormBody, FormEditingBtnWrap, FormTitle, Input, TextArea } from "../style/WriteStyle";
 function WritePage() {
   const { currentUser } = useContext(GrooveContext);
   const focusRef = useRef();

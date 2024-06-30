@@ -1,24 +1,23 @@
+import { signOut } from "firebase/auth";
+import { addDoc, collection, getDocs, query } from "firebase/firestore";
 import React, { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { auth, db } from "../../firebase";
+import { GrooveContext } from "../../shared/Context";
+import { SocialLogInNickname } from "../../style/AuthStyle";
 import {
-  GrooveHeaderWrap,
   GrooveHeaderFixed,
-  GrooveHeaderLogo,
-  GrooveHeaderIconWrap,
   GrooveHeaderIconHome,
-  GrooveHeaderIconWrite,
   GrooveHeaderIconMy,
   GrooveHeaderIconSelection,
+  GrooveHeaderIconWrap,
+  GrooveHeaderIconWrite,
   GrooveHeaderIcons,
+  GrooveHeaderLogo,
+  GrooveHeaderWrap,
   TopBtn
-} from "../../style/GrooveHeaderStyle";
-
+} from "../../style/HeaderStyle";
 import GrooveAuth from "./GrooveAuthentication/GrooveAuth";
-import { useNavigate } from "react-router-dom";
-import { signOut } from "firebase/auth";
-import { auth, db } from "../../firebase";
-import { addDoc, collection, getDocs, query } from "firebase/firestore";
-import { SocialLogInNickname } from "../../style/GrooveAuthStyle";
-import { GrooveContext } from "../../shared/Context";
 
 function GrooveHeader() {
   const navigate = useNavigate();
@@ -35,7 +34,7 @@ function GrooveHeader() {
     setNicknameModal,
     onNicknameChange
   } = useContext(GrooveContext);
-
+  console.log(currentUser);
   const logOut = async (event) => {
     await signOut(auth);
     setIsMyIconClicked(false);
@@ -63,14 +62,13 @@ function GrooveHeader() {
     navigate("/write");
   };
 
-  const user = currentUser;
   const nicknameModalIn = () => {
     if (!nickname) {
       return alert("빈칸을 입력해 주세요!");
     }
     setNickname(nickname);
     const newUser = {
-      email: user.email,
+      email: currentUser.email,
       nickname
       //   profileImage:
       //     "https://firebasestorage.googleapis.com/v0/b/groove-a1c3e.appspot.com/o/avatars%2F6jGLxl6CBvcl4vO5vtUvbLO2FN23_chicken.png?alt=media&token=3228961e-73b4-47e3-b371-ba9e3bf7207f"
@@ -99,14 +97,14 @@ function GrooveHeader() {
       if (!totalUsersInformation) return;
     };
 
-    if (user) {
-      const userEmail = user.email;
+    if (currentUser) {
+      const userEmail = currentUser.email;
       setIsUserLogIn(true);
       setLogInModal(false);
       fetchData(userEmail);
     } else {
     }
-  }, [user, nickname]);
+  }, [currentUser, nickname]);
 
   const [scrolled, setScrolled] = useState(false);
   useEffect(() => {

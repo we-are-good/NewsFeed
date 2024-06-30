@@ -1,22 +1,22 @@
+import { format } from "date-fns";
+import { collection, getDocs, getFirestore } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
+import defaultImage from "../../../assets/defaultImage.jpeg";
+import { app } from "../../../firebase";
 import {
-  Top,
-  StyledLink,
-  ImgWrapBox,
-  ContentWrapBox,
-  Title,
   Body,
-  WriteTime,
-  ContentTop,
   ContentBot,
+  ContentTop,
+  ContentWrapBox,
+  ImgWrapBox,
+  ProfileImage,
+  StyledLink,
+  Title,
+  Top,
   UserLikeBox,
   UserNicName,
-  ProfileImage
-} from "../../../style/GrooveFeedStyle";
-import { format } from "date-fns";
-import { getFirestore, collection, getDocs } from "firebase/firestore";
-import { app } from "../../../firebase";
-import defaultImage from "../../../assets/defaultImage.jpeg";
+  WriteTime
+} from "../../../style/FeedStyle";
 
 const GrooveFeed = ({ newsCards }) => {
   const [loginData, setLoginData] = useState([]);

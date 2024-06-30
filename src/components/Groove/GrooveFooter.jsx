@@ -1,5 +1,5 @@
 import React from "react";
-import { GrooveFooterWrap } from "../../style/GrooveFooterStyle";
+import { GrooveFooterWrap } from "../../style/FooterStyle";
 
 function GrooveFooter() {
   return <GrooveFooterWrap>GrooveFooter</GrooveFooterWrap>;

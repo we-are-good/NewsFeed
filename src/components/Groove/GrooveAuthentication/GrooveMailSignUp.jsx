@@ -2,6 +2,8 @@ import { createUserWithEmailAndPassword, onAuthStateChanged } from "firebase/aut
 import { addDoc, collection } from "firebase/firestore";
 import React, { useContext } from "react";
 import { auth, db } from "../../../firebase";
+import GrooveSocialLogIn from "./GrooveSocialLogIn";
+import { toast } from "react-toastify";
 import { GrooveContext } from "../../../shared/Context";
 
 import {
@@ -11,8 +13,7 @@ import {
   LogInForm,
   LogInSmallButton,
   LogSigninButton
-} from "../../../style/GrooveAuthStyle";
-import GrooveSocialLogIn from "./GrooveSocialLogIn";
+} from "../../../style/AuthStyle";
 
 function GrooveMailSignUp() {
   const {
@@ -45,23 +46,21 @@ function GrooveMailSignUp() {
         return alert("비밀번호는 여섯글자 이상이어야 합니다.");
       }
 
-      const nowUserData = onAuthStateChanged(auth, (user) => {
+      onAuthStateChanged(auth, (user) => {
         if (user) return;
       });
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      await createUserWithEmailAndPassword(auth, email, password);
       const newUser = {
-        email: email,
-        nickname: nickname,
+        email,
+        nickname,
         profileImage: "gs:groove-f6911.appspot.com/profileImage/왜되는걸까.jpeg"
-      }; // 기본 프로필 이미지 URL 추가
+      };
       const collectionRef = collection(db, "UserObj");
-      await addDoc(collectionRef, newUser);
       closeSignUpModal();
       setIsUserLogIn(true);
+      await addDoc(collectionRef, newUser);
     } catch (error) {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      alert(errorCode, errorMessage);
+      toast.error("Error Notification!", { position: "top-left" });
       setIsUserLogIn(false);
     } finally {
       setEmail("");
@@ -71,65 +70,61 @@ function GrooveMailSignUp() {
   };
 
   return (
-    <div>
+    <LogInForm>
       <div>
-        <LogInForm>
-          <div>
-            <LogSigninButton
-              type="button"
-              name="activeName"
-              onClick={() => {
-                closeSignUpModal();
-                openLogInModal();
-              }}
-            >
-              Log in
-            </LogSigninButton>
-            <LogSigninButton type="button" name="ignore-click">
-              Sign up
-            </LogSigninButton>
-          </div>
-          <IDPWBoxWrap>
-            <IDPWBox>
-              <input
-                placeholder="E-mail"
-                type="text"
-                name="email"
-                autoComplete="username"
-                value={email}
-                onChange={onEmailChange}
-              />
-            </IDPWBox>
-            <IDPWBox>
-              <input
-                placeholder="Nickname"
-                type="text"
-                name="text"
-                autoComplete="username"
-                value={nickname}
-                onChange={onNicknameChange}
-              />
-            </IDPWBox>
-            <IDPWBox>
-              <input
-                placeholder="PASSWORD"
-                type="password"
-                name="password"
-                autoComplete="new-password"
-                value={password}
-                onChange={onPasswordChange}
-              />
-            </IDPWBox>
-            <LogInButtonsBox>
-              <LogInSmallButton type="button" onClick={signUp}>
-                Sign up
-              </LogInSmallButton>
-            </LogInButtonsBox>
-          </IDPWBoxWrap>
-          <GrooveSocialLogIn />
-        </LogInForm>
+        <LogSigninButton
+          type="button"
+          name="activeName"
+          onClick={() => {
+            closeSignUpModal();
+            openLogInModal();
+          }}
+        >
+          Log in
+        </LogSigninButton>
+        <LogSigninButton type="button" name="ignore-click">
+          Sign up
+        </LogSigninButton>
       </div>
-    </div>
+      <IDPWBoxWrap>
+        <IDPWBox>
+          <input
+            placeholder="E-mail"
+            type="text"
+            name="email"
+            autoComplete="username"
+            value={email}
+            onChange={onEmailChange}
+          />
+        </IDPWBox>
+        <IDPWBox>
+          <input
+            placeholder="Nickname"
+            type="text"
+            name="text"
+            autoComplete="username"
+            value={nickname}
+            onChange={onNicknameChange}
+          />
+        </IDPWBox>
+        <IDPWBox>
+          <input
+            placeholder="PASSWORD"
+            type="password"
+            name="password"
+            autoComplete="new-password"
+            value={password}
+            onChange={onPasswordChange}
+          />
+        </IDPWBox>
+        <LogInButtonsBox>
+          <LogInSmallButton type="button" onClick={signUp}>
+            Sign up
+          </LogInSmallButton>
+        </LogInButtonsBox>
+      </IDPWBoxWrap>
+      <GrooveSocialLogIn />
+    </LogInForm>
   );
 }
 

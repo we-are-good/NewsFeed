@@ -1,6 +1,6 @@
 // groove-3e149.firebaseapp.com
 import React, { useContext, useEffect, useState } from "react";
-import { OverlayForm, BackgroundLogInButton } from "../../../style/GrooveAuthStyle";
+import { OverlayForm, BackgroundLogInButton } from "../../../style/AuthStyle";
 import { collection, getDocs, query } from "firebase/firestore";
 import { db } from "../../../firebase";
 import { GrooveContext } from "../../../shared/Context";
@@ -26,7 +26,6 @@ function GrooveAuth() {
     setLogInModal(false);
   };
 
-  const user = currentUser;
   useEffect(() => {
     const fetchData = async (userEmail) => {
       const q = query(collection(db, "UserObj"));
@@ -41,17 +40,16 @@ function GrooveAuth() {
       if (!nowLogIn) {
         return;
       }
-      const nowLogInNickname = nowLogIn.nickname;
       if (!totalUsersInformation) return;
     };
 
-    if (user) {
-      const userEmail = user.email;
+    if (currentUser) {
+      const userEmail = currentUser.email;
       setIsUserLogIn(true);
       setLogInModal(false);
       fetchData(userEmail);
     }
-  }, [user]);
+  }, [currentUser]);
 
   return (
     <div>
@@ -60,11 +58,7 @@ function GrooveAuth() {
           <i className="fa-solid fa-arrow-right-to-bracket" />
         </BackgroundLogInButton>
       )}
-      {(logInModal || signUpModal) && (
-        <div>
-          <OverlayForm onClick={closeLogInSignUpModal} />
-        </div>
-      )}
+      {(logInModal || signUpModal) && <OverlayForm onClick={closeLogInSignUpModal} />}
       <div>{logInModal && !signUpModal && <GrooveMailLogIn />}</div>
 
       <div>{signUpModal && !nicknameModal && <GrooveMailSignUp />}</div>

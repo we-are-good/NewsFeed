@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   GrooveHeaderWrap,
   GrooveHeaderFixed,
@@ -12,29 +12,29 @@ import {
   TopBtn
 } from "../../style/GrooveHeaderStyle";
 
-import GrooveAuth from "./GrooveAuth";
+import GrooveAuth from "./GrooveAuthentication/GrooveAuth";
 import { useNavigate } from "react-router-dom";
 import { signOut } from "firebase/auth";
 import { auth, db } from "../../firebase";
 import { addDoc, collection, getDocs, query } from "firebase/firestore";
 import { SocialLogInNickname } from "../../style/GrooveAuthStyle";
+import { GrooveContext } from "../../shared/Context";
 
-function GrooveHeader({
-  isUserLogIn,
-  currentUser,
-  isMyIconClicked,
-  setIsMyIconClicked,
-  setIsUserLogIn,
-  setTotalUsersInformation,
-  logInModal,
-  setLogInModal,
-  nickname,
-  setNickname,
-  nicknameModal,
-  setNicknameModal,
-  onNicknameChange
-}) {
+function GrooveHeader() {
   const navigate = useNavigate();
+  const {
+    currentUser,
+    isMyIconClicked,
+    setIsMyIconClicked,
+    setIsUserLogIn,
+    setTotalUsersInformation,
+    setLogInModal,
+    nickname,
+    setNickname,
+    nicknameModal,
+    setNicknameModal,
+    onNicknameChange
+  } = useContext(GrooveContext);
 
   const logOut = async (event) => {
     await signOut(auth);
@@ -71,18 +71,18 @@ function GrooveHeader({
     setNickname(nickname);
     const newUser = {
       email: user.email,
-      nickname,
-      profileImage:
-        "https://firebasestorage.googleapis.com/v0/b/groove-a1c3e.appspot.com/o/avatars%2F6jGLxl6CBvcl4vO5vtUvbLO2FN23_chicken.png?alt=media&token=3228961e-73b4-47e3-b371-ba9e3bf7207f"
+      nickname
+      //   profileImage:
+      //     "https://firebasestorage.googleapis.com/v0/b/groove-a1c3e.appspot.com/o/avatars%2F6jGLxl6CBvcl4vO5vtUvbLO2FN23_chicken.png?alt=media&token=3228961e-73b4-47e3-b371-ba9e3bf7207f"
     };
-    const collectionRef = collection(db, "logInData");
+    const collectionRef = collection(db, "UserObj");
     addDoc(collectionRef, newUser);
     setNicknameModal(false);
     setNickname("");
   };
   useEffect(() => {
     const fetchData = async (userEmail) => {
-      const q = query(collection(db, "logInData"));
+      const q = query(collection(db, "UserObj"));
       const querySnapshot = await getDocs(q);
 
       const totalUsersInformation = await querySnapshot.docs.map((doc) => ({
@@ -162,33 +162,17 @@ function GrooveHeader({
                 </GrooveHeaderIconMy>
               </GrooveHeaderIcons>
             ) : (
-              <GrooveAuth
-                nickname={nickname}
-                setNickname={setNickname}
-                currentUser={currentUser}
-                isUserLogIn={isUserLogIn}
-                setIsUserLogIn={setIsUserLogIn}
-                isMyIconClicked={isMyIconClicked}
-                setIsMyIconClicked={setIsMyIconClicked}
-                setTotalUsersInformation={setTotalUsersInformation}
-                logInModal={logInModal}
-                setLogInModal={setLogInModal}
-                nicknameModal={nicknameModal}
-                setNicknameModal={setNicknameModal}
-                onNicknameChange={onNicknameChange}
-              />
+              <GrooveAuth />
             )}
             {isMyIconClicked && (
-              <div>
-                <GrooveHeaderIconSelection>
-                  <button type="button" onClick={logOut}>
-                    Log-out
-                  </button>
-                  <button type="button" onClick={goMyPage}>
-                    My-page
-                  </button>
-                </GrooveHeaderIconSelection>
-              </div>
+              <GrooveHeaderIconSelection>
+                <button type="button" onClick={logOut}>
+                  Log-out
+                </button>
+                <button type="button" onClick={goMyPage}>
+                  My-page
+                </button>
+              </GrooveHeaderIconSelection>
             )}
             {nicknameModal && (
               <SocialLogInNickname>

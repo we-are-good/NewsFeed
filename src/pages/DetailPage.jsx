@@ -15,27 +15,12 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { app, auth, db, storage } from "../firebase";
 import { doc, updateDoc, deleteDoc, getDoc, getFirestore, collection, getDocs } from "firebase/firestore";
 import GrooveLikeBtn from "../components/Groove/GrooveTotalFeed/GrooveLikeBtn";
-import GrooveAuth from "../components/Groove/GrooveAuth";
 import { getDownloadURL, ref, uploadBytes } from "@firebase/storage";
-import defaultImage from "../assets/defaultImage.jpg";
+import defaultImage from "../assets/defaultImage.jpeg";
 import GrooveHeader from "../components/Groove/GrooveHeader";
 import GrooveFooter from "../components/Groove/GrooveFooter";
 
-function DetailPage({
-  currentUser,
-  isUserLogIn,
-  setIsUserLogIn,
-  isMyIconClicked,
-  setIsMyIconClicked,
-  setTotalUsersInformation,
-  logInModal,
-  setLogInModal,
-  nickname,
-  setNickname,
-  nicknameModal,
-  setNicknameModal,
-  onNicknameChange
-}) {
+function DetailPage() {
   const navigate = useNavigate();
   const params = useParams();
   const location = useLocation();
@@ -59,7 +44,7 @@ function DetailPage({
     const fetchLoginData = async () => {
       try {
         const db = getFirestore(app);
-        const loginDataCollection = collection(db, "logInData");
+        const loginDataCollection = collection(db, "UserObj");
         const snapshot = await getDocs(loginDataCollection);
         const loginDataArray = [];
 
@@ -245,21 +230,7 @@ function DetailPage({
 
   return (
     <Wrapper>
-      <GrooveHeader
-        nickname={nickname}
-        setNickname={setNickname}
-        currentUser={currentUser}
-        isUserLogIn={isUserLogIn}
-        setIsUserLogIn={setIsUserLogIn}
-        isMyIconClicked={isMyIconClicked}
-        setIsMyIconClicked={setIsMyIconClicked}
-        setTotalUsersInformation={setTotalUsersInformation}
-        logInModal={logInModal}
-        setLogInModal={setLogInModal}
-        nicknameModal={nicknameModal}
-        setNicknameModal={setNicknameModal}
-        onNicknameChange={onNicknameChange}
-      />
+      <GrooveHeader />
       {isEditing ? (
         <EditingWrap>
           {imageURL ? (

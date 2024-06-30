@@ -1,30 +1,18 @@
 import { FileBox, Form, Input, TextArea, FormTitle, FormBody, FormEditingBtnWrap } from "../style/GrooveWriteStyle";
 import { addDoc, collection } from "firebase/firestore";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { auth, db, storage } from "../firebase";
 import { useNavigate } from "react-router-dom";
 import GrooveHeader from "../components/Groove/GrooveHeader";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
-import defaultImage from "../assets/defaultImage.jpg";
+import defaultImage from "../assets/defaultImage.jpeg";
 import GrooveFooter from "../components/Groove/GrooveFooter";
 import styled from "styled-components";
+import { GrooveContext } from "../shared/Context";
 
-function WritePage({
-  currentUser,
-  isUserLogIn,
-  setIsUserLogIn,
-  isMyIconClicked,
-  setIsMyIconClicked,
-  setTotalUsersInformation,
-  logInModal,
-  setLogInModal,
-  nickname,
-  setNickname,
-  nicknameModal,
-  setNicknameModal,
-  onNicknameChange
-}) {
+function WritePage() {
+  const { currentUser } = useContext(GrooveContext);
   const focusRef = useRef();
   const navigate = useNavigate();
   const [titleText, setTitleText] = useState("");
@@ -74,7 +62,7 @@ function WritePage({
       return;
     }
     // const newTodo = { text: text, isDone: false };
-    const collectionRef = collection(db, "GrooveTop");
+    const collectionRef = collection(db, "NewsCards");
     // 여기서 id는  firebase database -> grooveTop컬렉션의 문서값
     const { id } = await addDoc(collectionRef, newGroove);
     setGrooveTop((prev) => {
@@ -99,21 +87,7 @@ function WritePage({
 
   return (
     <Wrapper>
-      <GrooveHeader
-        currentUser={currentUser}
-        isUserLogIn={isUserLogIn}
-        setIsUserLogIn={setIsUserLogIn}
-        isMyIconClicked={isMyIconClicked}
-        setIsMyIconClicked={setIsMyIconClicked}
-        setTotalUsersInformation={setTotalUsersInformation}
-        logInModal={logInModal}
-        setLogInModal={setLogInModal}
-        nickname={nickname}
-        setNickname={setNickname}
-        nicknameModal={nicknameModal}
-        setNicknameModal={setNicknameModal}
-        onNicknameChange={onNicknameChange}
-      />
+      <GrooveHeader />
       <Form>
         {imageUrl ? <img src={imageUrl} alt="Groove Image"></img> : <img src={defaultImage} alt="기본 이미지"></img>}
         {/* <label for="file">

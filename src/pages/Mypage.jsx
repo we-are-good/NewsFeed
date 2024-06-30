@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import { auth, db, storage } from "../firebase";
 import { collection, query, where, getDocs, getFirestore, doc, updateDoc, setDoc } from "firebase/firestore";
@@ -7,20 +7,10 @@ import GrooveHeader from "../components/Groove/GrooveHeader";
 import GrooveFooter from "../components/Groove/GrooveFooter";
 import styled from "styled-components";
 import { format } from "date-fns";
+import { GrooveContext } from "../shared/Context";
 
-function MyPage({
-  currentUser,
-  setCurrentUser,
-  isUserLogIn,
-  setIsUserLogIn,
-  isMyIconClicked,
-  setIsMyIconClicked,
-  setTotalUsersInformation,
-  logInModal,
-  setLogInModal,
-  nickname,
-  setNickname
-}) {
+function MyPage() {
+  const { currentUser, setCurrentUser, nickname, setNickname } = useContext(GrooveContext);
   const [userEmail, setUserEmail] = useState("");
   const [userUid, setUserUid] = useState("");
   const [userDocId, setUserDocId] = useState("");
@@ -59,7 +49,7 @@ function MyPage({
 
   const fetchData = async (email) => {
     try {
-      const q = query(collection(db, "logInData"), where("email", "==", email));
+      const q = query(collection(db, "UserObj"), where("Email", "==", email));
       const querySnapshot = await getDocs(q);
       querySnapshot.forEach((doc) => {
         const userData = doc.data();
@@ -76,7 +66,7 @@ function MyPage({
 
   const fetchUserPosts = async (uid) => {
     try {
-      const q = query(collection(db, "GrooveTop"), where("authorId", "==", uid));
+      const q = query(collection(db, "NewsCards"), where("authorId", "==", uid));
       const querySnapshot = await getDocs(q);
       const userPostsData = [];
       querySnapshot.forEach((doc) => {
@@ -156,18 +146,7 @@ function MyPage({
 
   return (
     <div>
-      <GrooveHeader
-        currentUser={currentUser}
-        isUserLogIn={isUserLogIn}
-        setIsUserLogIn={setIsUserLogIn}
-        isMyIconClicked={isMyIconClicked}
-        setIsMyIconClicked={setIsMyIconClicked}
-        setTotalUsersInformation={setTotalUsersInformation}
-        logInModal={logInModal}
-        setLogInModal={setLogInModal}
-        nickname={nickname}
-        setNickname={setNickname}
-      />
+      <GrooveHeader />
 
       <StDivWrap>
         {currentUser ? (

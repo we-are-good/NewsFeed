@@ -16,23 +16,22 @@ import {
 import { format } from "date-fns";
 import { getFirestore, collection, getDocs } from "firebase/firestore";
 import { app } from "../../../firebase";
-import defaultImage from "../../../assets/defaultImage.jpg";
+import defaultImage from "../../../assets/defaultImage.jpeg";
 
-const GrooveFeed = ({ GrooveTop }) => {
+const GrooveFeed = ({ newsCards }) => {
   const [loginData, setLoginData] = useState([]);
 
   useEffect(() => {
     const fetchLoginData = async () => {
       try {
         const db = getFirestore(app);
-        const loginDataCollection = collection(db, "logInData");
+        const loginDataCollection = collection(db, "UserObj");
         const snapshot = await getDocs(loginDataCollection);
         const loginDataArray = [];
 
         snapshot.forEach((doc) => {
           const data = doc.data();
           loginDataArray.push({
-            id: doc.id,
             email: data.email,
             nickname: data.nickname,
             profileImage: data.profileImage // 프로필 이미지 URL 추가
@@ -49,10 +48,12 @@ const GrooveFeed = ({ GrooveTop }) => {
   return (
     <>
       <Top>
-        {GrooveTop.map((item) => {
-          const timestampSeconds = item.Timestamp.seconds;
-          const date = new Date(timestampSeconds * 1000);
-          const formattedTime = format(date, "yyyy-MM-dd HH:mm:ss");
+        {newsCards.map((item) => {
+          const now = new Date();
+          const timeStemp = format(now, "yyyy-mm-dd");
+          // const timestampSeconds = item.Timestamp.seconds;
+          // const date = new Date(timestampSeconds * 1000);
+          // const formattedTime = format(date, "yyyy-MM-dd HH:mm:ss");
           const userLoginData = loginData.find((loginItem) => loginItem.email === item.email);
           return (
             <StyledLink
@@ -60,19 +61,23 @@ const GrooveFeed = ({ GrooveTop }) => {
               to={{
                 pathname: `/detail/${item.id}`
               }}
-              state={GrooveTop}
+              state={newsCards}
             >
               <ImgWrapBox>
-                {item.imageUrl ? <img src={item.imageUrl} alt="업로드된 이미지" /> : <img src={defaultImage} alt="기본 이미지" />}
+                {item.imageUrl ? (
+                  <img src={item.imageUrl} alt="업로드된 이미지" />
+                ) : (
+                  <img src={defaultImage} alt="기본 이미지" />
+                )}
               </ImgWrapBox>
               <ContentWrapBox>
                 <ContentTop>
                   <Title>{item.title}</Title>
                   <Body>{item.body}</Body>
-                  <WriteTime>{formattedTime}</WriteTime>
+                  <WriteTime>{timeStemp}</WriteTime>
                 </ContentTop>
                 <ContentBot>
-                <ProfileImage
+                  <ProfileImage
                     src={userLoginData && userLoginData.profileImage ? userLoginData.profileImage : ""}
                     alt=""
                   />
